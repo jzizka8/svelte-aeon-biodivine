@@ -12,6 +12,9 @@
 	import NodeMenu from '../components/NodeMenu.svelte';
 	import EdgeMenu from '../components/EdgeMenu.svelte';
 	import LoadingIndicator from '../components/LoadingIndicator.svelte';
+	import { onMount } from 'svelte';
+
+	onMount(init);
 </script>
 
 <CytoScapeEditor />
