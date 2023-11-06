@@ -183,15 +183,6 @@ hotkeys('n,+', function(event, handler) {
 	CytoscapeEditor.showNode(id);
 });
 
-hotkeys('h', { keyup: true }, function(event, handler) {
-	if (event.type === 'keydown') {
-		UI.setQuickHelpVisible(true);
-	}
-	if (event.type === 'keyup') {
-		UI.setQuickHelpVisible(false);
-	}	
-});
-
 
 // utility function to fire events on UI elements - we mainly need it to simulate clicks
 function fireEvent(el, etype){
