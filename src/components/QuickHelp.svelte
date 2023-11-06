@@ -11,7 +11,7 @@
 	});
 </script>
 
-// TODO: should also depent on model editor - show always if empty
+<!--  TODO: should also depent on model editor - show always if empty -->
 <div id="quick-help" class="quick-help {hidden ? 'hidden' : ''}">
 	<div class="quick-help__header">
 		<b>Network editor actions:</b>
