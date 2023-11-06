@@ -37,7 +37,6 @@
 </div>
 
 <style>
-    
 .quick-help {
     position: fixed;
     top: 50%;
@@ -46,10 +45,10 @@
     padding: 1.5rem;
     border-radius: 0.75rem;
     color: #ffffff;
-    background: #646464;
+    background: #333;
     font-size: 1.125rem;
     font-family: 'FiraMono';
-    opacity: 0.75;
+    opacity: 0.90;
 }
 
 .quick-help__header {
