@@ -39,6 +39,10 @@ body {
     font-family: 'Helvetica', 'Arial', sans-serif;
 }
 
+.button{
+    cursor: pointer;
+}
+
 #loading-indicator {
     text-align: center;
     background: #fff;

@@ -21,11 +21,24 @@
 </script>
 
 {#if component}
-	<svelte:component this={component} >
-        <button class="button--close" on:click={() => (activeTab = null)}>
-            <img src="img/close-24px.svg" alt="" /></button
-            >
-        </svelte:component>
+	<svelte:component this={component}>
+		<button class="button button--close" on:click={() => (activeTab = null)}>
+			<img src="img/close-24px.svg" alt="" />
+		</button>
+	</svelte:component>
 {/if}
 
+<style>
+	.button--close {
+		display: flex;
+		border: none;
+		background-color: transparent;
+		transition: 0.2s;
+		border-radius: 50%;
+		padding: 0.3rem;
+	}
 
+	.button--close:hover {
+		background-color: var(--primary-color);
+	}
+</style>
