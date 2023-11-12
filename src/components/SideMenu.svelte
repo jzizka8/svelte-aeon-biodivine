@@ -1,29 +1,79 @@
-<script>
+<script lang="ts">
+	import { getContext, setContext } from 'svelte';
 	import SideMenuItem from './SideMenuItem.svelte';
+	import type { tabType } from '../types/types';
+	let startAnalysisDisabled = false;
+	export let activeTab: tabType;
+
 </script>
 
 <div id="side-menu">
 	<ul>
-		<button 
-			class="button  nav__item button--green "
-			title="You need to connect compute eninge in order to start analysis"
-		>
-			<img src="img/play_circle_filled-48px.svg" alt="" /> Start Analysis
-		</button>
-		<button class="button nav__item "><img src="img/view_quilt-48px.svg" alt="" /> Apply Layout</button>
+		<li>
+			<button
+				class="button button--invert-img button--green {startAnalysisDisabled ? 'disabled' : ''}"
+				title="You need to connect compute eninge in order to start analysis"
+				disabled={startAnalysisDisabled}
+			>
+				<img src="img/play_circle_filled-48px.svg" alt="" /> Start Analysis
+			</button>
+		</li>
+		<li>
+			<button class="button button--invert-img button--primary">
+				<img src="img/view_quilt-48px.svg" alt="" /> Apply Layout
+			</button>
+		</li>
 	</ul>
 	<nav>
 		<ul>
+			<li class="">
+				<button
+					class="button {activeTab == 'compute-engine' ? 'active' : ''}"
 			<li class="nav__item"><img src="img/engine-48px.svg" alt="" /> Compute Engine</li>
 			<li class="nav__item"><img src="img/file_copy-48px.svg" alt="" /> Import / Export</li>
 			<li class="nav__item"><img src="img/model-48px.svg" alt="" /> Model Editor</li>
 			<li class="nav__item"><img src="img/call_split-48px.svg" alt="" /> Results</li>
 			<li class="nav__item"><img src="img/help-48px.svg" alt="" /> About</li>
+				>
+					<img src="img/engine-48px.svg" alt="" /> Compute Engine
+				</button>
+			</li>
+			<li class="">
+				<button
+					class="button {activeTab == 'import-export' ? 'active' : ''}"
+				>
+					<img src="img/file_copy-48px.svg" alt="" /> Import / Export
+				</button>
+			</li>
+			<li class="">
+				<button
+					class="button {activeTab == 'model-editor' ? 'active' : ''} "
+				>
+					<img src="img/model-48px.svg" alt="" /> Model Editor
+				</button>
+			</li>
+			<li class="">
+				<button
+					class="button {activeTab == 'results' ? 'active' : ''}"
+				>
+					<img src="img/call_split-48px.svg" alt="" /> Results
+				</button>
+			</li>
+			<li class="">
+				<button
+					class="button {activeTab == 'about' ? 'active' : ''}"
+				>
+					<img src="img/help-48px.svg" alt="" /> About
+				</button>
+			</li>
 		</ul>
 	</nav>
 </div>
 
 <style>
+	nav {
+		margin-top: 6rem;
+	}
 	ul {
 		display: flex;
 		flex-direction: column;
@@ -31,53 +81,46 @@
 		font-size: 1.25rem;
 		padding-left: 0;
 	}
-    nav{
-        margin-top: 6rem;
-    }
-	.nav__item {
+
+	.button {
 		padding: 1rem 0.75rem;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		border-radius: 1rem;
+		width: 100%;
+		border: none;
+		background-color: transparent;
+		font-size: 1.5rem;
+		padding-inline: 1rem;
 	}
-	.nav__item:hover,
-	.nav__item.active {
+	.button:hover,
+	.button.active {
 		background-color: var(--primary-color-light);
-        color: white;
-		cursor: pointer;
 	}
-	
-	.nav__item img {
+
+	.button img {
 		width: 2rem;
 		height: 2rem;
 		margin-right: 0.5rem;
 	}
 
-    .button {
-        border:none;
-		background-color:var(--primary-color-light);
-		color: white;
-        font-size: 1.25rem;
-        padding-inline: 1rem;
+	.button--primary {
+		background-color: var(--primary-color-light);
 	}
-	.button:hover {
-		background-color:var(--primary-color);
+	.button--primary:hover {
+		background-color: var(--primary-color);
+	}
+	.button--green {
+		background-color: var(--green-light);
+	}
+	.button--green:hover {
+		background-color: var(--green);
 	}
 	.button.disabled {
 		background-color: gray;
 		color: black;
 		opacity: 0.5;
-		pointer-events: none;
+		cursor: not-allowed;
 	}
-
-	.button img, .nav__item:hover img {
-		filter: invert(1);
-	}
-    .button--green{
-        background-color: var(--green-light) ;
-    }
-    .button--green:hover{
-        background-color: var(--green) ;
-    }
 </style>

@@ -28,12 +28,12 @@
 }
 
 :root{
-    --primary-color: hsl(0, 67%, 65%);
+    --primary-color: hsl(0, 67%, 60%);
     --primary-color-light: hsl(0, 57%, 65%);
     --soft-navy: hsl(221, 34%, 43%);
     --soft-navy-light: hsl(221, 34%, 53%);
-    --green: hsl(122, 55%, 39%);
-    --green-light: hsl(122, 55%, 49%);
+    --green: hsl(122, 75%, 45%);
+    --green-light: hsl(122, 65%, 50%);
 }
 body {
     font-family: 'Helvetica', 'Arial', sans-serif;
