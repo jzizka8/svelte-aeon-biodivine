@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import HelpTab from '../components/HelpTab.svelte';
 	import QuickHelp from '../components/QuickHelp.svelte';
 	import SideMenu from '../components/SideMenu.svelte';
