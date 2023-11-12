@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { getContext, setContext } from 'svelte';
-	import SideMenuItem from './SideMenuItem.svelte';
 	import type { tabType } from '../types/types';
 	let startAnalysisDisabled = false;
 	export let activeTab: tabType;
