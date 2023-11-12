@@ -1,5 +1,5 @@
 <div id="tab-help" class="main-panel " style="font-family: 'FiraMono';">
-    <img alt="close" src="img/close-24px.svg" class="panel-close-button" onclick="UI.closeContent()">
+    <slot />
     <h2 style="margin: 0 auto; font-size: 20px; text-align: center; margin-bottom: 8px;">About & Help</h2>
 
     <p>Aeon is a tool for analysing <b style="font-family: 'FiraMonoBold';">long-term behaviour of Boolean

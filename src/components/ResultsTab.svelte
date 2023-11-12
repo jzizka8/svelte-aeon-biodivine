@@ -1,5 +1,5 @@
 <div id="tab-results" class="main-panel">
-    <img alt="close" src="img/close-24px.svg" class="panel-close-button" onclick="UI.closeContent()">
+    <slot />
     <h2 style="margin: 0 auto; font-size: 20px; text-align: center; margin-bottom: 8px;">Bifurcation Function
     </h2>
     <div style="text-align: center; padding: 12px;"><span id="results-expired" class="orange center gone">The

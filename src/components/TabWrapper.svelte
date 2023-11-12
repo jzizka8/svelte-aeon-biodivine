@@ -21,13 +21,11 @@
 </script>
 
 {#if component}
-        <svelte:component this={component} />
-        <button on:click={()=>activeTab=null}> close </button>
-{:else}
-    <div class="tab-wrapper__empty">
-        <h2>Empty tab</h2>
-        <p>There is nothing to see here.</p>
-    </div>
+	<svelte:component this={component} >
+        <button class="button--close" on:click={() => (activeTab = null)}>
+            <img src="img/close-24px.svg" alt="" /></button
+            >
+        </svelte:component>
 {/if}
 
 
