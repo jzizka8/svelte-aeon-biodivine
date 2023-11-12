@@ -1,4 +1,4 @@
-<div id="tab-model-editor" class="main-panel gone" style="padding-bottom: 0px;">
+<div id="tab-model-editor" class="main-panel" style="padding-bottom: 0px;">
     <div class="invisible-input full-line">
         <input id="model-name" class="center" type="text" name="model-name" placeholder="(model name)"
             style="font-size: 20px;">

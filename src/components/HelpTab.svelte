@@ -1,4 +1,4 @@
-<div id="tab-help" class="main-panel gone" style="font-family: 'FiraMono';">
+<div id="tab-help" class="main-panel " style="font-family: 'FiraMono';">
     <img alt="close" src="img/close-24px.svg" class="panel-close-button" onclick="UI.closeContent()">
     <h2 style="margin: 0 auto; font-size: 20px; text-align: center; margin-bottom: 8px;">About & Help</h2>
 

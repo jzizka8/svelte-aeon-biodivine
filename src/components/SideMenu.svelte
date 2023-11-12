@@ -5,6 +5,9 @@
 	let startAnalysisDisabled = false;
 	export let activeTab: tabType;
 
+	const displayTab = (tab: tabType) => {
+		activeTab = tab;
+	};
 </script>
 
 <div id="side-menu">
@@ -29,11 +32,7 @@
 			<li class="">
 				<button
 					class="button {activeTab == 'compute-engine' ? 'active' : ''}"
-			<li class="nav__item"><img src="img/engine-48px.svg" alt="" /> Compute Engine</li>
-			<li class="nav__item"><img src="img/file_copy-48px.svg" alt="" /> Import / Export</li>
-			<li class="nav__item"><img src="img/model-48px.svg" alt="" /> Model Editor</li>
-			<li class="nav__item"><img src="img/call_split-48px.svg" alt="" /> Results</li>
-			<li class="nav__item"><img src="img/help-48px.svg" alt="" /> About</li>
+					on:click={() => displayTab('compute-engine')}
 				>
 					<img src="img/engine-48px.svg" alt="" /> Compute Engine
 				</button>
@@ -41,6 +40,7 @@
 			<li class="">
 				<button
 					class="button {activeTab == 'import-export' ? 'active' : ''}"
+					on:click={() => displayTab('import-export')}
 				>
 					<img src="img/file_copy-48px.svg" alt="" /> Import / Export
 				</button>
@@ -48,6 +48,7 @@
 			<li class="">
 				<button
 					class="button {activeTab == 'model-editor' ? 'active' : ''} "
+					on:click={() => displayTab('model-editor')}
 				>
 					<img src="img/model-48px.svg" alt="" /> Model Editor
 				</button>
@@ -55,6 +56,7 @@
 			<li class="">
 				<button
 					class="button {activeTab == 'results' ? 'active' : ''}"
+					on:click={() => displayTab('results')}
 				>
 					<img src="img/call_split-48px.svg" alt="" /> Results
 				</button>
@@ -62,6 +64,7 @@
 			<li class="">
 				<button
 					class="button {activeTab == 'about' ? 'active' : ''}"
+					on:click={() => displayTab('about')}
 				>
 					<img src="img/help-48px.svg" alt="" /> About
 				</button>

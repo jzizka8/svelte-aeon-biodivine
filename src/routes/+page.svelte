@@ -12,29 +12,19 @@
 	import NodeMenu from '../components/NodeMenu.svelte';
 	import EdgeMenu from '../components/EdgeMenu.svelte';
 	import LoadingIndicator from '../components/LoadingIndicator.svelte';
+	import type { tabType } from '../types/types';
+	import TabWrapper from '../components/TabWrapper.svelte';
+
+	let activeTab: tabType = null;
 </script>
 
-<CytoScapeEditor />
+	<SideMenu bind:activeTab />
+	<TabWrapper bind:activeTab />
 
-<LogoType />
-<Version />
-<NodeMenu />
-<EdgeMenu />
-
-<QuickHelp />
-
-<div style="position: absolute;">
-	<ModelEditorTab />
-
-	<EngingeTab />
-
-	<ImportExportTab />
-
-	<ResultsTab />
-
-	<HelpTab />
-
-	<SideMenu />
+	<LogoType />
+	<Version />
+	<NodeMenu />
+	<EdgeMenu />
 
 	<LoadingIndicator />
 </div>
