@@ -46,7 +46,7 @@ body {
 
 main {
     display: grid;
-    grid-template-columns: 16rem auto;
+    grid-template-columns: 11rem auto;
     grid-template-rows: 100vh;
     grid-template-areas: 'menu main';
 }

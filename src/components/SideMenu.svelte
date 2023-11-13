@@ -86,12 +86,11 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
-		font-size: 1.25rem;
 		padding-left: 0;
 	}
 
 	.button {
-		padding: 1rem 0.75rem;
+		padding: 1rem 0.5rem;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -99,8 +98,7 @@
 		width: 100%;
 		border: none;
 		background-color: transparent;
-		font-size: 1.5rem;
-		padding-inline: 1rem;
+		font-size: 1rem;
 	}
 	.button:hover,
 	.button.active {
@@ -108,8 +106,8 @@
 	}
 
 	.button img {
-		width: 2rem;
-		height: 2rem;
+		width: 1.5rem;
+		height: 1.5rem;
 		margin-right: 0.5rem;
 	}
     .button--half-round{
