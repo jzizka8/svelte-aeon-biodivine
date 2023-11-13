@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { tabType } from '../types/types';
-	let startAnalysisDisabled = true;
+	let startAnalysisDisabled = false;
 	let applyLayoutDisabled = false;
 	export let activeTab: tabType;
 
@@ -16,6 +16,7 @@
 				class="button button--half-round button--green {startAnalysisDisabled ? 'disabled' : ''}"
 				title="You need to connect compute eninge in order to start analysis"
 				disabled={startAnalysisDisabled}
+                onclick="ComputeEngine.startComputation(LiveModel.exportAeon());"
 			>
 				<img src="img/play_circle_filled-48px.svg" alt="" /> Start Analysis
 			</button>
@@ -24,6 +25,7 @@
 			<button
 				class="button button--half-round button--primary {applyLayoutDisabled ? 'disabled' : ''}"
 				disabled={applyLayoutDisabled}
+                onclick="CytoscapeEditor.layoutCose();" 
 			>
 				<img src="img/view_quilt-48px.svg" alt="" /> Apply Layout
 			</button>
@@ -33,10 +35,11 @@
 		<ul>
 			<li class="">
 				<button
-					class="button button--half-round {activeTab == 'compute-engine' ? 'active' : ''}"
+					class="button button--half-round engine-dot-container {activeTab == 'compute-engine' ? 'active' : ''}"
 					on:click={() => displayTab('compute-engine')}
 				>
-					<img src="img/engine-48px.svg" alt="" /> Compute Engine
+                <img src="img/engine-48px.svg" alt="" /> Compute Engine
+                <span id="engine-dot">●</span>
 				</button>
 			</li>
 			<li class="">
