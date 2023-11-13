@@ -19,17 +19,13 @@
 	$: component = activeTab ? tabComponents[activeTab] : null;
 </script>
 
-<!-- This is only a temporary fix to allow initialization of tabs from global js -->
-{#each Object.entries(tabComponents) as [key, tab]}
-    <div class="{key==activeTab? '' : 'gone'} temp-main">
-        
-        <svelte:component this={tab}>
-            <button class="button button--close" on:click={() => (activeTab = null)}>
-                <img src="img/close-24px.svg" alt="" />
-            </button>
-        </svelte:component>
-    </div>
-{/each}
+{#if component}
+	<svelte:component this={component}>
+		<button class="button button--close" on:click={() => (activeTab = null)}>
+			<img src="img/close-24px.svg" alt="" />
+		</button>
+	</svelte:component>
+{/if}
 
 <style>
 	.button--close {
@@ -44,7 +40,4 @@
 	.button--close:hover {
 		background-color: var(--primary-color);
 	}
-    .temp-main{
-        grid-area: main;
-    }
 </style>
