@@ -44,6 +44,13 @@ body {
     cursor: pointer;
 }
 
+main {
+    display: grid;
+    grid-template-columns: 16rem auto;
+    grid-template-rows: 100vh;
+    grid-template-areas: 'menu main';
+}
+
 #loading-indicator {
     text-align: center;
     background: #fff;
@@ -88,7 +95,7 @@ body {
 	The root of the model editor and attractor visualization 
     - just stretch across the whole page...
 */
-#cytoscape-editor, #visjs-container {
+ #visjs-container {
 	position: absolute;
     left: 0;
     right: 0;
@@ -97,7 +104,10 @@ body {
     background: #f9f9f9;
     z-index: -1;
 }
-
+#cytoscape-editor{
+    grid-area: main;
+    overflow: hidden;
+}
 /*
     The menu that is displayed when user clicks on a node.
 */
@@ -152,6 +162,8 @@ body {
 } */
 
 .main-panel {
+    grid-area: main;
+    position: absolute;
     z-index: 10;
     display: block;
     background-color: #eee;
@@ -276,11 +288,14 @@ div.invisible-input[contenteditable]:empty:not(:focus):before {
     width: 100%;
 }
 
+.engine-dot-container {
+    position: relative;
+}
 #engine-dot {
     position: absolute;
-    left: 55px;
-    top: -20px;
-    font-size: 45px;
+    right: 0;
+    top:0;
+    font-size: 2rem;
 }
 
 .compound-button {

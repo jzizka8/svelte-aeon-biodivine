@@ -18,13 +18,24 @@
 	let activeTab: tabType = null;
 </script>
 
+<main>
+	<!-- active tab can be opened from side menu and from the tab wrapper -->
 	<SideMenu bind:activeTab />
 	<TabWrapper bind:activeTab />
+	<CytoScapeEditor />
 
-	<LogoType />
-	<Version />
 	<NodeMenu />
 	<EdgeMenu />
-
+	
+	<!-- absolutely positioned stuff -->
+	<LogoType />
+	<Version />
 	<LoadingIndicator />
-</div>
+	<QuickHelp />
+
+
+</main>
+
+<style>
+	
+</style>
