@@ -1,11 +1,15 @@
 <script lang="ts">
+	import { activeTabStore } from '../stores/activeTabStore';
 	import type { tabType } from '../types/types';
 	let startAnalysisDisabled = false;
 	let applyLayoutDisabled = false;
-	export let activeTab: tabType;
+
+    let activeTab: tabType = null;
+    activeTabStore.subscribe(value => (activeTab = value));
+
 
 	const displayTab = (tab: tabType) => {
-		activeTab = tab;
+        activeTabStore.set(tab);
 	};
 </script>
 

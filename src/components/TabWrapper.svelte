@@ -5,6 +5,7 @@
 	import ModelEditorTab from './ModelEditorTab.svelte';
 	import ResultsTab from './ResultsTab.svelte';
 	import EngingeTab from './EngingeTab.svelte';
+	import { activeTabStore } from '../stores/activeTabStore';
 
 	const tabComponents = {
 		about: HelpTab,
@@ -14,7 +15,8 @@
 		'compute-engine': EngingeTab
 	};
 
-	export let activeTab: tabType;
+	let activeTab: tabType = null;
+    activeTabStore.subscribe(value => (activeTab = value));
 
 	$: component = activeTab ? tabComponents[activeTab] : null;
 </script>
@@ -24,7 +26,7 @@
     <div class="{key==activeTab? '' : 'gone'} temp-main">
         
         <svelte:component this={tab}>
-            <button class="button button--close" on:click={() => (activeTab = null)}>
+            <button class="button button--close" on:click={activeTabStore.close}>
                 <img src="img/close-24px.svg" alt="" />
             </button>
         </svelte:component>
