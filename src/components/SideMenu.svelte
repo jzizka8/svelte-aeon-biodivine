@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { tabType } from '../types/types';
-	let startAnalysisDisabled = false;
+	let startAnalysisDisabled = true;
+	let applyLayoutDisabled = false;
 	export let activeTab: tabType;
 
 	const displayTab = (tab: tabType) => {
@@ -20,7 +21,10 @@
 			</button>
 		</li>
 		<li>
-			<button class="button button--invert-img button--primary">
+			<button
+				class="button button--invert-img button--primary {applyLayoutDisabled ? 'disabled' : ''}"
+				disabled={applyLayoutDisabled}
+			>
 				<img src="img/view_quilt-48px.svg" alt="" /> Apply Layout
 			</button>
 		</li>
