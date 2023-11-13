@@ -37,7 +37,6 @@ let UI = {
 		
 		this._initNodeMenu(this._nodeMenu);
 		this._initEdgeMenu(this._edgeMenu);
-		this._initSideMenu(sideMenu);	
 
 		// Init fake button (sadly we have to do this explicitly
 		// because it is not a proper menu button).
@@ -187,10 +186,6 @@ let UI = {
 		return !this._nodeMenu.classList.contains("invisible");
 	},
 
-	// Close any content tab, if open.
-	closeContent() {
-		this.ensureContentTabOpen(undefined);
-	},
 
 	// A small utility method to show quick help.
 	setQuickHelpVisible(visible) {
@@ -201,20 +196,6 @@ let UI = {
 		}
 	},
 
-	// Make sure the given content tab is open (for example because there is content in it that
-	// needs to be seen).
-	ensureContentTabOpen(tabId) {
-		for (var i = 0; i < this._tabsAndButtons.length; i++) {
-			let item = this._tabsAndButtons[i];
-			if (item.tab.getAttribute("id") == tabId) {
-				item.button.classList.add("selected");
-				item.tab.classList.remove("gone");
-			} else {
-				item.button.classList.remove("selected");
-				item.tab.classList.add("gone");
-			}			
-		}	
-	},	
 
 
 	// If given a position, show the center of the node menu at that position.
@@ -509,42 +490,4 @@ let UI = {
 			}
 		})
 	},
-
-	// Add a hover listener to all side menu items to show hint when needed.
-	// Add a click listener that will toggle the appropriate tab for each button.
-	_initSideMenu: function(menu) {
-		let groups = menu.getElementsByClassName("button-group");
-		for (var i = 0; i < groups.length; i++) {
-			let group = groups[i];			
-			let button = group.getElementsByClassName("button")[0];
-			let hint = group.getElementsByClassName("hint")[0];
-			let tabId = button.getAttribute("tab-id");
-			// Show hint popup on mouse enter when button is not selected.
-			button.addEventListener("mouseenter", (e) => {
-				let selected = button.classList.contains("selected");
-				if (!selected) {
-					group.style.width = "272px";
-					hint.classList.remove("invisible");
-				}				
-			});
-			// Hide hint popup on mouse leave
-			button.addEventListener("mouseleave", (e) => {
-				group.style.width = "72px";				
-				hint.classList.add("invisible");			
-			});
-			// On click, if selected, close content. If not selected, switch to this tab.
-			button.addEventListener("click", (e) => {
-				let selected = button.classList.contains("selected");
-				if (selected) {
-					UI.closeContent();
-				} else {
-					UI.ensureContentTabOpen(tabId);
-					// Also, hide the hint popup
-					group.style.width = "72px";
-					hint.classList.add("invisible");
-				}				
-			});
-		}
-	},
-	
 }
