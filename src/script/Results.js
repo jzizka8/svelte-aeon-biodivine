@@ -61,7 +61,6 @@ let Results = {
 		        }
 		        document.getElementById("results").innerHTML = table;
 		        document.getElementById("open-tree-explorer").classList.remove("gone");
-		        UI.ensureContentTabOpen(ContentTabs.results);
 			}
 		});
 	},

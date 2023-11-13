@@ -1,5 +1,5 @@
-<div id="tab-import-export" class="main-panel gone">
-    <img alt="close" src="img/close-24px.svg" class="panel-close-button" onclick="UI.closeContent()">
+<div id="tab-import-export" class="main-panel">
+    <slot/>
     <h2 style="margin: 0 auto; font-size: 20px; text-align: center; margin-bottom: 8px;">Model File</h2>
 
     <div style="width: 244px; display: block; float: left; margin-right: 6px;">

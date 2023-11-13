@@ -1,5 +1,5 @@
-<div id="tab-engine" class="main-panel gone">
-    <img alt="close" src="img/close-24px.svg" class="panel-close-button" onclick="UI.closeContent()">
+<div id="tab-engine" class="main-panel ">
+    <slot />
     <h2 style="margin: 0 auto; font-size: 20px; text-align: center;">Compute Engine</h2>
     <div class="invisible-input full-line" style="margin-top: 4px; margin-bottom: 4px; font-size: 16px;">
         <input id="engine-address" class="center" type="text" name="engine-address"

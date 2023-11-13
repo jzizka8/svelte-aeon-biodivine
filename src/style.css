@@ -27,8 +27,28 @@
     src: url("font/B2.ttf");
 }
 
+:root{
+    --primary-color: hsl(0, 67%, 60%);
+    --primary-color-light: hsl(0, 57%, 65%);
+    --soft-navy: hsl(221, 34%, 43%);
+    --soft-navy-light: hsl(221, 34%, 53%);
+    --green: hsl(122, 75%, 45%);
+    --green-light: hsl(122, 65%, 50%);
+}
 body {
     font-family: 'Helvetica', 'Arial', sans-serif;
+    margin: 0;
+}
+
+.button{
+    cursor: pointer;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 11rem auto;
+    grid-template-rows: 100vh;
+    grid-template-areas: 'menu main';
 }
 
 #loading-indicator {
@@ -75,7 +95,7 @@ body {
 	The root of the model editor and attractor visualization 
     - just stretch across the whole page...
 */
-#cytoscape-editor, #visjs-container {
+ #visjs-container {
 	position: absolute;
     left: 0;
     right: 0;
@@ -84,7 +104,10 @@ body {
     background: #f9f9f9;
     z-index: -1;
 }
-
+#cytoscape-editor{
+    grid-area: main;
+    overflow: hidden;
+}
 /*
     The menu that is displayed when user clicks on a node.
 */
@@ -133,60 +156,21 @@ body {
 /*
     The menu with main buttons/panels
 */
-#side-menu {
+/* #side-menu {
     position: absolute;
     top: 0;
-}
-
-#side-menu .button, #side-menu .button-fake {
-    width: 48px;
-    height: 48px;
-    padding: 12px;
-    border-radius: 24px;
-    background-color: #ECEFF1;
-    display: inline-block;
-    transition: background-color 0.3s;
-}
-
-#side-menu .button.selected, #side-menu .button-fake.selected {
-    background-color: #CFD8DC;
-}
-
-#side-menu .button:hover, #side-menu .button-fake:hover {
-    background-color: #B0BEC5;
-}
-
-#side-menu .button-group, #side-menu .button-group-fake {
-    background-color: #ECEFF1;
-    display: block;
-    border-radius: 24px;
-    box-shadow: 0px 2px 5px #d0d0d0;
-    height: 72px;
-    width: 72px;
-    transition: width 0.3s;
-    position: relative;
-    margin-bottom: 12px;
-}
-
-#side-menu .button-group .hint, #side-menu .button-group-fake .hint {
-    width: 200px;
-    line-height: 72px;
-    display: table-cell;
-    position: absolute;
-    top: 0px;
-    left: 72px;
-    font-weight: bold;    
-    font-size: 20px;    
-    text-align: center;      
-    pointer-events: none;
-}
+} */
 
 .main-panel {
+    grid-area: main;
+    position: absolute;
+    z-index: 10;
     display: block;
-    background-color: #f5f5f5;
-    box-shadow: 0px 2px 5px #d0d0d0;
+    background-color: #eee;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     width: 500px;
-    margin-left: 82px;
+    margin-left: 1rem;
+    margin-top:1rem;
     padding: 12px;
     border-radius: 8px;
     position: relative;
@@ -305,11 +289,14 @@ div.invisible-input[contenteditable]:empty:not(:focus):before {
     width: 100%;
 }
 
+.engine-dot-container {
+    position: relative;
+}
 #engine-dot {
     position: absolute;
-    left: 55px;
-    top: -20px;
-    font-size: 45px;
+    right: 0;
+    top:0;
+    font-size: 2rem;
 }
 
 .compound-button {
