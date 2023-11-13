@@ -13,7 +13,7 @@
 	<ul>
 		<li>
 			<button
-				class="button button--invert-img button--green {startAnalysisDisabled ? 'disabled' : ''}"
+				class="button button--half-round button--green {startAnalysisDisabled ? 'disabled' : ''}"
 				title="You need to connect compute eninge in order to start analysis"
 				disabled={startAnalysisDisabled}
 			>
@@ -22,7 +22,7 @@
 		</li>
 		<li>
 			<button
-				class="button button--invert-img button--primary {applyLayoutDisabled ? 'disabled' : ''}"
+				class="button button--half-round button--primary {applyLayoutDisabled ? 'disabled' : ''}"
 				disabled={applyLayoutDisabled}
 			>
 				<img src="img/view_quilt-48px.svg" alt="" /> Apply Layout
@@ -33,7 +33,7 @@
 		<ul>
 			<li class="">
 				<button
-					class="button {activeTab == 'compute-engine' ? 'active' : ''}"
+					class="button button--half-round {activeTab == 'compute-engine' ? 'active' : ''}"
 					on:click={() => displayTab('compute-engine')}
 				>
 					<img src="img/engine-48px.svg" alt="" /> Compute Engine
@@ -41,7 +41,7 @@
 			</li>
 			<li class="">
 				<button
-					class="button {activeTab == 'import-export' ? 'active' : ''}"
+					class="button button--half-round {activeTab == 'import-export' ? 'active' : ''}"
 					on:click={() => displayTab('import-export')}
 				>
 					<img src="img/file_copy-48px.svg" alt="" /> Import / Export
@@ -49,7 +49,7 @@
 			</li>
 			<li class="">
 				<button
-					class="button {activeTab == 'model-editor' ? 'active' : ''} "
+					class="button button--half-round {activeTab == 'model-editor' ? 'active' : ''} "
 					on:click={() => displayTab('model-editor')}
 				>
 					<img src="img/model-48px.svg" alt="" /> Model Editor
@@ -57,7 +57,7 @@
 			</li>
 			<li class="">
 				<button
-					class="button {activeTab == 'results' ? 'active' : ''}"
+					class="button button--half-round {activeTab == 'results' ? 'active' : ''}"
 					on:click={() => displayTab('results')}
 				>
 					<img src="img/call_split-48px.svg" alt="" /> Results
@@ -65,7 +65,7 @@
 			</li>
 			<li class="">
 				<button
-					class="button {activeTab == 'about' ? 'active' : ''}"
+					class="button button--half-round {activeTab == 'about' ? 'active' : ''}"
 					on:click={() => displayTab('about')}
 				>
 					<img src="img/help-48px.svg" alt="" /> About
@@ -109,7 +109,10 @@
 		height: 2rem;
 		margin-right: 0.5rem;
 	}
-
+    .button--half-round{
+        border-top-left-radius:0;
+        border-bottom-left-radius:0;
+    }
 	.button--primary {
 		background-color: var(--primary-color-light);
 	}
