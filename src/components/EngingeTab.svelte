@@ -1,3 +1,6 @@
+<script lang="ts" >
+	import { activeTabStore } from "../stores/activeTabStore";
+</script>
 <div id="tab-engine" class="main-panel ">
     <slot />
     <h2 style="margin: 0 auto; font-size: 20px; text-align: center;">Compute Engine</h2>
@@ -26,7 +29,7 @@
             <button id="computation-cancel" class="image-button" onclick="ComputeEngine.cancelComputation();"
                 style="margin-right: 4px;">Cancel job <img src="img/cancel-24px.svg"></button>
 
-            <button id="computation-download" class="image-button" onclick="Results.download();"
+            <button id="computation-download" class="image-button" on:click={()=>activeTabStore.set('results')}
                 style="margin-left: 4px;">Show result <img src="img/cloud_download-24px.svg"></button>
 
         </div>
