@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { activeTabStore } from '../stores/activeTabStore';
 	import type { tabType } from '../types/types';
+	import Version from './Version.svelte';
 	let startAnalysisDisabled = false;
 	let applyLayoutDisabled = false;
 
@@ -76,6 +77,7 @@
 			</li>
 		</ul>
 	</nav>
+	<Version/>
 </div>
 
 <style>

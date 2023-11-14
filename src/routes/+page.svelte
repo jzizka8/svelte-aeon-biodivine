@@ -29,7 +29,6 @@
 	
 	<!-- absolutely positioned stuff -->
 	<LogoType />
-	<Version />
 	<LoadingIndicator />
 	<QuickHelp />
 
