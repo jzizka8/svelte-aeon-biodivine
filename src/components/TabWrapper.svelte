@@ -15,15 +15,12 @@
 		'compute-engine': EngingeTab
 	};
 
-	let activeTab: tabType = null;
-    activeTabStore.subscribe(value => (activeTab = value));
-
-	$: component = activeTab ? tabComponents[activeTab] : null;
+	$: component = $activeTabStore ? tabComponents[$activeTabStore] : null;
 </script>
 
 <!-- This is only a temporary fix to allow initialization of tabs from global js -->
 {#each Object.entries(tabComponents) as [key, tab]}
-    <div class="{key==activeTab? '' : 'gone'} temp-main">
+    <div class="{key==$activeTabStore? '' : 'gone'} temp-main">
         
         <svelte:component this={tab}>
             <button class="button button--close" on:click={activeTabStore.close}>

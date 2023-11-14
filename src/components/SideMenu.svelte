@@ -4,10 +4,6 @@
 	let startAnalysisDisabled = false;
 	let applyLayoutDisabled = false;
 
-    let activeTab: tabType = null;
-    activeTabStore.subscribe(value => (activeTab = value));
-
-
 	const displayTab = (tab: tabType) => {
         activeTabStore.set(tab);
 	};
@@ -39,7 +35,7 @@
 		<ul>
 			<li class="">
 				<button
-					class="button button--half-round engine-dot-container {activeTab == 'compute-engine' ? 'active' : ''}"
+					class="button button--half-round engine-dot-container {$activeTabStore == 'compute-engine' ? 'active' : ''}"
 					on:click={() => displayTab('compute-engine')}
 				>
                 <img src="img/engine-48px.svg" alt="" /> Compute Engine
@@ -48,7 +44,7 @@
 			</li>
 			<li class="">
 				<button
-					class="button button--half-round {activeTab == 'import-export' ? 'active' : ''}"
+					class="button button--half-round {$activeTabStore == 'import-export' ? 'active' : ''}"
 					on:click={() => displayTab('import-export')}
 				>
 					<img src="img/file_copy-48px.svg" alt="" /> Import / Export
@@ -56,7 +52,7 @@
 			</li>
 			<li class="">
 				<button
-					class="button button--half-round {activeTab == 'model-editor' ? 'active' : ''} "
+					class="button button--half-round {$activeTabStore == 'model-editor' ? 'active' : ''} "
 					on:click={() => displayTab('model-editor')}
 				>
 					<img src="img/model-48px.svg" alt="" /> Model Editor
@@ -64,7 +60,7 @@
 			</li>
 			<li class="">
 				<button
-					class="button button--half-round {activeTab == 'results' ? 'active' : ''}"
+					class="button button--half-round {$activeTabStore == 'results' ? 'active' : ''}"
 					on:click={() => displayTab('results')}
 				>
 					<img src="img/call_split-48px.svg" alt="" /> Results
@@ -72,7 +68,7 @@
 			</li>
 			<li class="">
 				<button
-					class="button button--half-round {activeTab == 'about' ? 'active' : ''}"
+					class="button button--half-round {$activeTabStore == 'about' ? 'active' : ''}"
 					on:click={() => displayTab('about')}
 				>
 					<img src="img/help-48px.svg" alt="" /> About
