@@ -1,5 +1,12 @@
-
 <script lang="ts">
-    import {EXPECTED_ENGINE_VERSION} from '../const';
+	import { EXPECTED_ENGINE_VERSION } from '../const';
 </script>
-<span id="version">{EXPECTED_ENGINE_VERSION}</span>
+
+<div class="version">{EXPECTED_ENGINE_VERSION}</div>
+
+<style>
+	.version {
+		margin-top: auto;
+		padding: 1rem;
+	}
+</style>

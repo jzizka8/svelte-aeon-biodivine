@@ -81,9 +81,11 @@
 </div>
 
 <style>
-	nav {
-		margin-top: 6rem;
+	#side-menu {
+		display: flex;
+		flex-direction: column;
 	}
+	
 	ul {
 		display: flex;
 		flex-direction: column;
