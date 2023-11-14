@@ -1,5 +1,10 @@
 <script lang="ts" >
+    import { EXPECTED_ENGINE_VERSION } from "../const";
 	import { activeTabStore } from "../stores/activeTabStore";
+
+    const getDownloadLink = (platform: 'windows'|'linux'|'macos') => {
+        return `https://github.com/sybila/biodivine-aeon-server/releases/download/${EXPECTED_ENGINE_VERSION}/aeon-compute-engine-${platform}.zip`;
+    }
 </script>
 <div id="tab-engine" class="main-panel ">
     <slot />
@@ -39,14 +44,14 @@
     <div style="text-align: center; margin-top: 48px;">
         <h3 style="margin: 0 auto; font-size: 14px; text-align: center; margin-bottom: 4px;">No engine running?
             Download binary:</h3>
-        <a href="https://github.com/sybila/biodivine-aeon-server/releases/download/VERSION/aeon-compute-engine-windows.zip"
+        <a href={getDownloadLink('windows')}
             id="engine-link-windows" target="blank"><button id="download-windows" class="image-button"
                 style="display: inline-block; margin: 4px;">Windows <img
                     src="img/windows-24px.svg"></button></a>
-        <a href="https://github.com/sybila/biodivine-aeon-server/releases/download/VERSION/aeon-compute-engine-macos.zip"
+        <a href={getDownloadLink('macos')}
             id="engine-link-macos" target="blank"><button id="download-mac" class="image-button"
                 style="display: inline-block; margin: 4px;">MacOS <img src="img/macos-24px.svg"></button></a>
-        <a href="https://github.com/sybila/biodivine-aeon-server/releases/download/VERSION/aeon-compute-engine-linux.zip"
+        <a href={getDownloadLink('linux')}
             id="engine-link-linux" target="blank"><button id="download-linux" class="image-button"
                 style="display: inline-block; margin: 4px;">Linux <img src="img/linux-24px.svg"></button></a>
     </div>
