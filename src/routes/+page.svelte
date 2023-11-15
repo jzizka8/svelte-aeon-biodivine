@@ -20,8 +20,8 @@
 
 <main>
 	<!-- active tab can be opened from side menu and from the tab wrapper -->
-	<SideMenu bind:activeTab />
-	<TabWrapper bind:activeTab />
+	<SideMenu />
+	<TabWrapper />
 	<CytoScapeEditor />
 
 	<NodeMenu />
@@ -29,7 +29,6 @@
 	
 	<!-- absolutely positioned stuff -->
 	<LogoType />
-	<Version />
 	<LoadingIndicator />
 	<QuickHelp />
 
