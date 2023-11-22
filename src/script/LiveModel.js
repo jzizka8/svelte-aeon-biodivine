@@ -2,9 +2,11 @@ import { error } from "@sveltejs/kit";
 import ComputeEngine from "./ComputeEngine";
 import CytoscapeEditor from "./CytoscapeEditor";
 import { EdgeMonotonicity } from "./CytoscapeTreeEditor";
-import ModelEditor from "./ModelEditor";
+import {modelEditorStore as ModelEditor} from "../stores/ModelEditorStore";
+
 import UI from "./UI";
 import Messages from "./messages";
+import { get } from "svelte/store";
 
 /*
 	Stores the PBN currently loaded into the editor. This is what you should interact with when
@@ -52,8 +54,8 @@ let LiveModel = {
 		}
 		this._variables[id] = { name: name, id: id }
 		CytoscapeEditor.addNode(id, name, position);
-		ModelEditor.addVariable(id, name);
-		ModelEditor.updateStats();
+		get(ModelEditor).addVariable(id, name);
+		get(ModelEditor).updateStats();
 		UI.setQuickHelpVisible(false);
 		// Just show the number of possible update functions, even though there are always two.
 		this._validateUpdateFunction(id);
@@ -120,8 +122,8 @@ let LiveModel = {
 			delete this._variables[id];
 			delete this._updateFunctions[id];
 			CytoscapeEditor.removeNode(id);
-			ModelEditor.removeVariable(id);
-			ModelEditor.updateStats();
+			get(ModelEditor).removeVariable(id);
+			get(ModelEditor).updateStats();
 			if (this.isEmpty()) UI.setQuickHelpVisible(true);
 			this.saveToLocalStorage();
 			for (let id of update_regulations_after_delete) { 
@@ -149,7 +151,7 @@ let LiveModel = {
 			let oldName = variable.name;
 			variable.name = newName;
 			CytoscapeEditor.renameNode(id, newName);
-			ModelEditor.renameVariable(id, newName, oldName);	
+			get(ModelEditor).renameVariable(id, newName, oldName);	
 			// We also have to notify every regulation this variable appears in:
 			// (technically, we don't have to notify regulations where variable appears
 			// as target because that is not displayed right now anywhere, but we 
@@ -184,7 +186,7 @@ let LiveModel = {
 					metadata: check,
 				};				
 			}
-			ModelEditor.updateStats();
+			get(ModelEditor).updateStats();
 			this._validateUpdateFunction(id);
 			this.saveToLocalStorage();
 		}
@@ -229,7 +231,7 @@ let LiveModel = {
 		}
 		this._regulations.push(regulation);
 		this._regulationChanged(regulation);
-		ModelEditor.updateStats();
+		get(ModelEditor).updateStats();
 		return true;
 	},
 
@@ -343,11 +345,11 @@ let LiveModel = {
 		let result = "";
 		let keys = Object.keys(this._variables);
 		if (keys.length == 0) return undefined;
-		let name = ModelEditor.getModelName();
+		let name = get(ModelEditor).getModelName();
 		if (name !== undefined) {
 			result += "#name:"+name+"\n";			
 		}
-		let description = ModelEditor.getModelDescription();
+		let description = get(ModelEditor).getModelDescription();
 		if (description !== undefined) {
 			result += "#description:"+description+"\n";
 		}
@@ -456,8 +458,8 @@ let LiveModel = {
 		this.clear();
 
 		// Set model metadata
-		ModelEditor.setModelName(modelName);
-		ModelEditor.setModelDescription(modelDescription);
+		get(ModelEditor).setModelName(modelName);
+		get(ModelEditor).setModelDescription(modelDescription);
 		// Add all regulations, creating variables if needed:
 		for (let template of regulations) {			
 			// Ensure regulator and target exist at requested positions...
@@ -489,7 +491,7 @@ let LiveModel = {
 			}			
 			// We actually have to also set the function in the model because we don't update it
 			// from the set method...
-			ModelEditor.setUpdateFunction(variable, updateFunctions[key]);			
+			get(ModelEditor).setUpdateFunction(variable, updateFunctions[key]);			
 			let error = this.setUpdateFunction(variable, updateFunctions[key]);
 			if (error !== undefined) {
 				alert(error);
@@ -514,8 +516,8 @@ let LiveModel = {
 		for (var i = 0; i < keys.length; i++) {
 			this.removeVariable(keys[i], true);
 		}
-		ModelEditor.setModelName("");
-		ModelEditor.setModelDescription("");
+		get(ModelEditor).setModelName("");
+		get(ModelEditor).setModelDescription("");
 	},
 
 	// Save the current state of the model to local storage.
@@ -550,13 +552,13 @@ let LiveModel = {
 		if (modelFragment !== undefined) {
 			ComputeEngine.validateUpdateFunction(modelFragment, (error, result) => {
 				if (error !== undefined) {
-					ModelEditor.setUpdateFunctionStatus(id, "Error: "+error, true);
+					get(ModelEditor).setUpdateFunctionStatus(id, "Error: "+error, true);
 				} else {
-					ModelEditor.setUpdateFunctionStatus(id, "Possible instantiations: "+result.cardinality, false);
+					get(ModelEditor).setUpdateFunctionStatus(id, "Possible instantiations: "+result.cardinality, false);
 				}
 			});
 		} else {
-			ModelEditor.setUpdateFunctionStatus(id, "", false);
+			get(ModelEditor).setUpdateFunctionStatus(id, "", false);
 		}	
 	},
 
@@ -609,7 +611,7 @@ let LiveModel = {
 
 	// Notify editors that a regulation has been changed.
 	_regulationChanged(regulation) {
-		ModelEditor.ensureRegulation(regulation);
+		get(ModelEditor).ensureRegulation(regulation);
 		CytoscapeEditor.ensureRegulation(regulation);
 		this._validateUpdateFunction(regulation.target);
 		this.saveToLocalStorage();
@@ -621,8 +623,8 @@ let LiveModel = {
 		if (index > -1) {			
 			this._regulations.splice(index, 1);
 			CytoscapeEditor.removeRegulation(regulation.regulator, regulation.target);
-			ModelEditor.removeRegulation(regulation.regulator, regulation.target);
-			ModelEditor.updateStats();
+			get(ModelEditor).removeRegulation(regulation.regulator, regulation.target);
+			get(ModelEditor).updateStats();
 			this.saveToLocalStorage();
 			return true;
 		}

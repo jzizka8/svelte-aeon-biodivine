@@ -1,7 +1,9 @@
 import cytoscape from "cytoscape";
 import LiveModel from "./LiveModel";
-import ModelEditor from "./ModelEditor";
+import {modelEditorStore as ModelEditor} from "../stores/ModelEditorStore";
 import UI from "./UI";
+import edgehandles from "cytoscape-edgehandles";
+import { get } from "svelte/store";
 /*
 	Responsible for managing the cytoscape editor object. It has its own representation of the graph,
 	but it should never be updated directly. Instead, always use LiveModel to specify updates.
@@ -17,7 +19,8 @@ let CytoscapeEditor = {
 
 	init: function() {
 		this._cytoscape = cytoscape(this.initOptions());
-		this._edgehandles = this._cytoscape.edgehandles(this.edgeOptions());
+		// this._cytoscape.use(edgehandles);
+		// this._edgehandles = this._cytoscape.edgehandles(this.edgeOptions());
 		// When the user moves or zooms the graph, position of menu must update as well.
 		this._cytoscape.on('zoom', (e) => {
 			this._renderMenuForSelectedNode();
@@ -66,11 +69,11 @@ let CytoscapeEditor = {
 		})
 		node.on('mouseover', (e) => {
 			node.addClass('hover');	
-			ModelEditor.hoverVariable(id, true);		
+			get(ModelEditor).hoverVariable(id, true);		
 		});
 		node.on('mouseout', (e) => {
 			node.removeClass('hover');			
-			ModelEditor.hoverVariable(id, false);		
+			get(ModelEditor).hoverVariable(id, false);		
 		});
 		node.on('select', (e) => {			
 			// deselect any previous selection - we don't support multiselection yet
@@ -80,11 +83,11 @@ let CytoscapeEditor = {
 				}
 			}			
 			CytoscapeEditor._renderMenuForSelectedNode(node);
-			ModelEditor.selectVariable(id, true);
+			get(ModelEditor).selectVariable(id, true);
 		})
 		node.on('unselect', (e) => {
 			UI.toggleNodeMenu();
-			ModelEditor.selectVariable(id, false);
+			get(ModelEditor).selectVariable(id, false);
 		})
 		node.on('click', (e) => {						
 			this._lastClickTimestamp = undefined; // ensure that we cannot double-click inside the node
@@ -280,11 +283,11 @@ let CytoscapeEditor = {
 		});
 		edge.on("mouseover", (e) => {
 			edge.addClass("hover");
-			ModelEditor.hoverRegulation(edge.data().source, edge.data().target, true);
+			get(ModelEditor).hoverRegulation(edge.data().source, edge.data().target, true);
 		});
 		edge.on("mouseout", (e) => {
 			edge.removeClass("hover");
-			ModelEditor.hoverRegulation(edge.data().source, edge.data().target, false);
+			get(ModelEditor).hoverRegulation(edge.data().source, edge.data().target, false);
 		});
 	},
 

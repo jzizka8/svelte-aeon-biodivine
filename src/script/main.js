@@ -2,9 +2,10 @@ import hotkeys from "hotkeys-js";
 import ComputeEngine from "./ComputeEngine";
 import LiveModel from "./LiveModel";
 import CytoscapeEditor from "./CytoscapeEditor";
-import ModelEditor from "./ModelEditor";
+import {modelEditorStore as ModelEditor} from "../stores/ModelEditorStore";
 import UI from "./UI";
 import Messages from './messages'
+import { get } from "svelte/store";
 
 
 function init() {
@@ -47,7 +48,7 @@ function init() {
 	}	
 	
 	UI.init();
-	ModelEditor.init();
+	get(ModelEditor).init();
 	CytoscapeEditor.init();			
 	ComputeEngine.openConnection();	// Try to automatically connect when first opened.
 
@@ -95,7 +96,7 @@ function fixEmptyEditable(e) {
 	}
 }
 
-function ensurePlaceholder(el) {
+export function ensurePlaceholder(el) {
 	el.addEventListener("focusout", fixEmptyEditable);	
 }
 

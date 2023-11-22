@@ -1,9 +1,10 @@
 import ComputeEngine from "./ComputeEngine";
 import LiveModel from "./LiveModel";
-import ModelEditor from "./ModelEditor";
+import {modelEditorStore as ModelEditor} from "../stores/ModelEditorStore";
 import CytoscapeEditor from "./CytoscapeEditor";
 import Results from "./Results";
 import Messages from "./messages";
+import { get } from "svelte/store";
 
 let ContentTabs = {
 	engine: "tab-engine",
@@ -263,7 +264,7 @@ let UI = {
 			alert(Messages.modelEmpty);
 			return;
 		}
-		let filename = ModelEditor.getModelName();
+		let filename = get(ModelEditor).getModelName();
         if (filename === undefined) {
         	filename = "model";
         }
@@ -276,7 +277,7 @@ let UI = {
 			alert(Messages.modelEmpty);
 			return;
 		}
-		let filename = ModelEditor.getModelName();
+		let filename = get(ModelEditor).getModelName();
         if (filename === undefined) {
         	filename = "model";
         }
@@ -300,7 +301,7 @@ let UI = {
 			alert(Messages.modelEmpty);
 			return;
 		}
-		let filename = ModelEditor.getModelName();
+		let filename = get(ModelEditor).getModelName();
         if (filename === undefined) {
         	filename = "model";
         }
@@ -485,7 +486,7 @@ let UI = {
 		editNameButton.addEventListener("click", (e) => {
 			let selectedNodeId = CytoscapeEditor.getSelectedNodeId();
 			if (selectedNodeId !== undefined) {
-				ModelEditor.focusNameInput(selectedNodeId);
+				get(ModelEditor).focusNameInput(selectedNodeId);
 			}
 		});
 		// Edit function button
@@ -493,7 +494,7 @@ let UI = {
 		editFunctionButton.addEventListener("click", (e) => {
 			let selectedNodeId = CytoscapeEditor.getSelectedNodeId();
 			if (selectedNodeId !== undefined) {
-				ModelEditor.focusFunctionInput(selectedNodeId);
+				get(ModelEditor).focusFunctionInput(selectedNodeId);
 			}
 		})
 	},
