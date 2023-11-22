@@ -29,8 +29,9 @@
 
 	<script type="module">
 		import main from './src/script/main.js';
-
-		document.body.onload = main.init;
+				document.addEventListener("DOMContentLoaded", function () {
+					main()
+				});
 	</script>
 </body>
 
