@@ -12,8 +12,6 @@ let ContentTabs = {
 	results: "tab-results",
 }
 
-const DOUBLE_CLICK_DELAY = 400;
-
 /*
 	Allows access to operations with the global UI (i.e. operating the menus, showing content panels, etc.).
 */
