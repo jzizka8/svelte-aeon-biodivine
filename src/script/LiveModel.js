@@ -522,7 +522,6 @@ let LiveModel = {
 	// TODO: This is only triggered when structure of the model changes (variables, regulations),
 	// not metadata. Change this so that metadata are also preserved.
 	saveToLocalStorage() {
-		if (!hasLocalStorage) return;
 		try {
 			if (!this.isEmpty()) {
 				localStorage.setItem('last_model', this.exportAeon());

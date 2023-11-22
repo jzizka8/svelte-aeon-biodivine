@@ -6,7 +6,6 @@ import ModelEditor from "./ModelEditor";
 import UI from "./UI";
 import Messages from './messages'
 
-let hasLocalStorage = false;
 
 function init() {
 	// Safari security alert
@@ -39,14 +38,6 @@ function init() {
 		// For Safari
 		return Messages.closePrompt;
 	};
-
-	try {
-		localStorage.setItem('testing', '1');
-		hasLocalStorage = true;
-		console.log("Local storage available.");
-	} catch (e) {
-		console.log("Local storage not available.");
-	}
 
 	// Set engine address according to query parameter
 	const urlParams = new URLSearchParams(window.location.search);
