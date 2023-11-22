@@ -1,4 +1,4 @@
-let EdgeMonotonicity = {
+export let EdgeMonotonicity = {
 	unspecified: "unspecified",
 	activation: "activation",
 	inhibition: "inhibition",

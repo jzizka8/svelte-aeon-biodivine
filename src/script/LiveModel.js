@@ -1,3 +1,11 @@
+import { error } from "@sveltejs/kit";
+import ComputeEngine from "./ComputeEngine";
+import CytoscapeEditor from "./CytoscapeEditor";
+import { EdgeMonotonicity } from "./CytoscapeTreeEditor";
+import ModelEditor from "./ModelEditor";
+import UI from "./UI";
+import Messages from "./messages";
+
 /*
 	Stores the PBN currently loaded into the editor. This is what you should interact with when
 	you want to modify the model, not the editor or graph directly.
@@ -95,7 +103,7 @@ let LiveModel = {
 		let variable = this._variables[id];
 		if (variable === undefined) return;	// nothing to remove
 		// prompt user to confirm action
-		if (force || confirm(Strings.removeNodeCheck(variable['name']))) {
+		if (force || confirm(Messages.removeNodeCheck(variable['name']))) {
 			// First, explicitly remove all regulations that have something to do with us.
 			let update_regulations_after_delete = [];
 			let to_remove = [];
@@ -135,7 +143,7 @@ let LiveModel = {
 		if (variable == undefined) return;
 		let error = this._checkVariableName(id, newName);
 		if (error !== undefined) {
-			error = Strings.invalidVariableName(newName) + " " + error;			
+			error = Messages.invalidVariableName(newName) + " " + error;			
 			return error;
 		} else {
 			let oldName = variable.name;
@@ -164,7 +172,7 @@ let LiveModel = {
 		}
 		let check = this._checkUpdateFunction(id, functionString);
 		if (typeof check === "string") {
-			error = Strings.invalidUpdateFunction(variable.name) + " " + check;
+			error = Messages.invalidUpdateFunction(variable.name) + " " + check;
 			return error;
 		} else {			
 			if (functionString.length == 0) {				
@@ -365,7 +373,7 @@ let LiveModel = {
 	// Import model from Aeon file. If the import is successful, return undefined,
 	// otherwise return an error string.
 	importAeon(modelString) {
-		if (!this.isEmpty() && !confirm(Strings.modelWillBeErased)) {
+		if (!this.isEmpty() && !confirm(Messages.modelWillBeErased)) {
 			// If there is some model loaded, let the user know it will be
 			// overwritten. If he decides not to do it, just return...
 			return undefined;
@@ -888,3 +896,6 @@ function _tokenize_update_function_recursive(str, i, top) {
 	}
 	return { data: result };
 }
+
+
+export default LiveModel;

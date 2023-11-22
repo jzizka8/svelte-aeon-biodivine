@@ -1,3 +1,7 @@
+import LiveModel from "./LiveModel";
+import UI from "./UI";
+import CytoscapeEditor from "./CytoscapeEditor";
+import { EdgeMonotonicity } from "./CytoscapeTreeEditor";
 
 /*
 	Responsible for managing the UI of the model editor, i.e. adding/removing variables and regulations, focusing
@@ -349,3 +353,4 @@ let ModelEditor = {
 	},
 
 }
+export default ModelEditor;

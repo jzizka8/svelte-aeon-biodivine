@@ -1,3 +1,10 @@
+import ComputeEngine from "./ComputeEngine";
+import LiveModel from "./LiveModel";
+import ModelEditor from "./ModelEditor";
+import CytoscapeEditor from "./CytoscapeEditor";
+import Results from "./Results";
+import Messages from "./messages";
+
 let ContentTabs = {
 	engine: "tab-engine",
 	modelEditor: "tab-model-editor",
@@ -253,7 +260,7 @@ let UI = {
 	downloadAeon() {
 		let modelFile = LiveModel.exportAeon();
 		if (modelFile === undefined) {
-			alert(Strings.modelEmpty);
+			alert(Messages.modelEmpty);
 			return;
 		}
 		let filename = ModelEditor.getModelName();
@@ -266,7 +273,7 @@ let UI = {
 	downloadSBML() {
 		let modelFile = LiveModel.exportAeon();
 		if (modelFile === undefined) {
-			alert(Strings.modelEmpty);
+			alert(Messages.modelEmpty);
 			return;
 		}
 		let filename = ModelEditor.getModelName();
@@ -290,7 +297,7 @@ let UI = {
 	downloadSBMLInstantiated() {
 		let modelFile = LiveModel.exportAeon();
 		if (modelFile === undefined) {
-			alert(Strings.modelEmpty);
+			alert(Messages.modelEmpty);
 			return;
 		}
 		let filename = ModelEditor.getModelName();
@@ -491,3 +498,5 @@ let UI = {
 		})
 	},
 }
+
+export default UI;

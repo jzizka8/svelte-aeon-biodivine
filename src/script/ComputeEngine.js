@@ -331,3 +331,5 @@ let ComputeEngine = {
     	return req;
     },
 }
+
+export default ComputeEngine;

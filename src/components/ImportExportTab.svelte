@@ -1,3 +1,8 @@
+<script>
+	import Examples from "../script/Examples";
+	import LiveModel from "../script/LiveModel";
+
+</script>
 <div id="tab-import-export" class="main-panel">
     <slot/>
     <h2 style="margin: 0 auto; font-size: 20px; text-align: center; margin-bottom: 8px;">Model File</h2>
@@ -43,16 +48,16 @@
         Models</h3>
 
     <button id="example-1" class="compound-button" style="margin-top: 8px; margin-bottom: 8px;"
-        onclick="LiveModel.importAeon(Examples.g2a);"><span class="main">G2A</span><span
+        on:click={()=>LiveModel.importAeon(Examples.g2a)}><span class="main">G2A</span><span
             class="desc">Cell<br>Division</span></button>
     <button id="example-2" class="compound-button" style="margin-top: 8px; margin-bottom: 8px; float: right;"
-        onclick="LiveModel.importAeon(Examples.g2b);"><span class="main">G2B</span><span
+        on:click={()=>LiveModel.importAeon(Examples.g2b)}><span class="main">G2B</span><span
             class="desc">Cell<br>Division</span></button>
     <button id="example-3" class="compound-button" style="margin-top: 8px; margin-bottom: 8px;"
-        onclick="LiveModel.importAeon(Examples.buddingYeastOrlando);"><span class="main">Orlando</span><span
+        on:click={()=>LiveModel.importAeon(Examples.buddingYeastOrlando)}><span class="main">Orlando</span><span
             class="desc">Budding<br>Yeast</span></button>
     <button id="example-4" class="compound-button" style="margin-top: 8px; margin-bottom: 8px; float: right;"
-        onclick="LiveModel.importAeon(Examples.buddingYeastIrons);"><span class="main">Irons</span><span
+        on:click={()=>LiveModel.importAeon(Examples.buddingYeastIrons)}><span class="main">Irons</span><span
             class="desc">Budding<br>Yeast</span></button>
     <div style="clear: both;"></div>
 </div>

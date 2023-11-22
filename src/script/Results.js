@@ -1,3 +1,6 @@
+import ComputeEngine from "./ComputeEngine";
+import UI from "./UI";
+
 let Results = {	
 
 	clear() {
@@ -66,3 +69,4 @@ let Results = {
 	},
 
 }
+export default Results;

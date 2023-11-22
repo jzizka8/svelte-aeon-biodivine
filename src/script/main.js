@@ -1,4 +1,12 @@
-hasLocalStorage = false;
+import hotkeys from "hotkeys-js";
+import ComputeEngine from "./ComputeEngine";
+import LiveModel from "./LiveModel";
+import CytoscapeEditor from "./CytoscapeEditor";
+import ModelEditor from "./ModelEditor";
+import UI from "./UI";
+import Messages from './messages'
+
+let hasLocalStorage = false;
 
 function init() {
 	// Safari security alert
@@ -25,11 +33,11 @@ function init() {
 
 		// For IE and Firefox prior to version 4
 		if (e) {
-			e.returnValue = Strings.closePrompt;
+			e.returnValue = Messages.closePrompt;
 		}
 	
 		// For Safari
-		return Strings.closePrompt;
+		return Messages.closePrompt;
 	};
 
 	try {
@@ -84,22 +92,10 @@ function init() {
             ComputeEngine._backendRequest('/get_stability_witness/' + requestedTreeWitness + '/' + encodeURI(requestedBehaviour) + '/' + encodeURI(requestedVariable) + '/' + encodeURI("["+requestedVector+"]"), witnessCallback, 'GET', null);
         }		
 	}
+	initHotkeys();
+
 }
 
-let Strings = {
-	removeNodeCheck(name) {
-		return "Dou you really want to remove '"+name+"'?";
-	},
-	invalidVariableName(name) {
-		return "Cannot use '"+name+"' as variable name.";
-	},
-	invalidUpdateFunction(name) {
-		return "Cannot set update function for '"+name+"'.";
-	},
-	modelEmpty: "Cannot export an empty model.",
-	modelWillBeErased: "This operation will overwrite your current model. Do you want to continue?",
-	closePrompt: "There may be unsaved changes. Close window?",
-}
 
 /* This can be used to properly show placeholder for content editable stuff */
 function fixEmptyEditable(e) {
@@ -123,51 +119,54 @@ function ensurePlaceholder(el) {
 	}
 */
 
-hotkeys('e', function(event, handler) {	
-	if (UI.isNodeMenuVisible()) {
-		event.preventDefault();
-		fireEvent(document.getElementById("node-menu-edit-name"), "click");
-	}	
-});
 
-hotkeys('f', function(event, handler) {	
-	if (UI.isNodeMenuVisible()) {
-		event.preventDefault();
-		fireEvent(document.getElementById("node-menu-edit-function"), "click");
-	}	
-});
 
-hotkeys('backspace', function(event, handler) {	
-	if (UI.isNodeMenuVisible()) {
-		event.preventDefault();
-		fireEvent(document.getElementById("node-menu-remove"), "click");
-	}	
-	if (UI.isEdgeMenuVisible()) {
-		event.preventDefault();
-		fireEvent(document.getElementById("edge-menu-remove"), "click");
-	}
-});
+function initHotkeys() {
+	hotkeys('e', function (event, handler) {
+		if (UI.isNodeMenuVisible()) {
+			event.preventDefault();
+			fireEvent(document.getElementById("node-menu-edit-name"), "click");
+		}
+	});
 
-hotkeys('o', function(event, handler) {	
-	if (UI.isEdgeMenuVisible()) {
+	hotkeys('f', function (event, handler) {
+		if (UI.isNodeMenuVisible()) {
+			event.preventDefault();
+			fireEvent(document.getElementById("node-menu-edit-function"), "click");
+		}
+	});
+
+	hotkeys('backspace', function (event, handler) {
+		if (UI.isNodeMenuVisible()) {
+			event.preventDefault();
+			fireEvent(document.getElementById("node-menu-remove"), "click");
+		}
+		if (UI.isEdgeMenuVisible()) {
+			event.preventDefault();
+			fireEvent(document.getElementById("edge-menu-remove"), "click");
+		}
+	});
+
+	hotkeys('o', function (event, handler) {
+		if (UI.isEdgeMenuVisible()) {
+			event.preventDefault();
+			fireEvent(document.getElementById("edge-menu-observability"), "click");
+		}
+	});
+
+	hotkeys('m', function (event, handler) {
+		if (UI.isEdgeMenuVisible()) {
+			event.preventDefault();
+			fireEvent(document.getElementById("edge-menu-monotonicity"), "click");
+		}
+	});
+
+	hotkeys('n,+', function (event, handler) {
 		event.preventDefault();
-		fireEvent(document.getElementById("edge-menu-observability"), "click");
-	}	
-});
-
-hotkeys('m', function(event, handler) {	
-	if (UI.isEdgeMenuVisible()) {
-		event.preventDefault();
-		fireEvent(document.getElementById("edge-menu-monotonicity"), "click");
-	}	
-});
-
-hotkeys('n,+', function(event, handler) {	
-	event.preventDefault();
-	let id = LiveModel.addVariable();
-	CytoscapeEditor.showNode(id);
-});
-
+		let id = LiveModel.addVariable();
+		CytoscapeEditor.showNode(id);
+	});
+}
 
 // utility function to fire events on UI elements - we mainly need it to simulate clicks
 function fireEvent(el, etype){
@@ -179,3 +178,5 @@ function fireEvent(el, etype){
     el.dispatchEvent(evObj);
   }
 }
+
+export default init;

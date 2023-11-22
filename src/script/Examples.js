@@ -187,3 +187,5 @@ let Examples = {
 	`,
 
 }
+
+export default Examples;
