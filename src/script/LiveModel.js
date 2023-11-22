@@ -109,8 +109,9 @@ let LiveModel = {
 			// First, explicitly remove all regulations that have something to do with us.
 			let update_regulations_after_delete = [];
 			let to_remove = [];
+			let reg;
 			for (var i = 0; i < this._regulations.length; i++) {
-				let reg = this._regulations[i];
+				reg = this._regulations[i];
 				if (reg.regulator == id || reg.target == id) {
 					to_remove.push(reg);					
 				}
