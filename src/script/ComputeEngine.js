@@ -22,7 +22,7 @@ let ComputeEngine = {
 		}
 		this.ping(true, 2000, function(error, ping) {
 			if (ping !== undefined && ping["version"] != EXPECTED_ENGINE_VERSION) {
-				alert(
+				console.warn(
 					"Your AEON client version is " + EXPECTED_ENGINE_VERSION + 
 					", but your compute engine version is " + ping["version"] + ". \n\n" +
 					"You may encounter compatibility issues. For best experience, please " +
