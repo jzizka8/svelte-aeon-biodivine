@@ -2,8 +2,11 @@
 	import { activeTabStore } from '../stores/activeTabStore';
 	import type { tabType } from '../types/types';
 	import Version from './Version.svelte';
+	import { computeEngineStore } from '../stores/ComputeEngineStore';
 	let startAnalysisDisabled = false;
 	let applyLayoutDisabled = false;
+
+    $: ComputeEngine = $computeEngineStore;
 
 	const displayTab = (tab: tabType) => {
         activeTabStore.set(tab);
@@ -17,7 +20,7 @@
 				class="button button--half-round button--green {startAnalysisDisabled ? 'disabled' : ''}"
 				title="You need to connect compute eninge in order to start analysis"
 				disabled={startAnalysisDisabled}
-                onclick="ComputeEngine.startComputation(LiveModel.exportAeon());"
+                on:click={()=>ComputeEngine.startComputation(LiveModel.exportAeon())}
 			>
 				<img src="img/play_circle_filled-48px.svg" alt="" /> Start Analysis
 			</button>

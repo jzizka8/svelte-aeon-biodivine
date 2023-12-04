@@ -1,8 +1,9 @@
+import { EXPECTED_ENGINE_VERSION } from '../const';
 /*
 	Compute engine object maintains connection to the rust backend that will actually
 	do the work for us.
 */
-let ComputeEngine = {
+export let ComputeEngine = {
 
 	waitingForResult: false,
 	_address: "http://localhost:8000",

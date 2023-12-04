@@ -1,6 +1,9 @@
 <script lang="ts" >
     import { EXPECTED_ENGINE_VERSION } from "../const";
-	import { activeTabStore } from "../stores/activeTabStore";
+    import { computeEngineStore } from "../stores/ComputeEngineStore";
+    import { activeTabStore } from "../stores/activeTabStore";
+
+    $: ComputeEngine = $computeEngineStore;
 
     const getDownloadLink = (platform: 'windows'|'linux'|'macos') => {
         return `https://github.com/sybila/biodivine-aeon-server/releases/download/${EXPECTED_ENGINE_VERSION}/aeon-compute-engine-${platform}.zip`;
