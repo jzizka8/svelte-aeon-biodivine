@@ -20,14 +20,13 @@
 
 <!-- This is only a temporary fix to allow initialization of tabs from global js -->
 {#each Object.entries(tabComponents) as [key, tab]}
-    <div class="{key==$activeTabStore? '' : 'gone'} temp-main">
-        
-        <svelte:component this={tab}>
-            <button class="button button--close" on:click={activeTabStore.close}>
-                <img src="img/close-24px.svg" alt="" />
-            </button>
-        </svelte:component>
-    </div>
+	<div class="{key == $activeTabStore ? '' : 'gone'} temp-main">
+		<svelte:component this={tab}>
+			<button class="button button--close" on:click={activeTabStore.close}>
+				<img src="img/close-24px.svg" alt="" />
+			</button>
+		</svelte:component>
+	</div>
 {/each}
 
 <style>
@@ -43,7 +42,7 @@
 	.button--close:hover {
 		background-color: var(--primary-color);
 	}
-    .temp-main{
-        grid-area: main;
-    }
+	.temp-main {
+		grid-area: main;
+	}
 </style>

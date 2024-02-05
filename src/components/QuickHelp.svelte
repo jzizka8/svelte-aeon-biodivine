@@ -5,8 +5,8 @@
 	//https://www.okupter.com/blog/sveltekit-document-is-not-defined
 	onMount(() => {
 		hotkeys('h', { keyup: true, keydown: true }, function (event, handler) {
-            event.preventDefault();
-            hidden = event.type === 'keyup';
+			event.preventDefault();
+			hidden = event.type === 'keyup';
 		});
 	});
 </script>
@@ -32,42 +32,40 @@
 		<li>M Change monotonicity of the selected regulation.</li>
 		<li>H Show this help message.</li>
 	</ul>
-	<div class="quick-help__footer">
-		(this message disappears when you create the first variable)
-	</div>
+	<div class="quick-help__footer">(this message disappears when you create the first variable)</div>
 </div>
 
 <style>
-.quick-help {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    color: #ffffff;
-    background: #333;
-    font-size: 1.125rem;
-    font-family: 'FiraMono';
-    opacity: 0.90;
-}
+	.quick-help {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		padding: 1.5rem;
+		border-radius: 0.75rem;
+		color: #ffffff;
+		background: #333;
+		font-size: 1.125rem;
+		font-family: 'FiraMono';
+		opacity: 0.9;
+	}
 
-.quick-help__header {
-    display: flex;
-    justify-content: space-between;
-}
+	.quick-help__header {
+		display: flex;
+		justify-content: space-between;
+	}
 
-.quick-help__header h3 {
-    margin: 0;
-}
+	.quick-help__header h3 {
+		margin: 0;
+	}
 
-.quick-help__footer {
-    font-size: 0.75rem;
-    text-align: center;
-}
+	.quick-help__footer {
+		font-size: 0.75rem;
+		text-align: center;
+	}
 
-.shortcuts-list li::first-letter{
-    font-weight: bold;
-    font-size: 1.5em;
-}
+	.shortcuts-list li::first-letter {
+		font-weight: bold;
+		font-size: 1.5em;
+	}
 </style>

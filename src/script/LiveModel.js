@@ -1,12 +1,12 @@
-import { error } from "@sveltejs/kit";
-import ComputeEngine from "./ComputeEngine";
-import CytoscapeEditor from "./CytoscapeEditor";
-import { EdgeMonotonicity } from "./CytoscapeTreeEditor";
-import {modelEditorStore as ModelEditor} from "../stores/ModelEditorStore";
+import { error } from '@sveltejs/kit';
+import ComputeEngine from './ComputeEngine';
+import CytoscapeEditor from './CytoscapeEditor';
+import { EdgeMonotonicity } from './CytoscapeTreeEditor';
+import { modelEditorStore as ModelEditor } from '../stores/ModelEditorStore';
 
-import UI from "./UI";
-import Messages from "./messages";
-import { get } from "svelte/store";
+import UI from './UI';
+import Messages from './messages';
+import { get } from 'svelte/store';
 
 /*
 	Stores the PBN currently loaded into the editor. This is what you should interact with when
@@ -15,8 +15,7 @@ import { get } from "svelte/store";
 	It is the responsibility of the `LiveModel`` to always update `ModelEditor` and `CytoscapeEditor`
 	to reflect the current state of the model.
 */
-let LiveModel = {
-
+const LiveModel = {
 	// used to provide unique variable ids
 	_idCounter: 0,
 	// keys are variable ids, values are variable objects { id, name }
@@ -43,16 +42,16 @@ let LiveModel = {
 	},
 
 	// Create a new variable with a default name. Returns an id of the variable.
-	addVariable: function(position = [0.0,0.0], name = undefined) {
+	addVariable: function (position = [0.0, 0.0], name = undefined) {
 		let id = this._idCounter;
 		this._idCounter += 1;
 		if (name === undefined) {
-			name = "v_"+(id + 1);
-		}		
+			name = 'v_' + (id + 1);
+		}
 		if (position === undefined) {
 			position = [0.0, 0.0];
 		}
-		this._variables[id] = { name: name, id: id }
+		this._variables[id] = { name: name, id: id };
 		CytoscapeEditor.addNode(id, name, position);
 		get(ModelEditor).addVariable(id, name);
 		get(ModelEditor).updateStats();
@@ -63,47 +62,10 @@ let LiveModel = {
 		return id;
 	},
 
-	// Remove constant variables, substituting them with parameters.
-	// If force is true, also remove variables with explicit update functions,
-	// otherwise only remove true constants...
-	pruneConstants(force = false) {
-		var to_remove = [];
-		for (const [id, variable] of Object.entries(this._variables)) {
-			var is_constant = true;
-			is_constant = is_constant & this.regulationsOf(id).length == 0;
-			if (!force) {
-				is_constant = is_constant & this._updateFunctions[id] === undefined;
-			}			
-			if (is_constant) { 
-				to_remove.push(id); 
-			}
-		}
-		console.log("To remove: ", to_remove);
-		for (id of to_remove) {
-			this.removeVariable(id, true);
-		}
-		return to_remove.length;
-	},
-
-	// Remove output variables, i.e. variables that have no outgoing regulations.
-	pruneOutputs() {
-		var to_remove = [];
-		for (const [id, variable] of Object.entries(this._variables)) {
-			if (this.regulationsFrom(id).length == 0) { 
-				to_remove.push(id); 
-			}
-		}
-		console.log("To remove: ", to_remove);
-		for (id of to_remove) {
-			this.removeVariable(id, true);
-		}
-		return to_remove.length;
-	},
-
 	// Remove the given variable from the model.
 	removeVariable(id, force = false) {
 		let variable = this._variables[id];
-		if (variable === undefined) return;	// nothing to remove
+		if (variable === undefined) return; // nothing to remove
 		// prompt user to confirm action
 		if (force || confirm(Messages.removeNodeCheck(variable['name']))) {
 			// First, explicitly remove all regulations that have something to do with us.
@@ -113,7 +75,7 @@ let LiveModel = {
 			for (var i = 0; i < this._regulations.length; i++) {
 				reg = this._regulations[i];
 				if (reg.regulator == id || reg.target == id) {
-					to_remove.push(reg);					
+					to_remove.push(reg);
 				}
 			}
 			for (reg of to_remove) {
@@ -127,14 +89,14 @@ let LiveModel = {
 			get(ModelEditor).updateStats();
 			if (this.isEmpty()) UI.setQuickHelpVisible(true);
 			this.saveToLocalStorage();
-			for (let id of update_regulations_after_delete) { 
+			for (let id of update_regulations_after_delete) {
 				// We also have to recompute the update function - the variable just became a parameter...
-					if (this._updateFunctions[id] !== undefined) {
-						// Set the function - this will mark the variable as parameter in metadata
-						this.setUpdateFunction(id, this._updateFunctions[id].functionString);
-					}
-					// And validate again.
-					this._validateUpdateFunction(id);
+				if (this._updateFunctions[id] !== undefined) {
+					// Set the function - this will mark the variable as parameter in metadata
+					this.setUpdateFunction(id, this._updateFunctions[id].functionString);
+				}
+				// And validate again.
+				this._validateUpdateFunction(id);
 			}
 		}
 	},
@@ -146,16 +108,16 @@ let LiveModel = {
 		if (variable == undefined) return;
 		let error = this._checkVariableName(id, newName);
 		if (error !== undefined) {
-			error = Messages.invalidVariableName(newName) + " " + error;			
+			error = Messages.invalidVariableName(newName) + ' ' + error;
 			return error;
 		} else {
 			let oldName = variable.name;
 			variable.name = newName;
 			CytoscapeEditor.renameNode(id, newName);
-			get(ModelEditor).renameVariable(id, newName, oldName);	
+			get(ModelEditor).renameVariable(id, newName, oldName);
 			// We also have to notify every regulation this variable appears in:
 			// (technically, we don't have to notify regulations where variable appears
-			// as target because that is not displayed right now anywhere, but we 
+			// as target because that is not displayed right now anywhere, but we
 			// might as well notify them anyway).
 			for (var i = 0; i < this._regulations.length; i++) {
 				let reg = this._regulations[i];
@@ -163,29 +125,29 @@ let LiveModel = {
 			}
 			this.saveToLocalStorage();
 			return undefined;
-		}		
+		}
 	},
 
-	// Try to set the update function for given variable. If the function is not valid, return 
+	// Try to set the update function for given variable. If the function is not valid, return
 	// error string, otherwise return undefined.
 	setUpdateFunction(id, functionString) {
 		let variable = this._variables[id];
 		if (variable === undefined) {
-			return "Unknown variable '"+id+"'.";
+			return "Unknown variable '" + id + "'.";
 		}
 		let check = this._checkUpdateFunction(id, functionString);
-		if (typeof check === "string") {
-			error = Messages.invalidUpdateFunction(variable.name) + " " + check;
+		if (typeof check === 'string') {
+			error = Messages.invalidUpdateFunction(variable.name) + ' ' + check;
 			return error;
-		} else {			
-			if (functionString.length == 0) {				
+		} else {
+			if (functionString.length == 0) {
 				delete this._updateFunctions[id];
 			} else {
 				this._updateFunctions[id] = {
 					// Replace all whitespace with single spaces since the model can't contain newlines.
-					functionString: functionString.replace(/\s+/, " "),
-					metadata: check,
-				};				
+					functionString: functionString.replace(/\s+/, ' '),
+					metadata: check
+				};
 			}
 			get(ModelEditor).updateStats();
 			this._validateUpdateFunction(id);
@@ -227,9 +189,11 @@ let LiveModel = {
 	addRegulation(regulatorId, targetId, isObservable, monotonicity) {
 		if (this.findRegulation(regulatorId, targetId) !== undefined) return false;
 		let regulation = {
-			regulator: regulatorId, target: targetId,
-			observable: isObservable, monotonicity: monotonicity
-		}
+			regulator: regulatorId,
+			target: targetId,
+			observable: isObservable,
+			monotonicity: monotonicity
+		};
 		this._regulations.push(regulation);
 		this._regulationChanged(regulation);
 		get(ModelEditor).updateStats();
@@ -280,8 +244,10 @@ let LiveModel = {
 		let regulation = this.findRegulation(regulatorId, targetId);
 		if (regulation !== undefined) {
 			let next = EdgeMonotonicity.unspecified;
-			if (regulation.monotonicity == EdgeMonotonicity.unspecified) next = EdgeMonotonicity.activation;
-			if (regulation.monotonicity == EdgeMonotonicity.activation) next = EdgeMonotonicity.inhibition;
+			if (regulation.monotonicity == EdgeMonotonicity.unspecified)
+				next = EdgeMonotonicity.activation;
+			if (regulation.monotonicity == EdgeMonotonicity.activation)
+				next = EdgeMonotonicity.inhibition;
 			regulation.monotonicity = next;
 			this._regulationChanged(regulation);
 		}
@@ -316,58 +282,58 @@ let LiveModel = {
 			}
 			if (this._updateFunctions[key] === undefined) {
 				// If the variable has implicit update function, count the function rows as parameter vars
-				parameterVars += (1 << regulators); 
+				parameterVars += 1 << regulators;
 			} else {
 				let metadata = this._updateFunctions[key].metadata;
 				for (let parameter of metadata.parameters) {
-					let p_key = parameter.name+"("+parameter.cardinality+")";
+					let p_key = parameter.name + '(' + parameter.cardinality + ')';
 					if (!explicitParameterNames.has(p_key)) {
 						explicitParameterNames.add(p_key);
-						parameterVars += (1 << parameter.cardinality);
+						parameterVars += 1 << parameter.cardinality;
 					}
 				}
 			}
 		}
 		let explicitParameters = Array.from(explicitParameterNames);
 		explicitParameters.sort();
-		return { 
+		return {
 			maxInDegree: maxInDegree,
 			maxOutDegree: maxOutDegree,
 			variableCount: keys.length,
 			parameterVariables: parameterVars,
 			regulationCount: this._regulations.length,
-			explicitParameters: explicitParameters,
+			explicitParameters: explicitParameters
 		};
 	},
 
-	// Export current model in Aeon text format, or undefined if model cannot be 
+	// Export current model in Aeon text format, or undefined if model cannot be
 	// exported (no variables).
 	exportAeon() {
-		let result = "";
+		let result = '';
 		let keys = Object.keys(this._variables);
 		if (keys.length == 0) return undefined;
 		let name = get(ModelEditor).getModelName();
 		if (name !== undefined) {
-			result += "#name:"+name+"\n";			
+			result += '#name:' + name + '\n';
 		}
 		let description = get(ModelEditor).getModelDescription();
 		if (description !== undefined) {
-			result += "#description:"+description+"\n";
+			result += '#description:' + description + '\n';
 		}
 		for (var i = 0; i < keys.length; i++) {
 			let id = keys[i];
 			let varName = this.getVariableName(id);
 			let position = CytoscapeEditor.getNodePosition(id);
 			if (position !== undefined) {
-				result += "#position:"+varName+":"+position+"\n";
+				result += '#position:' + varName + ':' + position + '\n';
 			}
 			let fun = this._updateFunctions[id];
 			if (fun !== undefined) {
-				result += "$"+varName+":"+fun.functionString+"\n";
+				result += '$' + varName + ':' + fun.functionString + '\n';
 			}
 			let regulations = this.regulationsOf(id);
 			for (var j = 0; j < regulations.length; j++) {
-				result += this._regulationToString(regulations[j]) + "\n";
+				result += this._regulationToString(regulations[j]) + '\n';
 			}
 		}
 		return result;
@@ -384,7 +350,7 @@ let LiveModel = {
 		// Disable on-the-fly server checks.
 		this._disable_dynamic_validation = true;
 
-		let lines = modelString.split("\n");
+		let lines = modelString.split('\n');
 		// name1 -> name2
 		let regulationRegex = /^\s*([a-zA-Z0-9_{}]+)\s*-([>|?])(\??)\s*([a-zA-Z0-9_{}]+)\s*$/;
 		// #name:content
@@ -398,24 +364,26 @@ let LiveModel = {
 		// #...
 		let commentRegex = /^\s*#.*?$/;
 
-		let modelName = "";
-		let modelDescription = "";
+		let modelName = '';
+		let modelDescription = '';
 		let regulations = [];
 		let positions = {};
 		let updateFunctions = {};
 
 		// First, parse all lines into intermediate objects:
 		for (let line of lines) {
-			line = line.trim()
-			if (line.length == 0) continue;	// skip whitespace
+			line = line.trim();
+			if (line.length == 0) continue; // skip whitespace
 			let match = line.match(regulationRegex);
 			if (match !== null) {
 				let monotonicity = EdgeMonotonicity.unspecified;
-				if (match[2] == ">") monotonicity = EdgeMonotonicity.activation;
-				if (match[2] == "|") monotonicity = EdgeMonotonicity.inhibition;
+				if (match[2] == '>') monotonicity = EdgeMonotonicity.activation;
+				if (match[2] == '|') monotonicity = EdgeMonotonicity.inhibition;
 				regulations.push({
-					regulatorName: match[1], targetName: match[4],
-					monotonicity: monotonicity, observable: (match[3].length == 0),
+					regulatorName: match[1],
+					targetName: match[4],
+					monotonicity: monotonicity,
+					observable: match[3].length == 0
 				});
 				continue;
 			}
@@ -433,9 +401,10 @@ let LiveModel = {
 			if (match !== null) {
 				let x = parseFloat(match[2]);
 				let y = parseFloat(match[3]);
-				if (x === x && y === y) {	// test for NaN
+				if (x === x && y === y) {
+					// test for NaN
 					positions[match[1]] = [parseFloat(match[2]), parseFloat(match[3])];
-				}				
+				}
 				continue;
 			}
 			match = line.match(updateFunctionRegex);
@@ -444,10 +413,10 @@ let LiveModel = {
 				continue;
 			}
 			if (line.match(commentRegex) === null) {
-				return "Unexpected line in file: "+line;
-			}			
+				return 'Unexpected line in file: ' + line;
+			}
 		}
-		
+
 		/*
 		console.log(modelName);
 		console.log(modelDescription);
@@ -462,7 +431,7 @@ let LiveModel = {
 		get(ModelEditor).setModelName(modelName);
 		get(ModelEditor).setModelDescription(modelDescription);
 		// Add all regulations, creating variables if needed:
-		for (let template of regulations) {			
+		for (let template of regulations) {
 			// Ensure regulator and target exist at requested positions...
 			let regulator = this._variableFromName(template.regulatorName);
 			if (regulator === undefined) {
@@ -473,14 +442,14 @@ let LiveModel = {
 			}
 			let target = this._variableFromName(template.targetName);
 			if (target === undefined) {
-				let position = positions[template.targetName];				
+				let position = positions[template.targetName];
 				target = this.addVariable(position, template.targetName);
 			} else {
 				target = target.id;
 			}
 			// Create the actual regulation...
 			this.addRegulation(regulator, target, template.observable, template.monotonicity);
-		}	
+		}
 		// Set all update functions
 		let keys = Object.keys(updateFunctions);
 		for (let key of keys) {
@@ -489,10 +458,10 @@ let LiveModel = {
 				variable = this.addVariable(positions[key], key);
 			} else {
 				variable = variable.id;
-			}			
+			}
 			// We actually have to also set the function in the model because we don't update it
 			// from the set method...
-			get(ModelEditor).setUpdateFunction(variable, updateFunctions[key]);			
+			get(ModelEditor).setUpdateFunction(variable, updateFunctions[key]);
 			let error = this.setUpdateFunction(variable, updateFunctions[key]);
 			if (error !== undefined) {
 				alert(error);
@@ -507,8 +476,7 @@ let LiveModel = {
 			this._validateUpdateFunction(variable);
 		}
 
-
-		return undefined;	// no error
+		return undefined; // no error
 	},
 
 	// Erase the whole model
@@ -517,8 +485,8 @@ let LiveModel = {
 		for (var i = 0; i < keys.length; i++) {
 			this.removeVariable(keys[i], true);
 		}
-		get(ModelEditor).setModelName("");
-		get(ModelEditor).setModelDescription("");
+		get(ModelEditor).setModelName('');
+		get(ModelEditor).setModelDescription('');
 	},
 
 	// Save the current state of the model to local storage.
@@ -528,7 +496,7 @@ let LiveModel = {
 		try {
 			if (!this.isEmpty()) {
 				localStorage.setItem('last_model', this.exportAeon());
-			}			
+			}
 		} catch (e) {
 			console.log(e);
 		}
@@ -539,9 +507,11 @@ let LiveModel = {
 			let modelString = localStorage.getItem('last_model');
 			if (modelString !== undefined && modelString !== null && modelString.length > 0) {
 				this.importAeon(modelString);
-			}			
+			}
 		} catch (e) {
-			alert("No recent model available. Make sure 'Block third-party cookies and site data' is disabled in your browser.");
+			alert(
+				"No recent model available. Make sure 'Block third-party cookies and site data' is disabled in your browser."
+			);
 			console.log(e);
 		}
 	},
@@ -553,14 +523,18 @@ let LiveModel = {
 		if (modelFragment !== undefined) {
 			ComputeEngine.validateUpdateFunction(modelFragment, (error, result) => {
 				if (error !== undefined) {
-					get(ModelEditor).setUpdateFunctionStatus(id, "Error: "+error, true);
+					get(ModelEditor).setUpdateFunctionStatus(id, 'Error: ' + error, true);
 				} else {
-					get(ModelEditor).setUpdateFunctionStatus(id, "Possible instantiations: "+result.cardinality, false);
+					get(ModelEditor).setUpdateFunctionStatus(
+						id,
+						'Possible instantiations: ' + result.cardinality,
+						false
+					);
 				}
 			});
 		} else {
-			get(ModelEditor).setUpdateFunctionStatus(id, "", false);
-		}	
+			get(ModelEditor).setUpdateFunctionStatus(id, '', false);
+		}
 	},
 
 	// Build a partial model that represents the parts necessary to analyze the update
@@ -569,14 +543,15 @@ let LiveModel = {
 	// If the variable does not have an explicit update function, return undefined.
 	_updateFunctionModelFragment(id) {
 		let name = this.getVariableName(id);
-		let fragment = "";
+		let fragment = '';
 		let regulations = this.regulationsOf(id);
 		let varNames = new Set();
 		for (var i = 0; i < regulations.length; i++) {
-			if (regulations[i].regulator != id) {	// if not self-loop, save
+			if (regulations[i].regulator != id) {
+				// if not self-loop, save
 				varNames.add(this.getVariableName(regulations[i].regulator));
-			}			
-			fragment += this._regulationToString(regulations[i]) + "\n";
+			}
+			fragment += this._regulationToString(regulations[i]) + '\n';
 		}
 		// If there are no regulations, we technically there are two instantiations - true and false.
 		// But the support for this is weird, so we just stop the whole process.
@@ -584,16 +559,16 @@ let LiveModel = {
 		if (regulations.length == 0) {
 			return undefined;
 		}
-		// Now add fixed update function for every other variable so that 
+		// Now add fixed update function for every other variable so that
 		// they do not create extra parameters.
 		for (let name of varNames) {
-			fragment += "$"+name+": false\n";
+			fragment += '$' + name + ': false\n';
 		}
 		let fun = this._updateFunctions[id];
-		// If we have a specified update function, put it into model - otherwise, 
+		// If we have a specified update function, put it into model - otherwise,
 		// keep it implicit.
 		if (fun !== undefined) {
-			fragment += "$"+name+": " + fun.functionString + "\n";		
+			fragment += '$' + name + ': ' + fun.functionString + '\n';
 		}
 		return fragment;
 	},
@@ -602,12 +577,12 @@ let LiveModel = {
 	_regulationToString(regulation) {
 		let regulatorName = this.getVariableName(regulation.regulator);
 		let targetName = this.getVariableName(regulation.target);
-		let arrow = "-";
-		if (regulation.monotonicity == EdgeMonotonicity.unspecified) arrow += "?";
-		if (regulation.monotonicity == EdgeMonotonicity.activation) arrow += ">";
-		if (regulation.monotonicity == EdgeMonotonicity.inhibition) arrow += "|";
-		if (!regulation.observable) arrow += "?";
-		return regulatorName + " " + arrow + " " + targetName;
+		let arrow = '-';
+		if (regulation.monotonicity == EdgeMonotonicity.unspecified) arrow += '?';
+		if (regulation.monotonicity == EdgeMonotonicity.activation) arrow += '>';
+		if (regulation.monotonicity == EdgeMonotonicity.inhibition) arrow += '|';
+		if (!regulation.observable) arrow += '?';
+		return regulatorName + ' ' + arrow + ' ' + targetName;
 	},
 
 	// Notify editors that a regulation has been changed.
@@ -621,7 +596,7 @@ let LiveModel = {
 	// Remove the given regulation object from the regulations array.
 	_removeRegulation(regulation) {
 		let index = this._regulations.indexOf(regulation);
-		if (index > -1) {			
+		if (index > -1) {
 			this._regulations.splice(index, 1);
 			CytoscapeEditor.removeRegulation(regulation.regulator, regulation.target);
 			get(ModelEditor).removeRegulation(regulation.regulator, regulation.target);
@@ -647,14 +622,14 @@ let LiveModel = {
 	// and it must not be a name of another variable.
 	// If the name is valid, return undefined, otherwise return an error string.
 	_checkVariableName(id, name) {
-		if (typeof name !== "string") return "Name must be a string.";
+		if (typeof name !== 'string') return 'Name must be a string.';
 		let has_valid_chars = name.match(/^[a-z0-9{}_]+$/i) != null;
-		if (!has_valid_chars) return "Name can only contain letters, numbers and `_`, `{`, `}`.";
+		if (!has_valid_chars) return 'Name can only contain letters, numbers and `_`, `{`, `}`.';
 		let existing_variable = this._variableFromName(name);
 		if (existing_variable !== undefined && existing_variable.id != id) {
-			return "Variable with this name already exists";
-		}		
-		return undefined;		
+			return 'Variable with this name already exists';
+		}
+		return undefined;
 	},
 
 	// Run as many quick static checks on the update function as possible, returning error string if
@@ -662,36 +637,46 @@ let LiveModel = {
 	// If check is successful, return a metadata object which contains the parameters used in the
 	// function.
 	_checkUpdateFunction(id, functionString) {
-		if (functionString.length == 0) return undefined;	// empty function is always ok
+		if (functionString.length == 0) return undefined; // empty function is always ok
 		// First, try to tokenize the update function to get a nice representation of what is going on.
 		let tokens = _tokenize_update_function(functionString);
-		if (typeof tokens === "string") {	// tokenization failed
+		if (typeof tokens === 'string') {
+			// tokenization failed
 			return tokens;
 		}
 		tokens = this._process_function_calls(tokens);
-		if (typeof tokens === "string") {	// function call parsing failed
+		if (typeof tokens === 'string') {
+			// function call parsing failed
 			return tokens;
 		}
 		// Now perform some basic checks - we are not doing full parsing, so things like operator cardinality
 		// are not checked, but we at least want to verify that we are not using any invalid variable names
-		let names = new Set();			
+		let names = new Set();
 		_extract_names_with_cardinalities(tokens, names);
-		let parameters = new Set();			
+		let parameters = new Set();
 		for (let item of names) {
 			let variable = this._variableFromName(item.name);
-			if (variable === undefined) {	// item is a parameter - save it
+			if (variable === undefined) {
+				// item is a parameter - save it
 				for (let existing of parameters) {
 					if (existing.name == item.name && existing.cardinality != item.cardinality) {
-						let message = "Parameter '"+item.name+"' used with "+item.cardinality+" argument(s) as well as "+existing.cardinality+" argument(s).";
+						let message =
+							"Parameter '" +
+							item.name +
+							"' used with " +
+							item.cardinality +
+							' argument(s) as well as ' +
+							existing.cardinality +
+							' argument(s).';
 						return message;
 					}
 				}
 				parameters.add(item);
 			}
 			// Check if variable is used as parameter
-			if (item.cardinality > 0) {	
+			if (item.cardinality > 0) {
 				if (variable !== undefined) {
-					return "Variable '"+item.name+"' used as parameter.";
+					return "Variable '" + item.name + "' used as parameter.";
 				}
 			}
 			// if this is a variable, we have to verify that it is a regulator. If not, offer to make it one.
@@ -699,33 +684,48 @@ let LiveModel = {
 				let regulation = this.findRegulation(variable.id, id);
 				if (regulation === undefined) {
 					let my_name = this.getVariableName(id);
-					let message = "Variable '"+variable.name+"' does not regulate '"+my_name+"'.";
-					if (confirm(message + " Do you want to create the regulation now?")) {
+					let message = "Variable '" + variable.name + "' does not regulate '" + my_name + "'.";
+					if (confirm(message + ' Do you want to create the regulation now?')) {
 						this.addRegulation(variable.id, id, true, EdgeMonotonicity.unspecified);
 					} else {
 						return message;
 					}
 				}
-			}			
-		}		
+			}
+		}
 		// Check if parameters are used consistently with other functions
 		let function_keys = Object.keys(LiveModel._updateFunctions);
 		for (var i = 0; i < function_keys.length; i++) {
 			let key = function_keys[i];
 			// Inconsistencies with this update function are already handled when adding parameters
 			// from the partial parse of the function.
-			if (key == id) { continue; }
+			if (key == id) {
+				continue;
+			}
 			let function_data = this._updateFunctions[key];
 			for (let parameter of function_data.metadata.parameters) {
 				for (let my_parameter of parameters) {
-					if (parameter.name == my_parameter.name && parameter.cardinality != my_parameter.cardinality) {
-						let message = "Parameter '"+my_parameter.name+"' used with "+my_parameter.cardinality+" argument(s).";
-						message += " Variable '"+this._variables[key].name+"' already uses the same parameter with "+parameter.cardinality+" argument(s).";
+					if (
+						parameter.name == my_parameter.name &&
+						parameter.cardinality != my_parameter.cardinality
+					) {
+						let message =
+							"Parameter '" +
+							my_parameter.name +
+							"' used with " +
+							my_parameter.cardinality +
+							' argument(s).';
+						message +=
+							" Variable '" +
+							this._variables[key].name +
+							"' already uses the same parameter with " +
+							parameter.cardinality +
+							' argument(s).';
 						return message;
 					}
 				}
 			}
-		}			
+		}
 		return { parameters: parameters };
 	},
 
@@ -736,34 +736,40 @@ let LiveModel = {
 	_process_function_calls(tokens) {
 		for (var i = 0; i < tokens.length; i++) {
 			let token = tokens[i];
-			if (token.token === "name" && i+1 < tokens.length && tokens[i+1].token === "group") {			
+			if (token.token === 'name' && i + 1 < tokens.length && tokens[i + 1].token === 'group') {
 				// we have a name that is followed by a group - this is a funciton call pattern!
-				let arg_tokens = tokens[i+1].data;
+				let arg_tokens = tokens[i + 1].data;
 				let args = [];
-				if (arg_tokens.length == 0) {	// nullary function call - do nothing
-				} else if (arg_tokens.length == 1) {	// unary function
+				if (arg_tokens.length == 0) {
+					// nullary function call - do nothing
+				} else if (arg_tokens.length == 1) {
+					// unary function
 					let arg = arg_tokens[0];
-					if (arg.token !== "name") {	// argument must be a name.
-						return "Expected name, but found "+arg.text+".";
+					if (arg.token !== 'name') {
+						// argument must be a name.
+						return 'Expected name, but found ' + arg.text + '.';
 					}
-					args.push(arg.data);				
-				} else {	// more arguments - read the whole list
+					args.push(arg.data);
+				} else {
+					// more arguments - read the whole list
 					let j = 0;
 					do {
 						let arg = arg_tokens[j];
-						if (arg.token !== "name") {	// argument must be a name.
-							return "Expected name, but found "+arg.text+".";
+						if (arg.token !== 'name') {
+							// argument must be a name.
+							return 'Expected name, but found ' + arg.text + '.';
 						}
 						let variable = this._variableFromName(arg.data);
 						if (variable === undefined) {
-							return "Unknown argument '"+arg.data+"'. Only variables allowed as arguments.";
+							return "Unknown argument '" + arg.data + "'. Only variables allowed as arguments.";
 						}
 						args.push(arg.data);
 						j += 1;
-						if (j < arg_tokens.length) {	// if we are not at the end, expect a comma
-							if (arg_tokens[j].token !== "comma") {
-								return "Expected ',', but found "+arg_tokens[j].text+".";
-							} else { 
+						if (j < arg_tokens.length) {
+							// if we are not at the end, expect a comma
+							if (arg_tokens[j].token !== 'comma') {
+								return "Expected ',', but found " + arg_tokens[j].text + '.';
+							} else {
 								j += 1;
 								if (j == arg_tokens.length) {
 									return "Unexpected ',' at the end of an argument list.";
@@ -771,42 +777,45 @@ let LiveModel = {
 							}
 						}
 					} while (j < arg_tokens.length);
-				}	
-				token.token = "call";
+				}
+				token.token = 'call';
 				token.args = args;
-				tokens.splice(i+1, 1);	// remove the group - i will now point to first token after group			
-			} else if (token.token === "group") { // recursively process group
+				tokens.splice(i + 1, 1); // remove the group - i will now point to first token after group
+			} else if (token.token === 'group') {
+				// recursively process group
 				let result = this._process_function_calls(token.data);
-				if (typeof result === "string") { return result; }
+				if (typeof result === 'string') {
+					return result;
+				}
 			}
 		}
 		return tokens;
-	},
-
-}
+	}
+};
 
 /// Given a token list and a result set, output all names in the form { name: "...", cardinality: x }
 /// that occur in the function.
 function _extract_names_with_cardinalities(tokens, names) {
 	for (var i = 0; i < tokens.length; i++) {
 		let token = tokens[i];
-		if (token.token === "name") {
+		if (token.token === 'name') {
 			names.add({ name: token.data, cardinality: 0 });
 		}
-		if (token.token === "call") {
+		if (token.token === 'call') {
 			names.add({ name: token.data, cardinality: token.args.length });
-			for (var j = 0; j < token.args.length; j++) {	// args are also names in the function
+			for (var j = 0; j < token.args.length; j++) {
+				// args are also names in the function
 				names.add({ name: token.args[j], cardinality: 0 });
 			}
 		}
-		if (token.token === "group") {
+		if (token.token === 'group') {
 			_extract_names_with_cardinalities(token.data, names);
 		}
 	}
 }
 
 /// Turn the given update function into an array of tokens,
-/// or an error string if tokenization fails. 
+/// or an error string if tokenization fails.
 function _tokenize_update_function(str) {
 	let result = _tokenize_update_function_recursive(str, 0, true);
 	if (result.error !== undefined) {
@@ -824,80 +833,86 @@ function _tokenize_update_function_recursive(str, i, top) {
 	let result = [];
 	while (i < str.length) {
 		let c = str[i];
-		i += 1;	// move to next char immediately...
-		if (/\s/.test(c)) { continue; }
-		else if (c == '!') { result.push({ token: "not", text: "!" }); }
-		else if (c == ',') { result.push({ token: "comma", text: "," }); }
-		else if (c == '&') { result.push({ token: "and", text: "&" }); }
-        else if (c == '|') { result.push({ token: "or", text: "|" }); }
-        else if (c == '^') { result.push({ token: "xor", text: "^" }); }
-        else if (c == '=') { 
-        	if (i < str.length && str[i] == '>') {
-        		i += 1;
-        		result.push({ token: "imp", text: "=>" });
-        	} else {
-        		return { error: "Expected '=>' after '='." };
-        	}        	
-        }
-        else if (c == '<') {
-        	if (i+1 < str.length && str[i] == '=' && str[i+1] =='>') {
-        		i += 2;
-        		result.push({ token: "iff", text: "<=>" });
-        	} else {
-        		return { error: "Expected '<=>' after '<'." };
-        	}
-        }
-        // '>' is invalid as a start of a token
-        else if (c == '>') {
-        	return { error: "Unexpected '>'." };
-        }
-        else if (c == ')') {
-        	if (!top) {
-        		return { data: result, continue_at: i };
-        	} else {
-        		return { error: "Unexpected ')'." };
-        	}
-        }
-        else if (c == '(') {
-        	let nested = _tokenize_update_function_recursive(str, i, false);
-        	if (nested.error === undefined) {
-        		i = nested.continue_at;
-        		result.push({ token: "group", data: nested.data, text: "(...)" });
-        	} else {
-        		return { error: nested.error };
-        	}
-        }
-        else if (/[a-zA-Z0-9{}_]+/.test(c)) {
-        	// start of a name
-        	let name = c;
-        	while (i < str.length) {
-        		if (!/[a-zA-Z0-9{}_]+/.test(str[i])) { break; } else {
-        			name += str[i];
-        			i += 1;
-        		}
-        	}
-        	if (name == "true") {
-        		result.push({ token: "true", text: name });
-        	} else if (name == "false") {
-        		result.push({ token: "false", text: "false" });
-        	} else {
-        		result.push({ token: "name", data: name, text: name });
-        	}        	
-        }
-        else { return { error: "Unexpected '"+c+"'." }; }        
+		i += 1; // move to next char immediately...
+		if (/\s/.test(c)) {
+			continue;
+		} else if (c == '!') {
+			result.push({ token: 'not', text: '!' });
+		} else if (c == ',') {
+			result.push({ token: 'comma', text: ',' });
+		} else if (c == '&') {
+			result.push({ token: 'and', text: '&' });
+		} else if (c == '|') {
+			result.push({ token: 'or', text: '|' });
+		} else if (c == '^') {
+			result.push({ token: 'xor', text: '^' });
+		} else if (c == '=') {
+			if (i < str.length && str[i] == '>') {
+				i += 1;
+				result.push({ token: 'imp', text: '=>' });
+			} else {
+				return { error: "Expected '=>' after '='." };
+			}
+		} else if (c == '<') {
+			if (i + 1 < str.length && str[i] == '=' && str[i + 1] == '>') {
+				i += 2;
+				result.push({ token: 'iff', text: '<=>' });
+			} else {
+				return { error: "Expected '<=>' after '<'." };
+			}
+		}
+		// '>' is invalid as a start of a token
+		else if (c == '>') {
+			return { error: "Unexpected '>'." };
+		} else if (c == ')') {
+			if (!top) {
+				return { data: result, continue_at: i };
+			} else {
+				return { error: "Unexpected ')'." };
+			}
+		} else if (c == '(') {
+			let nested = _tokenize_update_function_recursive(str, i, false);
+			if (nested.error === undefined) {
+				i = nested.continue_at;
+				result.push({ token: 'group', data: nested.data, text: '(...)' });
+			} else {
+				return { error: nested.error };
+			}
+		} else if (/[a-zA-Z0-9{}_]+/.test(c)) {
+			// start of a name
+			let name = c;
+			while (i < str.length) {
+				if (!/[a-zA-Z0-9{}_]+/.test(str[i])) {
+					break;
+				} else {
+					name += str[i];
+					i += 1;
+				}
+			}
+			if (name == 'true') {
+				result.push({ token: 'true', text: name });
+			} else if (name == 'false') {
+				result.push({ token: 'false', text: 'false' });
+			} else {
+				result.push({ token: 'name', data: name, text: name });
+			}
+		} else {
+			return { error: "Unexpected '" + c + "'." };
+		}
 	}
 	if (top) {
-		if (i < str.length) {	// this should not happen, but just in case...
-			return { error: "Unexpected '"+str[i]+"'." }
-		} else {				// strictly speaking, continue_at is useless here, but whatever
+		if (i < str.length) {
+			// this should not happen, but just in case...
+			return { error: "Unexpected '" + str[i] + "'." };
+		} else {
+			// strictly speaking, continue_at is useless here, but whatever
 			return { data: result, continue_at: i };
-		}		
+		}
 	} else {
 		// if not top level, we always return from the while loop.
 		return { error: "Expected ')'." };
 	}
 	return { data: result };
 }
-
 
 export default LiveModel;
