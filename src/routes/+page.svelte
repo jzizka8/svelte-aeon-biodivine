@@ -26,15 +26,12 @@
 
 	<NodeMenu />
 	<EdgeMenu />
-	
+
 	<!-- absolutely positioned stuff -->
 	<LogoType />
 	<LoadingIndicator />
 	<QuickHelp />
-
-
 </main>
 
 <style>
-	
 </style>

@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-	<meta charset="utf-8" />
-	<link rel="stylesheet" href="src/style.css">
-	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<script src="src/script/dependencies/cytoscape.min.js"></script>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="src/style.css" />
+		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!-- <script src="src/script/dependencies/cytoscape.min.js"></script>
 	<script src="src/script/dependencies/lodash.js"></script>
 	<script src="src/script/dependencies/cytoscape-edgehandles.js"></script>
 	<script src="src/script/dependencies/hotkeys.min.js"></script>
@@ -18,15 +17,20 @@
 	<script src="src/script/LiveModel.js"></script>
 	<script src="src/script/UI.js"></script>
 	<script src="src/script/CytoscapeEditor.js"></script>
-	<script src="src/script/ModelEditor.js"></script>
-	<script src="src/script/main.js"></script>
+	<script src="src/script/ModelEditor.js"></script> -->
+		<!-- <script type="module" src="src/script/main.js"></script> -->
 
-	%sveltekit.head%
-</head>
+		%sveltekit.head%
+	</head>
 
-<body data-sveltekit-preload-data="hover" onload="init()">
-	<div style="display: contents">%sveltekit.body%</div>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
 
-</body>
-
+		<script type="module">
+			import main from './src/script/main.js';
+			document.addEventListener('DOMContentLoaded', function () {
+				main();
+			});
+		</script>
+	</body>
 </html>

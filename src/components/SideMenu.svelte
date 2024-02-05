@@ -2,11 +2,17 @@
 	import { activeTabStore } from '../stores/activeTabStore';
 	import type { tabType } from '../types/types';
 	import Version from './Version.svelte';
+	import { computeEngineStore } from '../stores/ComputeEngineStore';
+	import { liveModelStore } from '../stores/liveModelStore';
+	import CytoscapeEditor from '../script/CytoscapeEditor';
 	let startAnalysisDisabled = false;
 	let applyLayoutDisabled = false;
 
+	$: ComputeEngine = $computeEngineStore;
+	$: LiveModel = $liveModelStore;
+
 	const displayTab = (tab: tabType) => {
-        activeTabStore.set(tab);
+		activeTabStore.set(tab);
 	};
 </script>
 
@@ -17,7 +23,7 @@
 				class="button button--half-round button--green {startAnalysisDisabled ? 'disabled' : ''}"
 				title="You need to connect compute eninge in order to start analysis"
 				disabled={startAnalysisDisabled}
-                onclick="ComputeEngine.startComputation(LiveModel.exportAeon());"
+				on:click={() => ComputeEngine.startComputation(LiveModel.exportAeon())}
 			>
 				<img src="img/play_circle_filled-48px.svg" alt="" /> Start Analysis
 			</button>
@@ -26,7 +32,7 @@
 			<button
 				class="button button--half-round button--primary {applyLayoutDisabled ? 'disabled' : ''}"
 				disabled={applyLayoutDisabled}
-                onclick="CytoscapeEditor.layoutCose();" 
+				on:click={() => CytoscapeEditor.layoutCose()}
 			>
 				<img src="img/view_quilt-48px.svg" alt="" /> Apply Layout
 			</button>
@@ -36,11 +42,13 @@
 		<ul>
 			<li class="">
 				<button
-					class="button button--half-round engine-dot-container {$activeTabStore == 'compute-engine' ? 'active' : ''}"
+					class="button button--half-round engine-dot-container {$activeTabStore == 'compute-engine'
+						? 'active'
+						: ''}"
 					on:click={() => displayTab('compute-engine')}
 				>
-                <img src="img/engine-48px.svg" alt="" /> Compute Engine
-                <span id="engine-dot">●</span>
+					<img src="img/engine-48px.svg" alt="" /> Compute Engine
+					<span id="engine-dot">●</span>
 				</button>
 			</li>
 			<li class="">
@@ -77,7 +85,7 @@
 			</li>
 		</ul>
 	</nav>
-	<Version/>
+	<Version />
 </div>
 
 <style>
@@ -85,7 +93,7 @@
 		display: flex;
 		flex-direction: column;
 	}
-	
+
 	ul {
 		display: flex;
 		flex-direction: column;
@@ -114,10 +122,10 @@
 		height: 1.5rem;
 		margin-right: 0.5rem;
 	}
-    .button--half-round{
-        border-top-left-radius:0;
-        border-bottom-left-radius:0;
-    }
+	.button--half-round {
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
 	.button--primary {
 		background-color: var(--primary-color-light);
 	}

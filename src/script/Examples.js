@@ -184,6 +184,7 @@ let Examples = {
 		M -> CD
 		CD -| CD
 
-	`,
+	`
+};
 
-}
+export default Examples;
