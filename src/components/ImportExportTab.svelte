@@ -6,8 +6,8 @@
 	$: LiveModel = $liveModelStore;
 	function importModel(model) {
 		LiveModel.importAeon(model);
-        activeTabStore.close();
-    }
+		activeTabStore.close();
+	}
 </script>
 
 <div id="tab-import-export" class="main-panel">
@@ -48,8 +48,18 @@
 			><span class="main">.SBML</span><span class="desc">Standard<br />SBML L3</span></label
 		>
 
-		<input on:change={()=>UI.importAeon(this)} id="import-aeon-input" style="display:none" type="file" />
-		<input on:change={()=>UI.importSBML(this)} id="import-sbml-input" style="display:none" type="file" />
+		<input
+			on:change={() => UI.importAeon(this)}
+			id="import-aeon-input"
+			style="display:none"
+			type="file"
+		/>
+		<input
+			on:change={() => UI.importSBML(this)}
+			id="import-sbml-input"
+			style="display:none"
+			type="file"
+		/>
 	</div>
 	<div style="width: 244px; display: inline-block; margin-left: 6px; float: right;">
 		<h3
