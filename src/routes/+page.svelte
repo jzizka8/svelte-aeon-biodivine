@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	import QuickHelp from '../components/QuickHelp.svelte';
 	import SideMenu from '../components/SideMenu.svelte';
 	import CytoScapeEditor from '../components/CytoScapeEditor.svelte';
@@ -7,7 +9,11 @@
 	import EdgeMenu from '../components/EdgeMenu.svelte';
 	import LoadingIndicator from '../components/LoadingIndicator.svelte';
 	import TabWrapper from '../components/TabWrapper.svelte';
+	import { init } from '../script/main'; 
 
+	onMount(() => {
+		init();
+	});
 </script>
 
 <main>

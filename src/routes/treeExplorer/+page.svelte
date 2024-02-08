@@ -1,3 +1,11 @@
+<script lang="ts">
+	import { onMount } from 'svelte';
+    import { init } from '../../script/main';
+	onMount(() => {
+		init();
+	});
+</script>
+
 <main>
     
     <div id="cytoscape-editor">

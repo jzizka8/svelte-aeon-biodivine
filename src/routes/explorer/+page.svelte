@@ -1,4 +1,11 @@
-<h1 id='logo'>Aeon/<span id='title'>BIODIVINE</span></h1>
+<script lang="ts">
+	import { onMount } from 'svelte';
+    import { init } from '../../script/main';
+	import { witnessPanelVisible } from '../../script/explorerMain';
+	onMount(() => {
+		init();
+	});
+</script>
 
 <div style="position:absolute" id="explorer-witness-panel" class="main-panel gone">
     <img alt="close" src="img/close-24px.svg" class="panel-close-button" onclick="witnessPanelVisible(false)">

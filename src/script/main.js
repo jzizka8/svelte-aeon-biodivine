@@ -8,7 +8,8 @@ import Messages from './messages';
 import { get } from 'svelte/store';
 import { activeTabStore } from '../stores/activeTabStore';
 
-function init() {
+export function init() {
+	console.log('Initializing AEON');
 	// Safari security alert
 	let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 	if (isSafari) {
@@ -179,4 +180,3 @@ function fireEvent(el, etype) {
 	}
 }
 
-export default init;
