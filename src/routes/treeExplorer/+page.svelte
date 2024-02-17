@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-    import { init } from '../../script/main';
+    import { init } from '../../script/CytoscapeTreeEditor';
+	import LogoType from '../../components/LogoType.svelte';
 	onMount(() => {
 		init();
 	});
 </script>
-
+<svelte:head>
+	<title>Tree explorer | AEON {EXPECTED_ENGINE_VERSION}</title>
+</svelte:head>
 <main>
 	<div id="cytoscape-editor" />
 
@@ -37,7 +40,7 @@
 		</div>
 	</div>
 
-	<h1 id="logo">Aeon/<span id="title">BIODIVINE</span></h1>
+	<LogoType>
 
 	<div id="decision-info" class="main-panel fira-mono gone">
 		<div class="center" style="margin: 16px;">

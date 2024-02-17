@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-    import { init } from '../../script/main';
-	import { witnessPanelVisible } from '../../script/explorerMain';
+	import { witnessPanelVisible, init } from '../../script/explorerMain';
 	onMount(() => {
 		init();
 	});
 </script>
+<svelte:head>
+	<title>Explorer | AEON {EXPECTED_ENGINE_VERSION}</title>
+</svelte:head>
+
 <h1 id="logo">Aeon/<span id="title">BIODIVINE</span></h1>
 
 <div style="position:absolute" id="explorer-witness-panel" class="main-panel gone">
