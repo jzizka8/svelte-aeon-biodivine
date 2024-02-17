@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import QuickHelp from '../components/QuickHelp.svelte';
+	import QuickHelp from './components/QuickHelp.svelte';
 	import SideMenu from '../components/SideMenu.svelte';
 	import CytoScapeEditor from '../components/CytoScapeEditor.svelte';
 	import LogoType from '../components/LogoType.svelte';

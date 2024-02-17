@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-    import { init } from '../../script/CytoscapeTreeEditor';
 	import LogoType from '../../components/LogoType.svelte';
+	import { EXPECTED_ENGINE_VERSION } from '../../const';
+	import { init } from '../../script/treeExplorerMain';
+	import QuickHelp from './components/QuickHelp.svelte';
 	onMount(() => {
 		init();
 	});
@@ -12,35 +14,9 @@
 <main>
 	<div id="cytoscape-editor" />
 
-	<div id="quick-help" style="top: 80%;">
-		<h3 style="display: block; margin: 0 auto; float: right;">HELP</h3>
-		<b>Tree editor navigation:</b>
-		<ul>
-			<li>(↑) Select parent node.</li>
-			<li>(↓) Select positive child.</li>
-			<li>(Shift + ↓) Select negative child.</li>
-			<li>(←/→) Switch positive/negative branch.</li>
-		</ul>
-		<b>Tree actions:</b>
-		<ul>
-			<li>(⌫) Remove selected node.</li>
-			<li>(S) Run stability analysis for the selected node.</li>
-			<li>(D) Compute decision attributes for the selected node.</li>
-			<li>(H) Toggle this help message.</li>
-		</ul>
-		<b>Units:</b>
-		<ul>
-			<li>Witness count: Number of fully instantiated networks.</li>
-			<li>(%): Percentage of networks in the node, i.e. count/total*100.</li>
-			<li>(٪): Log-percentage of networks, i.e. log(count)/log(total)*100.</li>
-		</ul>
+	<QuickHelp />
 
-		<div style="width: 100%; text-align: center; font-size: 12px;">
-			(this message disappears when you select some element)
-		</div>
-	</div>
-
-	<LogoType>
+	<LogoType />
 
 	<div id="decision-info" class="main-panel fira-mono gone">
 		<div class="center" style="margin: 16px;">
