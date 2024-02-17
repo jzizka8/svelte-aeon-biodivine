@@ -6,6 +6,8 @@
 	import ResultsTab from './ResultsTab.svelte';
 	import EngingeTab from './EngingeTab.svelte';
 	import { activeTabStore } from '../stores/activeTabStore';
+	import hotkeys from 'hotkeys-js';
+	import { onMount } from 'svelte';
 
 	const tabComponents = {
 		about: HelpTab,
@@ -14,7 +16,12 @@
 		results: ResultsTab,
 		'compute-engine': EngingeTab
 	};
-
+	onMount(() => {
+		hotkeys('esc', { keyup: true, keydown: true }, function (event, handler) {
+			event.preventDefault();
+			activeTabStore.close();
+		});
+	});
 	$: component = $activeTabStore ? tabComponents[$activeTabStore] : null;
 </script>
 
