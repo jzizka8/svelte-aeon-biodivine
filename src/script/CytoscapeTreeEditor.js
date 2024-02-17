@@ -1,8 +1,3 @@
-export let EdgeMonotonicity = {
-	unspecified: 'unspecified',
-	activation: 'activation',
-	inhibition: 'inhibition'
-};
 
 /*
 	Responsible for managing the cytoscape editor object. It has its own representation of the graph,
