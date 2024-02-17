@@ -370,7 +370,7 @@ let UI = {
 			alert('Results no longer available.');
 			return;
 		}
-		const url = 'explorer.html';
+		const url = 'explorer/';
 		window.open(
 			url + '?engine=' + encodeURI(ComputeEngine.getAddress()) + '&behavior=' + encodeURI(behavior)
 		);
@@ -381,7 +381,7 @@ let UI = {
 			alert('Results no longer available.');
 			return;
 		}
-		const url = 'tree_explorer.html';
+		const url = 'treeExplorer/';
 		window.open(url + '?engine=' + encodeURI(ComputeEngine.getAddress()));
 	},
 
