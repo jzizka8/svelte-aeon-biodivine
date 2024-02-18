@@ -69,6 +69,8 @@ let UI = {
 		let cmpClasses = document.getElementById('computation-classes');
 		let cmpCancel = document.getElementById('computation-cancel');
 		let cmpDownload = document.getElementById('computation-download');
+		// for treeExplorer, where these are not present
+		if(!statusLabel || !dot ||!cmpStatus){return;}
 		// Reset classes
 		statusLabel.classList.remove('red', 'green', 'orange');
 		dot.classList.remove('red', 'green', 'orange');
