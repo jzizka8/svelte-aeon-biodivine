@@ -1,9 +1,10 @@
+import cytoscape from 'cytoscape';
 
 /*
 	Responsible for managing the cytoscape editor object. It has its own representation of the graph,
 	but it should never be updated directly. Instead, always use LiveModel to specify updates.
 */
-let CytoscapeEditor = {
+export const CytoscapeEditor = {
 	// Reference to the cytoscape library "god object"
 	_cytoscape: undefined,
 	_totalCardinality: 0.0,

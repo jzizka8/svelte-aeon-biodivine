@@ -1,4 +1,6 @@
 import hotkeys from "hotkeys-js";
+import ComputeEngine from "./ComputeEngine";
+import { CytoscapeEditor } from "./CytoscapeTreeEditor";
 
 let SORT_INFORMATION_GAIN = 'sort-information-gain';
 let SORT_TOTAL_CLASSES = 'sort-total-classes';
@@ -31,7 +33,7 @@ export function init() {
 	const urlParams = new URLSearchParams(window.location.search);
 	const engineAddress = urlParams.get('engine');
 	console.log(engineAddress);
-	get(ComputeEngine).openConnection(undefined, engineAddress);
+	ComputeEngine.openConnection(undefined, engineAddress);
 
 	CytoscapeEditor.init();
 
