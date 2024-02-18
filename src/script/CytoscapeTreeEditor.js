@@ -1,4 +1,5 @@
 import cytoscape from 'cytoscape';
+import cytoscapeDagre from 'cytoscape-dagre';
 
 /*
 	Responsible for managing the cytoscape editor object. It has its own representation of the graph,
@@ -12,6 +13,7 @@ export const CytoscapeEditor = {
 
 	init: function () {
 		this._cytoscape = cytoscape(this.initOptions());
+		cytoscape.use(cytoscapeDagre);
 		this._cytoscape.on('select', (e) => {
 			document.getElementById('quick-help').classList.add('gone');
 			console.log(e.target.data());
