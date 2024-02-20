@@ -1,24 +1,7 @@
 import hotkeys from "hotkeys-js";
 import ComputeEngine from "./ComputeEngine";
 import { CytoscapeEditor } from "./CytoscapeTreeEditor";
-
-let SORT_INFORMATION_GAIN = 'sort-information-gain';
-let SORT_TOTAL_CLASSES = 'sort-total-classes';
-let SORT_POSITIVE = 'sort-positive';
-let SORT_POSITIVE_MAJORITY = 'sort-positive-majority';
-let SORT_NEGATIVE = 'sort-negative';
-let SORT_NEGATIVE_MAJORITY = 'sort-negative-majority';
-let SORT_ALPHABETICAL = 'sort-alphabetical';
-
-let SORTS = [
-	SORT_INFORMATION_GAIN,
-	SORT_TOTAL_CLASSES,
-	SORT_POSITIVE,
-	SORT_POSITIVE_MAJORITY,
-	SORT_NEGATIVE,
-	SORT_NEGATIVE_MAJORITY,
-	SORT_ALPHABETICAL
-];
+import { SORT_ALPHABETICAL, SORT_INFORMATION_GAIN, SORT_NEGATIVE, SORT_NEGATIVE_MAJORITY, SORT_POSITIVE, SORT_POSITIVE_MAJORITY, SORT_TOTAL_CLASSES } from "../const";
 
 export function Math_dimPercent(cardinality, total) {
 	return Math.round(((Math.log2(cardinality) + 1) / (Math.log2(total) + 1)) * 100);
@@ -90,17 +73,6 @@ export function init() {
 		autoExpandBifurcationTree(CytoscapeEditor.getSelectedNodeId(), depth.value);
 	};
 
-	// Setup mutually exclusive sort checkboxes.
-	for (let sort of SORTS) {
-		let checkbox = document.getElementById(sort);
-		checkbox.onclick = function () {
-			for (sort of SORTS) {
-				document.getElementById(sort).checked = false;
-			}
-			this.checked = true;
-			setSort(this.id);
-		};
-	}
 	initHotkeys();
 }
 
@@ -173,12 +145,7 @@ function getCurrentSort() {
 // 	return SORT_INFORMATION_GAIN;
 // }
 
-function setSort(sort) {
-	for (let sortId of SORTS) {
-		document.getElementById(sortId).checked = false;
-	}
-	document.getElementById(sort).checked = true;
-
+export function setSort() {
 	let selected = CytoscapeEditor.getSelectedNodeTreeData();
 	renderAttributeTable(selected.id, selected.attributes, selected.cardinality);
 }

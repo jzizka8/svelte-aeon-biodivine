@@ -1,15 +1,6 @@
 <script lang="ts">
-	const sortOptions = [
-		{ id: 'sort-information-gain', label: 'Information gain' },
-		{ id: 'sort-total-classes', label: 'Total classes' },
-		{ id: 'sort-positive', label: 'Positive' },
-		{ id: 'sort-positive-majority', label: 'Positive majority' },
-		{ id: 'sort-negative', label: 'Negative' },
-		{ id: 'sort-negative-majority', label: 'Negative majority' },
-		{ id: 'sort-alphabetical', label: 'Alphabetical' }
-	];
-	let selectedSort = 'sort-information-gain';
-	
+	import { setSort } from "../../../script/treeExplorerMain";
+	import { sortOptions } from "../../../const";
 </script>
 
 <div id="mixed-info" class="main-panel fira-mono gone">
@@ -109,11 +100,12 @@
 				{#each sortOptions as option}
 					<label class="sort-checkbox">
 						<input
-							type="checkbox"
+							type="radio"
 							name="sort"
 							value={option.id}
 							checked={option.id === sortOptions[0].id}
 							id={option.id}
+							on:change={ setSort}	
 						/>
 						{option.label}
 					</label>
