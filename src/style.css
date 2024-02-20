@@ -34,6 +34,7 @@
 	--green: hsl(122, 75%, 45%);
 	--green-light: hsl(122, 65%, 50%);
 }
+
 body {
 	font-family: 'Helvetica', 'Arial', sans-serif;
 	margin: 0;
@@ -43,11 +44,17 @@ body {
 	cursor: pointer;
 }
 
-main {
+.index-page {
 	display: grid;
 	grid-template-columns: 11rem auto;
 	grid-template-rows: 100vh;
 	grid-template-areas: 'menu main';
+}
+
+
+.index-page #cytoscape-editor {
+	grid-area: main;
+	overflow: hidden;
 }
 
 #loading-indicator {
@@ -94,10 +101,6 @@ main {
 	top: 0;
 	background: #f9f9f9;
 	z-index: -1;
-}
-#cytoscape-editor {
-	grid-area: main;
-	overflow: hidden;
 }
 
 .quick-help {
@@ -318,6 +321,7 @@ div.invisible-input[contenteditable]:empty:not(:focus):before {
 .engine-dot-container {
 	position: relative;
 }
+
 #engine-dot {
 	position: absolute;
 	right: 0;
@@ -665,16 +669,19 @@ div.center {
 	/* remove cell spacing for proper borders */
 	border-collapse: collapse;
 }
+
 .behavior-table-header td {
 	border-bottom: 1px solid black;
 	margin-bottom: 4px;
 }
+
 .behavior-table td {
 	padding-left: 8px;
 	padding-right: 8px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
+
 .behavior-table .cell-behavior {
 	width: 200px;
 }
@@ -767,6 +774,7 @@ div.center {
 .attribute-sub-panel.negative .phenotype {
 	text-align: right;
 }
+
 .attribute-sub-panel.positive .distribution {
 	text-align: right;
 }
@@ -888,39 +896,56 @@ div.center {
 
 /* The slider itself */
 .seekbar {
-	-webkit-appearance: none; /* Override default CSS styles */
+	-webkit-appearance: none;
+	/* Override default CSS styles */
 	appearance: none;
-	width: 100%; /* Full-width */
-	height: 25px; /* Specified height */
-	background: #d3d3d3; /* Grey background */
-	outline: none; /* Remove outline */
-	opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-	-webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
+	width: 100%;
+	/* Full-width */
+	height: 25px;
+	/* Specified height */
+	background: #d3d3d3;
+	/* Grey background */
+	outline: none;
+	/* Remove outline */
+	opacity: 0.7;
+	/* Set transparency (for mouse-over effects on hover) */
+	-webkit-transition: 0.2s;
+	/* 0.2 seconds transition on hover */
 	transition: opacity 0.2s;
 	border-radius: 4px;
 }
 
 /* Mouse-over effects */
 .seekbar:hover {
-	opacity: 1; /* Fully shown on mouse-over */
+	opacity: 1;
+	/* Fully shown on mouse-over */
 }
 
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
 .seekbar::-webkit-slider-thumb {
-	-webkit-appearance: none; /* Override default look */
+	-webkit-appearance: none;
+	/* Override default look */
 	appearance: none;
-	width: 25px; /* Set a specific slider handle width */
-	height: 25px; /* Slider handle height */
-	background: #3a568c; /* Green background */
-	cursor: pointer; /* Cursor on hover */
+	width: 25px;
+	/* Set a specific slider handle width */
+	height: 25px;
+	/* Slider handle height */
+	background: #3a568c;
+	/* Green background */
+	cursor: pointer;
+	/* Cursor on hover */
 	border-radius: 4px;
 }
 
 .seekbar::-moz-range-thumb {
-	width: 25px; /* Set a specific slider handle width */
-	height: 25px; /* Slider handle height */
-	background: #3a568c; /* Green background */
-	cursor: pointer; /* Cursor on hover */
+	width: 25px;
+	/* Set a specific slider handle width */
+	height: 25px;
+	/* Slider handle height */
+	background: #3a568c;
+	/* Green background */
+	cursor: pointer;
+	/* Cursor on hover */
 	border-radius: 4px;
 }
 
@@ -966,15 +991,15 @@ div.center {
 	transition: 0.4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
 	background-color: #3a568c;
 }
 
-input:focus + .slider {
+input:focus+.slider {
 	box-shadow: 0 0 1px #3a568c;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
 	-webkit-transform: translateX(17px);
 	-ms-transform: translateX(17px);
 	transform: translateX(17px);

@@ -20,7 +20,7 @@
 <svelte:head>
 	<title>AEON {EXPECTED_ENGINE_VERSION}</title>
 </svelte:head>
-<main>
+<main class="index-page">
 	<!-- active tab can be opened from side menu and from the tab wrapper -->
 	<SideMenu />
 	<TabWrapper />

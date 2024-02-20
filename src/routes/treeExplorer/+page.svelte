@@ -41,3 +41,11 @@
 
 	<LoadingIndicator />
 </main>
+
+<style>
+	#cytoscape-editor {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+	}
+</style>
