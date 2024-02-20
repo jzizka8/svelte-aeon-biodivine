@@ -1,5 +1,6 @@
+import { DEFAULT_ENGINE_ADDRESS } from '../const';
 import ComputeEngine from './ComputeEngine';
-import {vis} from 'vis';
+import { Network } from 'vis';
 
 var RESULT = undefined;
 var network = undefined;
@@ -29,7 +30,8 @@ var options = {
 	},
 	layout: {
 		improvedLayout: false
-	}
+	},
+	physics: false
 };
 
 export function init() {
@@ -37,14 +39,12 @@ export function init() {
 
 	// Set engine address according to query parameter
 	const urlParams = new URLSearchParams(window.location.search);
-	const engineAddress = urlParams.get('engine');
+	const engineAddress = urlParams.get('engine') ?? DEFAULT_ENGINE_ADDRESS;
 	const reqBeh = urlParams.get('behavior');
 
-	if (engineAddress !== undefined && engineAddress !== null && engineAddress.length > 0) {
-		document.getElementById('engine-address').value = engineAddress;
-		ComputeEngine._address = engineAddress;
-	}
+
 	let callback = function (e, r) {
+		console.log(e);
 		if (e !== undefined) {
 			alert(e);
 		} else {
@@ -68,42 +68,44 @@ export function init() {
 	// get the attractors
 	if (reqBeh !== undefined && reqBeh !== null) {
 		var request = ComputeEngine._backendRequest('/get_attractors/' + reqBeh, callback, 'GET', null);
-	} else {
-		const requestedTreeWitness = urlParams.get('tree_witness'); // Should be a node id.
-		if (requestedTreeWitness !== undefined && requestedTreeWitness !== null) {
-			const requestedVariable = urlParams.get('variable');
-			const requestedBehaviour = urlParams.get('behaviour');
-			const requestedVector = urlParams.get('vector');
-			if (
-				requestedVariable === undefined ||
-				requestedVariable === null ||
-				requestedVector === null
-			) {
-				// Just get node attractors
-				var request = ComputeEngine._backendRequest(
-					'/get_tree_attractors/' + requestedTreeWitness,
-					callback,
-					'GET',
-					null
-				);
-			} else {
-				// This is attractor stability query
-				var request = ComputeEngine._backendRequest(
-					'/get_stability_attractors/' +
-						requestedTreeWitness +
-						'/' +
-						encodeURI(requestedBehaviour) +
-						'/' +
-						encodeURI(requestedVariable) +
-						'/' +
-						encodeURI('[' + requestedVector + ']'),
-					callback,
-					'GET',
-					null
-				);
-			}
+		return;
+	}
+
+	const requestedTreeWitness = urlParams.get('tree_witness'); // Should be a node id.
+	if (requestedTreeWitness !== undefined && requestedTreeWitness !== null) {
+		const requestedVariable = urlParams.get('variable');
+		const requestedBehaviour = urlParams.get('behaviour');
+		const requestedVector = urlParams.get('vector');
+		if (
+			requestedVariable === undefined ||
+			requestedVariable === null ||
+			requestedVector === null
+		) {
+			// Just get node attractors
+			var request = ComputeEngine._backendRequest(
+				'/get_tree_attractors/' + requestedTreeWitness,
+				callback,
+				'GET',
+				null
+			);
+		} else {
+			// This is attractor stability query
+			var request = ComputeEngine._backendRequest(
+				'/get_stability_attractors/' +
+				requestedTreeWitness +
+				'/' +
+				encodeURI(requestedBehaviour) +
+				'/' +
+				encodeURI(requestedVariable) +
+				'/' +
+				encodeURI('[' + requestedVector + ']'),
+				callback,
+				'GET',
+				null
+			);
 		}
 	}
+
 }
 
 function nodeClick(e) {
@@ -219,10 +221,10 @@ function displayAll() {
 		edges = edges.concat(RESULT.attractors[i].vis.edges);
 	}
 
-	network = new vis.Network(container, { nodes, edges }, options);
+	network = new Network(container, { nodes, edges }, options);
 }
 
 function displayGraph(index) {
 	// displays just one attractor, not all of them
-	network = new vis.Network(container, RESULT.attractors[index].vis, options);
+	network = new Network(container, RESULT.attractors[index].vis, options);
 }
