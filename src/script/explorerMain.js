@@ -1,3 +1,6 @@
+import ComputeEngine from './ComputeEngine';
+import {vis} from 'vis';
+
 var RESULT = undefined;
 var network = undefined;
 var container = undefined;
@@ -29,7 +32,7 @@ var options = {
 	}
 };
 
-function init() {
+export function init() {
 	container = document.getElementById('visjs-container');
 
 	// Set engine address according to query parameter
@@ -119,7 +122,7 @@ function nodeClick(e) {
 }
 
 function stateToHtml(state) {
-	result = '';
+	let result = '';
 	for (var i = 0; i < state.length; i++) {
 		let is_false = state[i] == '0' || state[i] == '⊥';
 		let is_dynamic = state[i] == '0' || state[i] == '1';
@@ -158,7 +161,7 @@ function generateWitness() {
 		.reduce((a, x) => '<li>' + x + '</li>' + a, '');
 }
 
-function witnessPanelVisible(show = true) {
+export function witnessPanelVisible(show = true) {
 	document.getElementById('explorer-witness-panel').style.display = show ? 'block' : 'none';
 }
 
