@@ -20,11 +20,11 @@ let SORTS = [
 	SORT_ALPHABETICAL
 ];
 
-function Math_dimPercent(cardinality, total) {
+export function Math_dimPercent(cardinality, total) {
 	return Math.round(((Math.log2(cardinality) + 1) / (Math.log2(total) + 1)) * 100);
 }
 
-function Math_percent(cardinality, total) {
+export function Math_percent(cardinality, total) {
 	return Math.round((cardinality / total) * 100);
 }
 
@@ -91,7 +91,7 @@ export function init() {
 	};
 
 	// Setup mutually exclusive sort checkboxes.
-	for (sort of SORTS) {
+	for (let sort of SORTS) {
 		let checkbox = document.getElementById(sort);
 		checkbox.onclick = function () {
 			for (sort of SORTS) {
@@ -157,24 +157,24 @@ function compareNegative(a, b) {
 	}
 }
 
-// function getCurrentSort() {
-//     const checkedInput = document.querySelector('input[name="sort-method"]:checked');
-//     if (checkedInput) {
-//         return checkedInput.value;
-//     }
-//     return SORT_INFORMATION_GAIN;
-// }
 function getCurrentSort() {
-	for (sort of SORTS) {
-		if (document.getElementById(sort).checked) {
-			return sort;
-		}
-	}
-	return SORT_INFORMATION_GAIN;
+    const checkedInput = document.querySelector('input[name="sort"]:checked');
+    if (checkedInput) {
+        return checkedInput.id;
+    }
+    return SORT_INFORMATION_GAIN;
 }
+// function getCurrentSort() {
+// 	for (let sort of SORTS) {
+// 		if (document.getElementById(sort).checked) {
+// 			return sort;
+// 		}
+// 	}
+// 	return SORT_INFORMATION_GAIN;
+// }
 
 function setSort(sort) {
-	for (sortId of SORTS) {
+	for (let sortId of SORTS) {
 		document.getElementById(sortId).checked = false;
 	}
 	document.getElementById(sort).checked = true;
@@ -202,7 +202,7 @@ function sortAttributes(attributes) {
 	}
 }
 
-function renderAttributeTable(id, attributes, totalCardinality) {
+export function renderAttributeTable(id, attributes, totalCardinality) {
 	document.getElementById('mixed-attributes').classList.remove('gone');
 	document.getElementById('mixed-attributes-title').innerHTML =
 		'Attributes (' + attributes.length + '):';
@@ -211,7 +211,7 @@ function renderAttributeTable(id, attributes, totalCardinality) {
 	list.innerHTML = '';
 	var cut_off = 100;
 	sortAttributes(attributes);
-	for (attr of attributes) {
+	for (let attr of attributes) {
 		if (cut_off < 0) break;
 		let attrNode = template.cloneNode(true);
 		attrNode.id = '';
@@ -304,10 +304,10 @@ function autoExpandBifurcationTree(node, depth, fit = true) {
 		depth,
 		(e, r) => {
 			if (r !== undefined && r.length > 0) {
-				for (node of r) {
+				for (let node of r) {
 					CytoscapeEditor.ensureNode(node);
 				}
-				for (node of r) {
+				for (let node of r) {
 					if (node.type == 'decision') {
 						CytoscapeEditor.ensureEdge(node.id, node.left, false);
 						CytoscapeEditor.ensureEdge(node.id, node.right, true);
@@ -324,7 +324,7 @@ function autoExpandBifurcationTree(node, depth, fit = true) {
 			loading.classList.add('invisible');
 			CytoscapeEditor.refreshSelection();
 		},
-		true
+		
 	);
 }
 
@@ -334,10 +334,10 @@ function loadBifurcationTree(fit = true) {
 	ComputeEngine.getBifurcationTree((e, r) => {
 		if (r !== undefined && r.length > 0) {
 			CytoscapeEditor.removeAll(); // remove old tree if present
-			for (node of r) {
+			for (let node of r) {
 				CytoscapeEditor.ensureNode(node);
 			}
-			for (node of r) {
+			for (let node of r) {
 				if (node.type == 'decision') {
 					CytoscapeEditor.ensureEdge(node.id, node.left, false);
 					CytoscapeEditor.ensureEdge(node.id, node.right, true);
@@ -365,7 +365,7 @@ function removeNode(nodeId) {
 	ComputeEngine.deleteDecision(nodeId, (e, r) => {
 		console.log(r);
 		if (r.removed.length > 0) {
-			for (removed of r.removed) {
+			for (let removed of r.removed) {
 				CytoscapeEditor.removeNode(removed);
 			}
 		}
@@ -379,10 +379,10 @@ function removeNode(nodeId) {
 function selectAttribute(node, attr) {
 	ComputeEngine.selectDecisionAttribute(node, attr, (e, r) => {
 		console.log(r);
-		for (node of r) {
+		for (let node of r) {
 			CytoscapeEditor.ensureNode(node);
 		}
-		for (node of r) {
+		for (let node of r) {
 			if (node.type == 'decision') {
 				CytoscapeEditor.ensureEdge(node.id, node.left, false);
 				CytoscapeEditor.ensureEdge(node.id, node.right, true);
@@ -462,7 +462,7 @@ function openStabilityAttractor(variable, behaviour, vector) {
 function vector_to_string(vector) {
 	let result = '[';
 	let first = true;
-	for (item of vector) {
+	for (let item of vector) {
 		if (first) {
 			first = false;
 		} else {
@@ -481,7 +481,7 @@ function vector_to_string(vector) {
 }
 
 // Used to initialize a stability analysis button in the detail panels.
-function initStabilityButton(id, button, dropdown, container) {
+export function initStabilityButton(id, button, dropdown, container) {
 	let loading = document.getElementById('loading-indicator');
 	button.onclick = function () {
 		loading.classList.remove('invisible');
@@ -494,7 +494,7 @@ function initStabilityButton(id, button, dropdown, container) {
 			} else {
 				console.log(r);
 				let content = '<h4>Stability analysis:</h4>';
-				for (item of r) {
+				for (let item of r) {
 					let variableName = item.variable;
 					if (item.data.length == 1) {
 						content +=
@@ -505,7 +505,7 @@ function initStabilityButton(id, button, dropdown, container) {
 							'</div>';
 					} else {
 						content += '<div><b>' + variableName + '</b>:</br>';
-						for (data of item.data) {
+						for (let data of item.data) {
 							content +=
 								' - ' +
 								vector_to_string(data.vector) +
