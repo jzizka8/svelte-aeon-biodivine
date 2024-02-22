@@ -1,7 +1,6 @@
-import { error } from '@sveltejs/kit';
 import ComputeEngine from './ComputeEngine';
 import CytoscapeEditor from './CytoscapeEditor';
-import { EdgeMonotonicity } from './CytoscapeTreeEditor';
+import { EdgeMonotonicity } from '../types/types';
 import { modelEditorStore as ModelEditor } from '../stores/ModelEditorStore';
 
 import UI from './UI';

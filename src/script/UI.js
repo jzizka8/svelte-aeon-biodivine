@@ -69,6 +69,8 @@ let UI = {
 		let cmpClasses = document.getElementById('computation-classes');
 		let cmpCancel = document.getElementById('computation-cancel');
 		let cmpDownload = document.getElementById('computation-download');
+		// for treeExplorer, where these are not present
+		if(!statusLabel || !dot ||!cmpStatus){return;}
 		// Reset classes
 		statusLabel.classList.remove('red', 'green', 'orange');
 		dot.classList.remove('red', 'green', 'orange');
@@ -370,7 +372,7 @@ let UI = {
 			alert('Results no longer available.');
 			return;
 		}
-		const url = 'explorer.html';
+		const url = 'explorer/';
 		window.open(
 			url + '?engine=' + encodeURI(ComputeEngine.getAddress()) + '&behavior=' + encodeURI(behavior)
 		);
@@ -381,7 +383,7 @@ let UI = {
 			alert('Results no longer available.');
 			return;
 		}
-		const url = 'tree_explorer.html';
+		const url = 'treeExplorer/';
 		window.open(url + '?engine=' + encodeURI(ComputeEngine.getAddress()));
 	},
 

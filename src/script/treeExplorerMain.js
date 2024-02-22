@@ -1,30 +1,17 @@
-let SORT_INFORMATION_GAIN = 'sort-information-gain';
-let SORT_TOTAL_CLASSES = 'sort-total-classes';
-let SORT_POSITIVE = 'sort-positive';
-let SORT_POSITIVE_MAJORITY = 'sort-positive-majority';
-let SORT_NEGATIVE = 'sort-negative';
-let SORT_NEGATIVE_MAJORITY = 'sort-negative-majority';
-let SORT_ALPHABETICAL = 'sort-alphabetical';
+import hotkeys from "hotkeys-js";
+import ComputeEngine from "./ComputeEngine";
+import { CytoscapeEditor } from "./CytoscapeTreeEditor";
+import { SORT_ALPHABETICAL, SORT_INFORMATION_GAIN, SORT_NEGATIVE, SORT_NEGATIVE_MAJORITY, SORT_POSITIVE, SORT_POSITIVE_MAJORITY, SORT_TOTAL_CLASSES } from "../const";
 
-let SORTS = [
-	SORT_INFORMATION_GAIN,
-	SORT_TOTAL_CLASSES,
-	SORT_POSITIVE,
-	SORT_POSITIVE_MAJORITY,
-	SORT_NEGATIVE,
-	SORT_NEGATIVE_MAJORITY,
-	SORT_ALPHABETICAL
-];
-
-function Math_dimPercent(cardinality, total) {
+export function Math_dimPercent(cardinality, total) {
 	return Math.round(((Math.log2(cardinality) + 1) / (Math.log2(total) + 1)) * 100);
 }
 
-function Math_percent(cardinality, total) {
+export function Math_percent(cardinality, total) {
 	return Math.round((cardinality / total) * 100);
 }
 
-function init() {
+export function init() {
 	// Set engine address according to query parameter
 	const urlParams = new URLSearchParams(window.location.search);
 	const engineAddress = urlParams.get('engine');
@@ -86,17 +73,7 @@ function init() {
 		autoExpandBifurcationTree(CytoscapeEditor.getSelectedNodeId(), depth.value);
 	};
 
-	// Setup mutually exclusive sort checkboxes.
-	for (sort of SORTS) {
-		let checkbox = document.getElementById(sort);
-		checkbox.onclick = function () {
-			for (sort of SORTS) {
-				document.getElementById(sort).checked = false;
-			}
-			this.checked = true;
-			setSort(this.id);
-		};
-	}
+	initHotkeys();
 }
 
 function compareInformationGain(a, b) {
@@ -152,28 +129,23 @@ function compareNegative(a, b) {
 	}
 }
 
-// function getCurrentSort() {
-//     const checkedInput = document.querySelector('input[name="sort-method"]:checked');
-//     if (checkedInput) {
-//         return checkedInput.value;
-//     }
-//     return SORT_INFORMATION_GAIN;
-// }
 function getCurrentSort() {
-	for (sort of SORTS) {
-		if (document.getElementById(sort).checked) {
-			return sort;
-		}
-	}
-	return SORT_INFORMATION_GAIN;
+    const checkedInput = document.querySelector('input[name="sort"]:checked');
+    if (checkedInput) {
+        return checkedInput.id;
+    }
+    return SORT_INFORMATION_GAIN;
 }
+// function getCurrentSort() {
+// 	for (let sort of SORTS) {
+// 		if (document.getElementById(sort).checked) {
+// 			return sort;
+// 		}
+// 	}
+// 	return SORT_INFORMATION_GAIN;
+// }
 
-function setSort(sort) {
-	for (sortId of SORTS) {
-		document.getElementById(sortId).checked = false;
-	}
-	document.getElementById(sort).checked = true;
-
+export function setSort() {
 	let selected = CytoscapeEditor.getSelectedNodeTreeData();
 	renderAttributeTable(selected.id, selected.attributes, selected.cardinality);
 }
@@ -197,7 +169,7 @@ function sortAttributes(attributes) {
 	}
 }
 
-function renderAttributeTable(id, attributes, totalCardinality) {
+export function renderAttributeTable(id, attributes, totalCardinality) {
 	document.getElementById('mixed-attributes').classList.remove('gone');
 	document.getElementById('mixed-attributes-title').innerHTML =
 		'Attributes (' + attributes.length + '):';
@@ -206,7 +178,7 @@ function renderAttributeTable(id, attributes, totalCardinality) {
 	list.innerHTML = '';
 	var cut_off = 100;
 	sortAttributes(attributes);
-	for (attr of attributes) {
+	for (let attr of attributes) {
 		if (cut_off < 0) break;
 		let attrNode = template.cloneNode(true);
 		attrNode.id = '';
@@ -299,10 +271,10 @@ function autoExpandBifurcationTree(node, depth, fit = true) {
 		depth,
 		(e, r) => {
 			if (r !== undefined && r.length > 0) {
-				for (node of r) {
+				for (let node of r) {
 					CytoscapeEditor.ensureNode(node);
 				}
-				for (node of r) {
+				for (let node of r) {
 					if (node.type == 'decision') {
 						CytoscapeEditor.ensureEdge(node.id, node.left, false);
 						CytoscapeEditor.ensureEdge(node.id, node.right, true);
@@ -319,7 +291,7 @@ function autoExpandBifurcationTree(node, depth, fit = true) {
 			loading.classList.add('invisible');
 			CytoscapeEditor.refreshSelection();
 		},
-		true
+		
 	);
 }
 
@@ -329,10 +301,10 @@ function loadBifurcationTree(fit = true) {
 	ComputeEngine.getBifurcationTree((e, r) => {
 		if (r !== undefined && r.length > 0) {
 			CytoscapeEditor.removeAll(); // remove old tree if present
-			for (node of r) {
+			for (let node of r) {
 				CytoscapeEditor.ensureNode(node);
 			}
-			for (node of r) {
+			for (let node of r) {
 				if (node.type == 'decision') {
 					CytoscapeEditor.ensureEdge(node.id, node.left, false);
 					CytoscapeEditor.ensureEdge(node.id, node.right, true);
@@ -360,7 +332,7 @@ function removeNode(nodeId) {
 	ComputeEngine.deleteDecision(nodeId, (e, r) => {
 		console.log(r);
 		if (r.removed.length > 0) {
-			for (removed of r.removed) {
+			for (let removed of r.removed) {
 				CytoscapeEditor.removeNode(removed);
 			}
 		}
@@ -374,10 +346,10 @@ function removeNode(nodeId) {
 function selectAttribute(node, attr) {
 	ComputeEngine.selectDecisionAttribute(node, attr, (e, r) => {
 		console.log(r);
-		for (node of r) {
+		for (let node of r) {
 			CytoscapeEditor.ensureNode(node);
 		}
-		for (node of r) {
+		for (let node of r) {
 			if (node.type == 'decision') {
 				CytoscapeEditor.ensureEdge(node.id, node.left, false);
 				CytoscapeEditor.ensureEdge(node.id, node.right, true);
@@ -394,7 +366,7 @@ function openTreeWitness() {
 	if (node === undefined) {
 		return;
 	}
-	const url = window.location.pathname.replace('tree_explorer.html', 'index.html');
+	const url = window.location.pathname.replace('treeExplorer', '/');
 	window.open(
 		url + '?engine=' + encodeURI(ComputeEngine.getAddress()) + '&tree_witness=' + encodeURI(node)
 	);
@@ -405,7 +377,7 @@ function openStabilityWitness(variable, behaviour, vector) {
 	if (node === undefined) {
 		return;
 	}
-	const url = window.location.pathname.replace('tree_explorer.html', 'index.html');
+	const url = window.location.pathname.replace('treeExplorer', '/');
 	window.open(
 		url +
 			'?engine=' +
@@ -427,7 +399,7 @@ function openTreeAttractor() {
 	if (node === undefined) {
 		return;
 	}
-	const url = window.location.pathname.replace('tree_explorer.html', 'explorer.html');
+	const url = window.location.pathname.replace('treeExplorer/', 'explorer/');
 	window.open(
 		url + '?engine=' + encodeURI(ComputeEngine.getAddress()) + '&tree_witness=' + encodeURI(node)
 	);
@@ -438,7 +410,7 @@ function openStabilityAttractor(variable, behaviour, vector) {
 	if (node === undefined) {
 		return;
 	}
-	const url = window.location.pathname.replace('tree_explorer.html', 'explorer.html');
+	const url = window.location.pathname.replace('treeExplorer/', 'explorer/');
 	window.open(
 		url +
 			'?engine=' +
@@ -457,7 +429,7 @@ function openStabilityAttractor(variable, behaviour, vector) {
 function vector_to_string(vector) {
 	let result = '[';
 	let first = true;
-	for (item of vector) {
+	for (let item of vector) {
 		if (first) {
 			first = false;
 		} else {
@@ -476,7 +448,7 @@ function vector_to_string(vector) {
 }
 
 // Used to initialize a stability analysis button in the detail panels.
-function initStabilityButton(id, button, dropdown, container) {
+export function initStabilityButton(id, button, dropdown, container) {
 	let loading = document.getElementById('loading-indicator');
 	button.onclick = function () {
 		loading.classList.remove('invisible');
@@ -489,7 +461,7 @@ function initStabilityButton(id, button, dropdown, container) {
 			} else {
 				console.log(r);
 				let content = '<h4>Stability analysis:</h4>';
-				for (item of r) {
+				for (let item of r) {
 					let variableName = item.variable;
 					if (item.data.length == 1) {
 						content +=
@@ -500,7 +472,7 @@ function initStabilityButton(id, button, dropdown, container) {
 							'</div>';
 					} else {
 						content += '<div><b>' + variableName + '</b>:</br>';
-						for (data of item.data) {
+						for (let data of item.data) {
 							content +=
 								' - ' +
 								vector_to_string(data.vector) +
@@ -536,121 +508,121 @@ function getWitnessPanelForVariable(variable, behaviour, vector) {
 	);
 }
 
-// Keyboard shortcuts for basic navigation:
+function initHotkeys(){// Keyboard shortcuts for basic navigation:
 
-hotkeys('up', function (event, handler) {
-	let selected = CytoscapeEditor.getSelectedNodeId();
-	if (selected == undefined) {
-		CytoscapeEditor.selectNode('0');
-	} else {
-		let parent = CytoscapeEditor.getParentNode(selected);
-		if (parent == undefined) {
-			return;
+	hotkeys('up', function (event, handler) {
+		let selected = CytoscapeEditor.getSelectedNodeId();
+		if (selected == undefined) {
+			CytoscapeEditor.selectNode('0');
+		} else {
+			let parent = CytoscapeEditor.getParentNode(selected);
+			if (parent == undefined) {
+				return;
+			}
+			CytoscapeEditor.selectNode(parent);
+			event.preventDefault();
 		}
-		CytoscapeEditor.selectNode(parent);
-		event.preventDefault();
-	}
-});
+	});
 
-hotkeys('left', function (event, handler) {
-	let selected = CytoscapeEditor.getSelectedNodeId();
-	if (selected == undefined) {
-		CytoscapeEditor.selectNode('0');
-	} else {
-		let sibling = CytoscapeEditor.getSiblingNode(selected);
-		if (sibling == undefined) {
-			return;
+	hotkeys('left', function (event, handler) {
+		let selected = CytoscapeEditor.getSelectedNodeId();
+		if (selected == undefined) {
+			CytoscapeEditor.selectNode('0');
+		} else {
+			let sibling = CytoscapeEditor.getSiblingNode(selected);
+			if (sibling == undefined) {
+				return;
+			}
+			CytoscapeEditor.selectNode(sibling);
+			event.preventDefault();
 		}
-		CytoscapeEditor.selectNode(sibling);
-		event.preventDefault();
-	}
-});
+	});
 
-hotkeys('right', function (event, handler) {
-	let selected = CytoscapeEditor.getSelectedNodeId();
-	if (selected == undefined) {
-		CytoscapeEditor.selectNode('0');
-	} else {
-		let sibling = CytoscapeEditor.getSiblingNode(selected);
-		if (sibling == undefined) {
-			return;
+	hotkeys('right', function (event, handler) {
+		let selected = CytoscapeEditor.getSelectedNodeId();
+		if (selected == undefined) {
+			CytoscapeEditor.selectNode('0');
+		} else {
+			let sibling = CytoscapeEditor.getSiblingNode(selected);
+			if (sibling == undefined) {
+				return;
+			}
+			CytoscapeEditor.selectNode(sibling);
+			event.preventDefault();
 		}
-		CytoscapeEditor.selectNode(sibling);
-		event.preventDefault();
-	}
-});
+	});
 
-hotkeys('down', function (event, handler) {
-	let selected = CytoscapeEditor.getSelectedNodeId();
-	if (selected == undefined) {
-		CytoscapeEditor.selectNode('0');
-	} else {
-		let child = CytoscapeEditor.getChildNode(selected, true);
-		if (child == undefined) {
-			return;
+	hotkeys('down', function (event, handler) {
+		let selected = CytoscapeEditor.getSelectedNodeId();
+		if (selected == undefined) {
+			CytoscapeEditor.selectNode('0');
+		} else {
+			let child = CytoscapeEditor.getChildNode(selected, true);
+			if (child == undefined) {
+				return;
+			}
+			CytoscapeEditor.selectNode(child);
+			event.preventDefault();
 		}
-		CytoscapeEditor.selectNode(child);
-		event.preventDefault();
-	}
-});
+	});
 
-hotkeys('shift+down', function (event, handler) {
-	let selected = CytoscapeEditor.getSelectedNodeId();
-	if (selected == undefined) {
-		CytoscapeEditor.selectNode('0');
-	} else {
-		let child = CytoscapeEditor.getChildNode(selected, false);
-		if (child == undefined) {
-			return;
+	hotkeys('shift+down', function (event, handler) {
+		let selected = CytoscapeEditor.getSelectedNodeId();
+		if (selected == undefined) {
+			CytoscapeEditor.selectNode('0');
+		} else {
+			let child = CytoscapeEditor.getChildNode(selected, false);
+			if (child == undefined) {
+				return;
+			}
+			CytoscapeEditor.selectNode(child);
+			event.preventDefault();
 		}
-		CytoscapeEditor.selectNode(child);
-		event.preventDefault();
-	}
-});
+	});
 
-hotkeys('backspace', function (event, handler) {
-	let selected = CytoscapeEditor.getSelectedNodeId();
-	if (selected !== undefined && CytoscapeEditor.getNodeType(selected) == 'decision') {
-		event.preventDefault();
-		if (confirm('Delete this node?')) {
-			removeNode(selected);
+	hotkeys('backspace', function (event, handler) {
+		let selected = CytoscapeEditor.getSelectedNodeId();
+		if (selected !== undefined && CytoscapeEditor.getNodeType(selected) == 'decision') {
+			event.preventDefault();
+			if (confirm('Delete this node?')) {
+				removeNode(selected);
+			}
 		}
-	}
-});
+	});
 
-hotkeys('h', { keyup: true }, function (event, handler) {
-	if (event.type === 'keydown') {
-		document.getElementById('quick-help').classList.remove('gone');
-	}
-	if (event.type === 'keyup') {
-		document.getElementById('quick-help').classList.add('gone');
-	}
-});
+	hotkeys('h', { keyup: true }, function (event, handler) {
+		if (event.type === 'keydown') {
+			document.getElementById('quick-help').classList.remove('gone');
+		}
+		if (event.type === 'keyup') {
+			document.getElementById('quick-help').classList.add('gone');
+		}
+	});
 
-hotkeys('s', function (event, handler) {
-	let panel = document.getElementById('mixed-info');
-	if (!panel.classList.contains('gone')) {
-		fireEvent(document.getElementById('mixed-stability-analysis-button'), 'click');
-	}
+	hotkeys('s', function (event, handler) {
+		let panel = document.getElementById('mixed-info');
+		if (!panel.classList.contains('gone')) {
+			fireEvent(document.getElementById('mixed-stability-analysis-button'), 'click');
+		}
 
-	panel = document.getElementById('decision-info');
-	if (!panel.classList.contains('gone')) {
-		fireEvent(document.getElementById('decision-stability-analysis-button'), 'click');
-	}
+		panel = document.getElementById('decision-info');
+		if (!panel.classList.contains('gone')) {
+			fireEvent(document.getElementById('decision-stability-analysis-button'), 'click');
+		}
 
-	panel = document.getElementById('leaf-info');
-	if (!panel.classList.contains('gone')) {
-		fireEvent(document.getElementById('leaf-stability-analysis-button'), 'click');
-	}
-});
+		panel = document.getElementById('leaf-info');
+		if (!panel.classList.contains('gone')) {
+			fireEvent(document.getElementById('leaf-stability-analysis-button'), 'click');
+		}
+	});
 
-hotkeys('d', function (event, handler) {
-	let panel = document.getElementById('mixed-info');
-	if (!panel.classList.contains('gone')) {
-		fireEvent(document.getElementById('button-add-variable'), 'click');
-	}
-});
-
+	hotkeys('d', function (event, handler) {
+		let panel = document.getElementById('mixed-info');
+		if (!panel.classList.contains('gone')) {
+			fireEvent(document.getElementById('button-add-variable'), 'click');
+		}
+	});
+}
 // utility function to fire events on UI elements - we mainly need it to simulate clicks
 function fireEvent(el, etype) {
 	if (el.fireEvent) {

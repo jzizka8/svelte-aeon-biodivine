@@ -1,14 +1,13 @@
-export let EdgeMonotonicity = {
-	unspecified: 'unspecified',
-	activation: 'activation',
-	inhibition: 'inhibition'
-};
+import cytoscape from 'cytoscape';
+import cytoscapeDagre from 'cytoscape-dagre';
+import { Math_dimPercent, Math_percent, initStabilityButton, renderAttributeTable } from './treeExplorerMain';
+import ComputeEngine from './ComputeEngine';
 
 /*
 	Responsible for managing the cytoscape editor object. It has its own representation of the graph,
 	but it should never be updated directly. Instead, always use LiveModel to specify updates.
 */
-let CytoscapeEditor = {
+export const CytoscapeEditor = {
 	// Reference to the cytoscape library "god object"
 	_cytoscape: undefined,
 	_totalCardinality: 0.0,
@@ -16,13 +15,14 @@ let CytoscapeEditor = {
 
 	init: function () {
 		this._cytoscape = cytoscape(this.initOptions());
+		cytoscape.use(cytoscapeDagre);
 		this._cytoscape.on('select', (e) => {
 			document.getElementById('quick-help').classList.add('gone');
 			console.log(e.target.data());
 			let data = e.target.data();
 			if (data.action == 'remove') {
 				// This is a remove button for a specifc tree node.
-				removeNode(data.targetId);
+				this.removeNode(data.targetId);
 			} else if (data.type == 'leaf') {
 				this._showLeafPanel(data);
 			} else if (data.type == 'decision') {
@@ -132,13 +132,13 @@ let CytoscapeEditor = {
 	},
 
 	getSelectedNodeId() {
-		node = CytoscapeEditor._cytoscape.nodes(':selected');
+		const node = CytoscapeEditor._cytoscape.nodes(':selected');
 		if (node.length == 0) return undefined;
 		return node.data().id;
 	},
 
 	getSelectedNodeTreeData() {
-		node = CytoscapeEditor._cytoscape.nodes(':selected');
+		const node = CytoscapeEditor._cytoscape.nodes(':selected');
 		if (node.length == 0) return undefined;
 		return node.data().treeData;
 	},
@@ -181,7 +181,7 @@ let CytoscapeEditor = {
 				ComputeEngine.getDecisionAttributes(data.id, (e, r) => {
 					loading.classList.add('invisible');
 					addButton.classList.add('gone');
-					for (attr of r) {
+					for (let attr of r) {
 						// Prepare data:
 						attr.left.sort(function (a, b) {
 							return b.cardinality - a.cardinality;
@@ -193,10 +193,10 @@ let CytoscapeEditor = {
 						let rightTotal = attr.right.reduce((a, b) => a + b.cardinality, 0.0);
 						attr['leftTotal'] = leftTotal;
 						attr['rightTotal'] = rightTotal;
-						for (lElement of attr.left) {
+						for (let lElement of attr.left) {
 							lElement['fraction'] = lElement.cardinality / leftTotal;
 						}
-						for (rElement of attr.right) {
+						for (let rElement of attr.right) {
 							rElement['fraction'] = rElement.cardinality / rightTotal;
 						}
 					}
@@ -224,7 +224,7 @@ let CytoscapeEditor = {
 			}
 		} while (oldRow !== undefined);
 		// Add new rows
-		for (cls of classes) {
+		for (let cls of classes) {
 			let row = rowTemplate.cloneNode(true);
 			row.id = '';
 			let behavior = row.getElementsByClassName('cell-behavior')[0];
@@ -441,7 +441,7 @@ let CytoscapeEditor = {
 
 	setMassEnabled() {
 		this._showMass = true;
-		for (node of this._cytoscape.nodes()) {
+		for (let node of this._cytoscape.nodes()) {
 			let data = node.data();
 			if (data.treeData !== undefined) {
 				data.opacity = this._computeMassOpacity(data.treeData.cardinality);
@@ -452,7 +452,7 @@ let CytoscapeEditor = {
 
 	setMassDisabled() {
 		this._showMass = false;
-		for (node of this._cytoscape.nodes()) {
+		for (let node of this._cytoscape.nodes()) {
 			let data = node.data();
 			data.opacity = 1.0;
 		}
@@ -475,7 +475,7 @@ let CytoscapeEditor = {
 
 	_applyTreeData(data, treeData) {
 		if (data.id != treeData.id) {
-			error('Updating wrong node.');
+			console.error('Updating wrong node.');
 		}
 		if (treeData.id == '0') {
 			this._totalCardinality = treeData.cardinality;

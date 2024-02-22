@@ -1,7 +1,7 @@
 import LiveModel from './LiveModel';
 import UI from './UI';
 import CytoscapeEditor from './CytoscapeEditor';
-import { EdgeMonotonicity } from './CytoscapeTreeEditor';
+import { EdgeMonotonicity } from '../types/types';
 import { ensurePlaceholder } from './main';
 import { activeTabStore } from '../stores/activeTabStore';
 

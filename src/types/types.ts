@@ -6,8 +6,8 @@ export type tabType =
 	| 'model-editor'
 	| null;
 
-export type EdgeMonotonicity = {
-	unspecified: 'unspecified';
-	activation: 'activation';
-	inhibition: 'inhibition';
+export enum EdgeMonotonicity {
+	unspecified = 'unspecified',
+	activation = 'activation',
+	inhibition = 'inhibition',
 };

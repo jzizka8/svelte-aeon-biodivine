@@ -67,17 +67,17 @@ export let ComputeEngine = {
 
 	// Close current connection - return true if really closed.
 	closeConnection() {
-		if (this._pingRepeatToken !== undefined) {
-			clearTimeout(this._pingRepeatToken);
-			this._pingRepeatToken = undefined;
-			this._connected = false;
-			if (typeof UI !== 'undefined') {
-				UI.updateComputeEngineStatus('disconnected');
-			}
-			return true;
-		} else {
+		if (this._pingRepeatToken === undefined) {
 			return false;
-		}
+		} 
+
+		clearTimeout(this._pingRepeatToken);
+		this._pingRepeatToken = undefined;
+		this._connected = false;
+		UI.updateComputeEngineStatus('disconnected');
+
+		return true;
+	
 	},
 
 	// Return current connection status.
@@ -337,9 +337,7 @@ export let ComputeEngine = {
 				status = 'connected';
 			}
 			//console.log("...ping..."+status+"...");
-			if (typeof UI !== 'undefined') {
-				UI.updateComputeEngineStatus(status, response);
-			}
+			UI.updateComputeEngineStatus(status, response);
 			// Schedule a ping for later if requested.
 			if (keepAlive && error === undefined) {
 				this._pingRepeatToken = setTimeout(() => {

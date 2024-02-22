@@ -15,8 +15,6 @@ let CytoscapeEditor = {
 	_cytoscape: undefined,
 	// Reference to the edgehandles library "god object"
 	_edgehandles: undefined,
-	// Used to implement the double click feature
-	_lastClickTimestamp: undefined,
 
 	init: function () {
 		this._cytoscape = cytoscape(this.initOptions());
@@ -31,12 +29,8 @@ let CytoscapeEditor = {
 			this._renderMenuForSelectedNode();
 			this._renderMenuForSelectedEdge();
 		});
-		this._cytoscape.on('click', (e) => {
-			let now = new Date().getTime();
-			if (this._lastClickTimestamp && now - this._lastClickTimestamp < DOUBLE_CLICK_DELAY) {
-				LiveModel.addVariable([e.position['x'], e.position['y']]);
-			}
-			this._lastClickTimestamp = now;
+		this._cytoscape.on('dblclick', (e) => {
+			LiveModel.addVariable([e.position['x'], e.position['y']]);
 		});
 	},
 
