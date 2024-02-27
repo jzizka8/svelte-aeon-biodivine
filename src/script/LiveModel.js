@@ -6,6 +6,7 @@ import { modelEditorStore as ModelEditor } from '../stores/ModelEditorStore';
 import UI from './UI';
 import Messages from './messages';
 import { get } from 'svelte/store';
+import { modelStoreActions } from '../stores/modelStore';
 
 /*
 	Stores the PBN currently loaded into the editor. This is what you should interact with when
@@ -63,6 +64,8 @@ const LiveModel = {
 
 	// Remove the given variable from the model.
 	removeVariable(id, force = false) {
+		modelStoreActions.removeVariable(id);
+
 		let variable = this._variables[id];
 		if (variable === undefined) return; // nothing to remove
 		// prompt user to confirm action
@@ -186,6 +189,8 @@ const LiveModel = {
 	// Try to add the specified regulation to the model. Return true if added successfully
 	// and false if not (e.g. already exists).
 	addRegulation(regulatorId, targetId, isObservable, monotonicity) {
+		modelStoreActions.createRegulation(regulatorId, targetId, monotonicity, isObservable);
+
 		if (this.findRegulation(regulatorId, targetId) !== undefined) return false;
 		let regulation = {
 			regulator: regulatorId,
@@ -480,6 +485,8 @@ const LiveModel = {
 
 	// Erase the whole model
 	clear() {
+		modelStoreActions.clearModel();
+
 		let keys = Object.keys(this._variables);
 		for (var i = 0; i < keys.length; i++) {
 			this.removeVariable(keys[i], true);
