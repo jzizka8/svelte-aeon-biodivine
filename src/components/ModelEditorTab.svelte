@@ -2,8 +2,22 @@
 	import ModelVariable from './ModelVariable.svelte';
 
 	import { liveModelStore } from '../stores/liveModelStore';
-	import { modelStore } from '../stores/modelStore';
+	import { modelStore, modelStoreActions } from '../stores/modelStore';
+	import { calculateMaxDegrees } from '$lib/utils/modelStats';
+	import { get } from 'svelte/store';
+	import { nextMonotonicity } from '$lib/utils/utils';
 	const LiveModel = liveModelStore;
+	$: [maxIn, maxOut] = calculateMaxDegrees($modelStore.regulations);
+	function handleMonotonicityChange(event: CustomEvent) {
+		const { id, current } = event.detail;
+		modelStoreActions.changeMonotonicity(id, nextMonotonicity(current));
+	}
+	function handleObservableToggle(event: CustomEvent) {
+		modelStoreActions.toggleObservable(event.detail.id);
+	}
+	function handleNameChange(event: Event) {
+		modelStoreActions.setName((event.target as HTMLInputElement).value);
+	}
 </script>
 
 <div id="tab-model-editor" class="main-panel" style="padding-bottom: 0px;">
@@ -15,6 +29,17 @@
 			name="model-name"
 			placeholder="Untitled model"
 			style="font-size: 20px;"
+			
+		/>
+		<input
+			id="model-name2"
+			class="center"
+			type="text"
+			name="model-name"
+			placeholder="Untitled model"
+			value={$modelStore.name}
+			on:change={handleNameChange}
+			style="font-size: 20px;"
 		/>
 	</div>
 	<slot />
@@ -25,7 +50,7 @@
 		data-placeholder="(model description)"
 		style="margin-top: 4px; margin-bottom: 4px;"
 	/>
-
+	<div class="invisible-input full-line" contenteditable>{@html $modelStore.description}</div>
 	<div style="height: 30px;">
 		<h3 style="font-family: 'FiraMono'; text-transform: uppercase;">● Overview</h3>
 	</div>
@@ -43,9 +68,9 @@
 			<td class="value">-</td>
 		</tr>
 		<tr class="row">
-			<td>Max. in-degree: </td>
+			<td>Max. in-degree: {maxIn} </td>
 			<td class="value">-</td>
-			<td>Max. out-degree: </td>
+			<td>Max. out-degree: {maxOut} </td>
 			<td class="value">-</td>
 		</tr>
 		<tr class="row">
@@ -108,6 +133,9 @@
 		<ModelVariable
 			{variable}
 			regulations={$modelStore.regulations.filter((v) => v.target.id == variable.id)}
+			on:delete={() => modelStoreActions.removeVariable(variable.id)}
+			on:changeMonotonicity={handleMonotonicityChange}
+			on:toggleObservability={handleObservableToggle}
 		/>
 	{/each}
 </div>
