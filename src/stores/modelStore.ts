@@ -109,7 +109,16 @@ const modelStoreActions = {
             );
             return { ...currentModel, variables: updatedVariables };
         });
+    },
+    toggleObservable: function (edgeId: string) {
+        modelStore.update((currentModel) => ({
+            ...currentModel,
+            regulations: currentModel.regulations.map((edge) =>
+                edge.id === edgeId ? { ...edge, observable: !edge.observable } : edge
+            )
+        }));
     }
+
 };
 
 export { modelStore, modelStoreActions };
