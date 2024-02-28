@@ -17,7 +17,7 @@
 		dispatch('toggleObservable', { id: regulation.id });
 	}
 	function dispatchRenameVariable() {
-		dispatch('renameVariable', { newName: variable.name});
+		dispatch('renameVariable', { newName: variable.name });
 	}
 </script>
 
@@ -53,7 +53,7 @@
 					{regulation.observable ? 'observable' : 'non-observable'}
 				</button>
 				<button
-				class={`model-regulation-monotonicity monotonicity--${regulation.monotonicity}`}
+					class={`model-regulation-monotonicity monotonicity--${regulation.monotonicity}`}
 					on:click={() => dispatchMonotonicity(regulation)}
 				>
 					{regulation.monotonicity}
@@ -72,5 +72,7 @@
 	>
 		{variable.updateFunction}
 	</div>
-	<div class="variable-function-status" />
+	<div class="variable-function-status">
+		<!-- TODO: validate the function and display status  -->
+	</div>
 </div>
