@@ -1,7 +1,8 @@
 <script lang="ts">
-  import ModelStats from './ModelStats.svelte';
+	import ModelStats from './ModelStats.svelte';
 
 	import ModelVariable from './ModelVariable.svelte';
+	import type { ModelStatistics } from '../types/types';
 
 	import { liveModelStore } from '../stores/liveModelStore';
 	import { modelStore, modelStoreActions } from '../stores/modelStore';
@@ -9,8 +10,6 @@
 	import { nextMonotonicity } from '$lib/utils/utils';
 
 	const LiveModel = liveModelStore;
-
-	$: [maxIn, maxOut] = calculateMaxDegrees($modelStore.regulations);
 
 	function handleMonotonicityChange(event: CustomEvent) {
 		const { id, current } = event.detail;
@@ -24,6 +23,17 @@
 	function handleNameChange(event: Event) {
 		modelStoreActions.setName((event.target as HTMLInputElement).value);
 	}
+
+	$: [maxIn, maxOut] = calculateMaxDegrees($modelStore.regulations);
+	$: modelStats = {
+		maxInDegree: maxIn,
+		maxOutDegree: maxOut,
+		regulationCount: $modelStore.regulations.length,
+		variableCount: $modelStore.variables.length,
+		parameterSpace: 'TODO',
+		stateSpace: 'TODO',
+		explicitParameters: ['TODO']
+	};
 </script>
 
 <div id="tab-model-editor" class="main-panel" style="padding-bottom: 0px;">
@@ -35,7 +45,6 @@
 			name="model-name"
 			placeholder="Untitled model"
 			style="font-size: 20px;"
-			
 		/>
 		<input
 			id="model-name2"
@@ -60,7 +69,7 @@
 	<div style="height: 30px;">
 		<h3 style="font-family: 'FiraMono'; text-transform: uppercase;">● Overview</h3>
 	</div>
-	<ModelStats></ModelStats>
+	<ModelStats {modelStats} />
 	<div style="height: 40px;">
 		<h3 style="float: left; font-family: 'FiraMono'; text-transform: uppercase;">● Variables</h3>
 		<button
