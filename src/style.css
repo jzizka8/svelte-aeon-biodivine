@@ -51,7 +51,6 @@ body {
 	grid-template-areas: 'menu main';
 }
 
-
 .index-page #cytoscape-editor {
 	grid-area: main;
 	overflow: hidden;
@@ -134,7 +133,7 @@ body {
 .shortcuts-list li::first-letter {
 	font-weight: bold;
 	font-size: 1.25em;
-} 
+}
 
 /*
     The menu that is displayed when user clicks on a node.
@@ -472,7 +471,9 @@ div.invisible-input[contenteditable]:empty:not(:focus):before {
 	right: 36px;
 	top: 4px;
 }
-
+.remove-variable-button{
+	border:none;
+}
 #model-stats {
 	font-family: 'FiraMono', monospace;
 	margin-bottom: 8px;
@@ -537,6 +538,22 @@ div.invisible-input[contenteditable]:empty:not(:focus):before {
 .model-regulation .model-regulation-monotonicity {
 	width: 110px;
 	text-align: center;
+}
+.model-regulation-monotonicity, .model-regulation-observable{
+	border: none;
+	background: transparent;
+}
+.monotonicity--activation{
+	color: var(--green);
+}
+.monotonicity--inhibition{
+	color: red;
+}
+.monotonicity--unspecified{
+	color: grey;
+}
+.observable--false{
+	color:grey;
 }
 
 .variable-function-status {
@@ -991,15 +1008,15 @@ div.center {
 	transition: 0.4s;
 }
 
-input:checked+.slider {
+input:checked + .slider {
 	background-color: #3a568c;
 }
 
-input:focus+.slider {
+input:focus + .slider {
 	box-shadow: 0 0 1px #3a568c;
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
 	-webkit-transform: translateX(17px);
 	-ms-transform: translateX(17px);
 	transform: translateX(17px);
