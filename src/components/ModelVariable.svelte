@@ -11,14 +11,10 @@
 		dispatch('delete', { variable });
 	}
 	function dispatchMonotonicity(regulation: Regulation) {
-		dispatch('changeMonotonicity', { id: regulation.id, current: regulation.monotonicity })
+		dispatch('changeMonotonicity', { id: regulation.id, current: regulation.monotonicity });
 	}
-	function toggleObservability(event: MouseEvent) {
-		const target = event.target as HTMLElement;
-		const observable = target.classList.contains('observable--true');
-		target.classList.toggle('observable--true');
-		target.classList.toggle('observable--false');
-		target.textContent = observable ? 'non-observable' : 'observable';
+	function dispatchToggleObservable(regulation: Regulation) {
+		dispatch('toggleObservable', { id: regulation.id });
 	}
 </script>
 
@@ -35,7 +31,7 @@
 			autocorrect="off"
 		/>
 	</div>
-	<button on:click={dispatchDelete}>
+	<button class="remove-variable-button" on:click={dispatchDelete}>
 		<img alt="Remove variable" src="img/delete-24px.svg" class="model-variable-remove button" />
 	</button>
 	<img alt="Show variable" src="img/search-24px.svg" class="model-variable-show button" />
@@ -48,13 +44,13 @@
 				<span class="model-regulation-short">{regulationShortcut(regulation)}</span>
 				<button
 					class={`model-regulation-observable observable--${regulation.observable}`}
-					on:click={() => dispatch('toggleObservability', { id: regulation.id })}
+					on:click={() => dispatchToggleObservable(regulation)}
 				>
 					{regulation.observable ? 'observable' : 'non-observable'}
 				</button>
 				<button
+				class={`model-regulation-monotonicity monotonicity--${regulation.monotonicity}`}
 					on:click={() => dispatchMonotonicity(regulation)}
-					class={`model-regulation-monotonicity monotonicity--${regulation.monotonicity}`}
 				>
 					{regulation.monotonicity}
 				</button>

@@ -135,7 +135,7 @@
 			regulations={$modelStore.regulations.filter((v) => v.target.id == variable.id)}
 			on:delete={() => modelStoreActions.removeVariable(variable.id)}
 			on:changeMonotonicity={handleMonotonicityChange}
-			on:toggleObservability={handleObservableToggle}
+			on:toggleObservable={handleObservableToggle}
 		/>
 	{/each}
 </div>
