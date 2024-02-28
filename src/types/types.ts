@@ -33,3 +33,13 @@ export type Regulation = {
 	monotonicity: EdgeMonotonicity;
 	observable: boolean;
 };
+
+export type ModelStatistics = {
+	maxInDegree: number;
+	maxOutDegree: number;
+	variableCount: number;
+	regulationCount: number;
+	parameterSpace: string;
+	stateSpace: string;
+	explicitParameters: string[]
+}
