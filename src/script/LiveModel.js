@@ -434,6 +434,10 @@ const LiveModel = {
 		// Set model metadata
 		get(ModelEditor).setModelName(modelName);
 		get(ModelEditor).setModelDescription(modelDescription);
+
+		modelStoreActions.setName(modelName);
+		modelStoreActions.setDescription(modelDescription);
+
 		// Add all regulations, creating variables if needed:
 		for (let template of regulations) {
 			// Ensure regulator and target exist at requested positions...
