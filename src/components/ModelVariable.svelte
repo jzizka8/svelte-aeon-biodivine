@@ -16,6 +16,9 @@
 	function dispatchToggleObservable(regulation: Regulation) {
 		dispatch('toggleObservable', { id: regulation.id });
 	}
+	function dispatchRenameVariable() {
+		dispatch('renameVariable', { newName: variable.name});
+	}
 </script>
 
 <div class="model-variable">
@@ -24,11 +27,12 @@
 			class="variable-name"
 			type="text"
 			name="variable-name"
-			value={variable.name}
+			bind:value={variable.name}
 			placeholder={variable.name}
 			style="font-size: 18px;"
 			spellcheck="false"
 			autocorrect="off"
+			on:change={dispatchRenameVariable}
 		/>
 	</div>
 	<button class="remove-variable-button" on:click={dispatchDelete}>
