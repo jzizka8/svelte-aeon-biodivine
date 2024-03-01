@@ -1,9 +1,11 @@
 import LiveModel from './LiveModel';
-import UI from './UI';
 import CytoscapeEditor from './CytoscapeEditor';
 import { EdgeMonotonicity } from '../types/types';
 import { ensurePlaceholder } from './main';
 import { activeTabStore } from '../stores/activeTabStore';
+import { modelStore, modelStoreActions } from '../stores/modelStore';
+import { get } from 'svelte/store';
+import { generateRegulationId } from '$lib/utils/utils';
 
 /*
 	Responsible for managing the UI of the model editor, i.e. adding/removing variables and regulations, focusing
@@ -36,6 +38,7 @@ const ModelEditor = {
 	getModelName() {
 		let name = this._modelName.value;
 		if (name.length == 0) return undefined;
+
 		return name;
 	},
 
@@ -49,10 +52,12 @@ const ModelEditor = {
 	},
 
 	setModelName(name) {
+		modelStoreActions.setName(name);
 		this._modelName.value = name;
 	},
 
 	setModelDescription(description) {
+		modelStoreActions.setDescription(description);
 		this._modelDescription.innerHTML = description;
 	},
 
@@ -85,6 +90,9 @@ const ModelEditor = {
 
 	// Create a new variable box for the given id (without any regulations).
 	addVariable(id, name) {
+		modelStoreActions.addVariable({ id, name, updateFunction: '' });
+		console.log(get(modelStore));
+
 		let variableBox = this._variableTemplate.cloneNode(true);
 		let variableName = variableBox.getElementsByClassName('variable-name')[0];
 		let updateFunction = variableBox.getElementsByClassName('variable-function')[0];
@@ -189,6 +197,8 @@ const ModelEditor = {
 
 	// Remove a variable box and all associated regulations from the editor.
 	removeVariable(id) {
+		modelStoreActions.removeVariable(id);
+
 		let variableBox = this._getVariableBox(id);
 		if (variableBox !== undefined) {
 			this._variables.removeChild(variableBox);
@@ -197,6 +207,8 @@ const ModelEditor = {
 
 	// Change the name of the given variable (if different - to avoid event loops).
 	renameVariable(id, newName, oldName) {
+		modelStoreActions.renameVariable(id, newName);
+
 		let variableBox = this._getVariableBox(id);
 		if (variableBox !== undefined) {
 			let nameInput = variableBox.getElementsByClassName('variable-name')[0];
@@ -252,6 +264,8 @@ const ModelEditor = {
 
 	// Change the content of the update function string.
 	setUpdateFunction(id, functionString) {
+		modelStoreActions.setVariableUpdateFunction(id, functionString);
+
 		let variableBox = this._getVariableBox(id);
 		if (variableBox !== undefined) {
 			let updateFunction = variableBox.getElementsByClassName('variable-function')[0];
@@ -262,71 +276,75 @@ const ModelEditor = {
 	// Ensure that the given regulation is shown in the editor (do not add duplicates).
 	ensureRegulation(regulation) {
 		let variableBox = this._getVariableBox(regulation.target);
-		if (variableBox !== undefined) {
-			let row = this._getRegulatorRow(variableBox, regulation.regulator);
-			if (row === undefined) {
-				// We have to create a new row
-				row = this._regulationTemplate.cloneNode(true);
-				row.removeAttribute('id');
-				row.setAttribute('regulator-id', regulation.regulator);
-				variableBox.getElementsByClassName('model-variable-regulators')[0].appendChild(row);
-				let observable = row.getElementsByClassName('model-regulation-observable')[0];
-				let monotonicity = row.getElementsByClassName('model-regulation-monotonicity')[0];
-				// make text-button toggles work
-				observable.addEventListener('click', (e) => {
-					LiveModel.toggleObservability(regulation.regulator, regulation.target);
-				});
-				monotonicity.addEventListener('click', (e) => {
-					LiveModel.toggleMonotonicity(regulation.regulator, regulation.target);
-				});
-				row.addEventListener('mouseenter', (e) => {
-					row.classList.add('hover');
-					CytoscapeEditor.hoverEdge(regulation.regulator, regulation.target, true);
-				});
-				row.addEventListener('mouseleave', (e) => {
-					row.classList.remove('hover');
-					CytoscapeEditor.hoverEdge(regulation.regulator, regulation.target, false);
-				});
-			}
-			// Update row info...
-			let regulatorName = row.getElementsByClassName('model-regulation-regulator')[0];
-			let regulationShort = row.getElementsByClassName('model-regulation-short')[0];
+		if (variableBox === undefined) {
+			return;
+		}
+		let row = this._getRegulatorRow(variableBox, regulation.regulator);
+		if (row === undefined) {
+			// We have to create a new row
+			row = this._regulationTemplate.cloneNode(true);
+			row.removeAttribute('id');
+			row.setAttribute('regulator-id', regulation.regulator);
+			variableBox.getElementsByClassName('model-variable-regulators')[0].appendChild(row);
 			let observable = row.getElementsByClassName('model-regulation-observable')[0];
 			let monotonicity = row.getElementsByClassName('model-regulation-monotonicity')[0];
-			monotonicity.textContent = regulation.monotonicity;
-			if (regulation.observable) {
-				observable.textContent = 'observable';
-				observable.classList.remove('grey');
-			} else {
-				observable.textContent = 'non-observable';
-				observable.classList.add('grey');
-			}
-			regulatorName.textContent = LiveModel.getVariableName(regulation.regulator);
-			let short = '-';
-			monotonicity.classList.remove('red');
-			monotonicity.classList.remove('green');
-			monotonicity.classList.remove('grey');
-			if (regulation.monotonicity == EdgeMonotonicity.unspecified) {
-				short += '?';
-				monotonicity.classList.add('grey');
-			}
-			if (regulation.monotonicity == EdgeMonotonicity.activation) {
-				short += '>';
-				monotonicity.classList.add('green');
-			}
-			if (regulation.monotonicity == EdgeMonotonicity.inhibition) {
-				short += '|';
-				monotonicity.classList.add('red');
-			}
-			if (!regulation.observable) {
-				short += '?';
-			}
-			regulationShort.textContent = short;
+			// make text-button toggles work
+			observable.addEventListener('click', (e) => {
+				LiveModel.toggleObservability(regulation.regulator, regulation.target);
+			});
+			monotonicity.addEventListener('click', (e) => {
+				LiveModel.toggleMonotonicity(regulation.regulator, regulation.target);
+			});
+			row.addEventListener('mouseenter', (e) => {
+				row.classList.add('hover');
+				CytoscapeEditor.hoverEdge(regulation.regulator, regulation.target, true);
+			});
+			row.addEventListener('mouseleave', (e) => {
+				row.classList.remove('hover');
+				CytoscapeEditor.hoverEdge(regulation.regulator, regulation.target, false);
+			});
 		}
+		// Update row info...
+		let regulatorName = row.getElementsByClassName('model-regulation-regulator')[0];
+		let regulationShort = row.getElementsByClassName('model-regulation-short')[0];
+		let observable = row.getElementsByClassName('model-regulation-observable')[0];
+		let monotonicity = row.getElementsByClassName('model-regulation-monotonicity')[0];
+		monotonicity.textContent = regulation.monotonicity;
+		if (regulation.observable) {
+			observable.textContent = 'observable';
+			observable.classList.remove('grey');
+		} else {
+			observable.textContent = 'non-observable';
+			observable.classList.add('grey');
+		}
+		regulatorName.textContent = LiveModel.getVariableName(regulation.regulator);
+		let short = '-';
+		monotonicity.classList.remove('red');
+		monotonicity.classList.remove('green');
+		monotonicity.classList.remove('grey');
+		if (regulation.monotonicity == EdgeMonotonicity.unspecified) {
+			short += '?';
+			monotonicity.classList.add('grey');
+		}
+		if (regulation.monotonicity == EdgeMonotonicity.activation) {
+			short += '>';
+			monotonicity.classList.add('green');
+		}
+		if (regulation.monotonicity == EdgeMonotonicity.inhibition) {
+			short += '|';
+			monotonicity.classList.add('red');
+		}
+		if (!regulation.observable) {
+			short += '?';
+		}
+		regulationShort.textContent = short;
 	},
 
 	// Remove regulation between the two specified variables.
 	removeRegulation(regulatorId, targetId) {
+		//TODO use some function to create edge ids
+		modelStoreActions.removeRegulation(generateRegulationId(regulatorId, targetId));
+
 		let variableBox = this._getVariableBox(targetId);
 		if (variableBox !== undefined) {
 			let row = this._getRegulatorRow(variableBox, regulatorId);

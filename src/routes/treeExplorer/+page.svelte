@@ -3,7 +3,7 @@
 
 	import LogoType from '../../components/LogoType.svelte';
 	import LoadingIndicator from '../../components/LoadingIndicator.svelte';
-	import { EXPECTED_ENGINE_VERSION } from '../../const';
+	import { modelStore } from '../../stores/modelStore';
 	import { init } from '../../script/treeExplorerMain';
 
 	import {
@@ -20,7 +20,7 @@
 </script>
 
 <svelte:head>
-	<title>Tree explorer | AEON {EXPECTED_ENGINE_VERSION}</title>
+	<title>{$modelStore.name} | Tree explorer AEON</title>
 </svelte:head>
 <main>
 	<div id="cytoscape-editor" />

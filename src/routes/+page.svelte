@@ -10,7 +10,7 @@
 	import LoadingIndicator from '../components/LoadingIndicator.svelte';
 	import TabWrapper from '../components/TabWrapper.svelte';
 	import { init } from '../script/main';
-	import { EXPECTED_ENGINE_VERSION } from '../const';
+	import { modelStore } from '../stores/modelStore';
 	
 	onMount(() => {
 		init();
@@ -18,7 +18,7 @@
 </script>
 
 <svelte:head>
-	<title>AEON {EXPECTED_ENGINE_VERSION}</title>
+	<title>{$modelStore.name} | AEON</title>
 </svelte:head>
 <main class="index-page">
 	<!-- active tab can be opened from side menu and from the tab wrapper -->

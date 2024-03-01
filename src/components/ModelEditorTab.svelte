@@ -1,6 +1,39 @@
 <script lang="ts">
+	import ModelStats from './ModelStats.svelte';
+
+	import ModelVariable from './ModelVariable.svelte';
+	import type { ModelStatistics } from '../types/types';
+
 	import { liveModelStore } from '../stores/liveModelStore';
+	import { modelStore, modelStoreActions } from '../stores/modelStore';
+	import { calculateMaxDegrees } from '$lib/utils/modelStats';
+	import { nextMonotonicity } from '$lib/utils/utils';
+
 	const LiveModel = liveModelStore;
+
+	function handleMonotonicityChange(event: CustomEvent) {
+		const { id, current } = event.detail;
+		modelStoreActions.changeMonotonicity(id, nextMonotonicity(current));
+	}
+
+	function handleObservableToggle(event: CustomEvent) {
+		modelStoreActions.toggleObservable(event.detail.id);
+	}
+
+	function handleNameChange(event: Event) {
+		modelStoreActions.setName((event.target as HTMLInputElement).value);
+	}
+
+	$: [maxIn, maxOut] = calculateMaxDegrees($modelStore.regulations);
+	$: modelStats = {
+		maxInDegree: maxIn,
+		maxOutDegree: maxOut,
+		regulationCount: $modelStore.regulations.length,
+		variableCount: $modelStore.variables.length,
+		parameterSpace: 'TODO',
+		stateSpace: 'TODO',
+		explicitParameters: ['TODO']
+	};
 </script>
 
 <div id="tab-model-editor" class="main-panel" style="padding-bottom: 0px;">
@@ -10,7 +43,17 @@
 			class="center"
 			type="text"
 			name="model-name"
-			placeholder="(model name)"
+			placeholder="Untitled model"
+			style="font-size: 20px;"
+		/>
+		<input
+			id="model-name2"
+			class="center"
+			type="text"
+			name="model-name"
+			placeholder="Untitled model"
+			value={$modelStore.name}
+			on:change={handleNameChange}
 			style="font-size: 20px;"
 		/>
 	</div>
@@ -22,34 +65,11 @@
 		data-placeholder="(model description)"
 		style="margin-top: 4px; margin-bottom: 4px;"
 	/>
-
+	<div class="invisible-input full-line" contenteditable>{@html $modelStore.description}</div>
 	<div style="height: 30px;">
 		<h3 style="font-family: 'FiraMono'; text-transform: uppercase;">● Overview</h3>
 	</div>
-	<table id="model-stats">
-		<tr class="row">
-			<td>Variables: </td>
-			<td class="value">-</td>
-			<td>Parameter space size: </td>
-			<td class="value">-</td>
-		</tr>
-		<tr class="row">
-			<td>Regulations: </td>
-			<td class="value">-</td>
-			<td>State space size: </td>
-			<td class="value">-</td>
-		</tr>
-		<tr class="row">
-			<td>Max. in-degree: </td>
-			<td class="value">-</td>
-			<td>Max. out-degree: </td>
-			<td class="value">-</td>
-		</tr>
-		<tr class="row">
-			<td colspan="2">Explicit parameters: </td>
-			<td colspan="2">(none)</td>
-		</tr>
-	</table>
+	<ModelStats {modelStats} />
 	<div style="height: 40px;">
 		<h3 style="float: left; font-family: 'FiraMono'; text-transform: uppercase;">● Variables</h3>
 		<button
@@ -99,4 +119,16 @@
 			<span class="model-regulation-monotonicity">activation</span>
 		</div>
 	</div>
+	<h1>Svelte variables</h1>
+
+	{#each $modelStore.variables as variable (variable.id)}
+		<ModelVariable
+			{variable}
+			regulations={$modelStore.regulations.filter((v) => v.target.id == variable.id)}
+			on:delete={() => modelStoreActions.removeVariable(variable.id)}
+			on:changeMonotonicity={handleMonotonicityChange}
+			on:toggleObservable={handleObservableToggle}
+			on:renameVariable={() => modelStoreActions.renameVariable(variable.id, variable.name)}
+		/>
+	{/each}
 </div>
