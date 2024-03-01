@@ -19,9 +19,20 @@
 	function dispatchRenameVariable() {
 		dispatch('renameVariable', { newName: variable.name });
 	}
+
+	$: isHover = false;
+
+	function handleMouseEnter() {
+		// TODO: handle highlighting in the model
+		isHover = true;
+	}
+	function handleMouseLeave() {
+		// TODO: handle highlighting in the model
+		isHover = false;
+	}
 </script>
 
-<div class="model-variable">
+<div class="model-variable" class:hover={isHover} role="presentation" on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
 	<div class="invisible-input">
 		<input
 			class="variable-name"
