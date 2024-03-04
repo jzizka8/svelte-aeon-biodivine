@@ -26,6 +26,11 @@ export type Variable = {
 	updateFunction: string;
 };
 
+export type Node = {
+	id: string;
+	label: string;
+}
+
 export type Regulation = {
 	id: string;
 	source: Variable;
@@ -43,3 +48,4 @@ export type ModelStatistics = {
 	stateSpace: string;
 	explicitParameters: string[]
 }
+
