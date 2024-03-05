@@ -14,10 +14,10 @@
 	}
 
 	function handleConnectionFrom() {
-		modelStoreActions.createRegulation(nodes[0].id, nodes[1].id);
+		modelStoreActions.createRegulation(nodes[1].id, nodes[0].id);
 	}
 	function handleConnectionTo() {
-		modelStoreActions.createRegulation(nodes[1].id, nodes[0].id);
+		modelStoreActions.createRegulation(nodes[0].id, nodes[1].id);
 	}
 </script>
 
