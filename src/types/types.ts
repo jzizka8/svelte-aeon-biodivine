@@ -18,7 +18,6 @@ export type Model = {
 	description: string;
 	regulations: Regulation[];
 	variables: Variable[];
-	currentId: number;
 };
 
 export type Variable = {
