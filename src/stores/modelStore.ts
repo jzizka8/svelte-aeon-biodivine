@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import type { Model, Variable, Regulation, EdgeMonotonicity } from '../types/types'; // Adjust the import path to where your types are defined
+import { type Model, type Variable, type Regulation, EdgeMonotonicity } from '../types/types'; // Adjust the import path to where your types are defined
 import { generateRegulationId } from '$lib/utils/utils';
 
 const initialState: Model = {
@@ -40,8 +40,8 @@ const modelStoreActions = {
     createRegulation: function (
         sourceId: string,
         targetId: string,
-        monotonicity: EdgeMonotonicity.unspecified,
-        observable: false
+        monotonicity = EdgeMonotonicity.unspecified,
+        observable = true
     ) {
         modelStore.update((currentModel) => {
             const regulationId = generateRegulationId(sourceId, targetId);
@@ -52,8 +52,8 @@ const modelStoreActions = {
                 return currentModel;
             }
 
-            const source = currentModel.variables.find((node) => node.id === sourceId);
-            const target = currentModel.variables.find((node) => node.id === targetId);
+            const source = currentModel.variables.find((node) => node.id == sourceId);
+            const target = currentModel.variables.find((node) => node.id == targetId);
             if (!source || !target) {
                 return currentModel;
             }
