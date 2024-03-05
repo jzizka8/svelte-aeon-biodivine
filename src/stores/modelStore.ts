@@ -7,7 +7,8 @@ const initialState: Model = {
     name: 'Untitled Model',
     description: '',
     regulations: [],
-    variables: []
+    variables: [],
+    currentId: 0
 };
 
 const modelStore = writable<Model>(initialState);
@@ -18,6 +19,23 @@ const modelStoreActions = {
     },
     clearModel: function () {
         modelStore.set(initialState);
+    },
+    createVariable: function (name: string | undefined) {
+
+        modelStore.update((currentModel) => {
+            const id = currentModel.currentId.toString();
+            const usedName = name || `v_${id}`;
+            const newVariable: Variable = {
+                id,
+                name: usedName,
+                updateFunction: ''
+            };
+            return {
+                ...currentModel,
+                currentId: currentModel.currentId + 1,
+                variables: [...currentModel.variables, newVariable]
+            }
+        });
     },
     addVariable: function (variable: Variable) {
         modelStore.update((currentModel) => ({
