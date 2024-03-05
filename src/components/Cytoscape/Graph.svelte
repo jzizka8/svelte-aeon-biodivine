@@ -40,8 +40,6 @@
   
   <style>
     .graph {
-      position: absolute;
       inset: 0;
-      z-index: -1;
     }
     </style>
