@@ -1,14 +1,38 @@
+<script lang="ts">
+	import { modelStore, modelStoreActions } from '../stores/modelStore';
+	import { selectedNodes } from '../stores/selectedNodesStore';
+	$: nodes = $selectedNodes?.nodes;
+	$: position = $selectedNodes?.position;
+	$: menuStyle =
+		nodes && position
+			? `position: absolute; top: ${position.y}px; left: ${position.x}px;`
+			: '';
+
+	function handleRemove() {
+		if (nodes)
+		nodes.forEach((node)=> {modelStoreActions.removeVariable(node.id)});
+	}
+</script>
+
 <!-- A menu element that is shown for selected graph nodes in the editor. -->
-<div id="node-menu" class="float-menu invisible">
+<div id="node-menu" class="float-menu" class:hidden={!nodes?.length} style={menuStyle}>
 	<div class="button-row">
-		<img alt="Edit name (E)" id="node-menu-edit-name" class="button" src="img/edit-24px.svg" />
-		<img
-			alt="Edit update function (F)"
-			id="node-menu-edit-function"
-			class="button"
-			src="img/functions-24px.svg"
-		/>
-		<img alt="Remove (⌫)" id="node-menu-remove" class="button" src="img/delete-24px.svg" />
+		{#if nodes?.length === 1}
+		<button>
+			<img alt="Edit name (E)" id="node-menu-edit-name" class="button" src="img/edit-24px.svg" />
+		</button>
+		<button>
+			<img
+				alt="Edit update function (F)"
+				id="node-menu-edit-function"
+				class="button"
+				src="img/functions-24px.svg"
+			/>
+		</button>
+		{/if}
+		<button on:click={handleRemove}>
+			<img alt="Remove (⌫)" id="node-menu-remove" class="button" src="img/delete-24px.svg" />
+		</button>
 	</div>
 	<br />
 	<span class="hint invisible">Hint</span>

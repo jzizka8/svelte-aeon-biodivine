@@ -18,11 +18,11 @@
 </script>
 
 <Graph>
-	{#each nodes as node}
+	{#each nodes as node (node.id)}
 		<GraphNode {node} />
 	{/each}
 
-	{#each edges as edge}
+	{#each edges as edge (edge.id)}
 		<GraphEdge {edge} />
 	{/each}
 </Graph>

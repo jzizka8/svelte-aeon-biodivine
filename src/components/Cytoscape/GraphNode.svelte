@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { onMount, getContext, onDestroy } from 'svelte';
 	import type { Node } from '../../types/types';
+	import { selectedNodes } from '../../stores/selectedNodesStore';
 
 	export let node: Node;
 
 	const { getCyInstance } = getContext('graphSharedState') as { getCyInstance: () => any };
 
-	let showNodeMenu = false; // A flag to control the display of the context menu
-    const cyInstance = getCyInstance();
+	const cyInstance = getCyInstance();
 
 	onMount(() => {
 		const cyNode = cyInstance.add({
@@ -16,14 +16,16 @@
 		});
 
 		cyNode.on('select', () => {
-			showNodeMenu = true;
+			const position = cyNode.renderedPosition();
+			selectedNodes.addNode(node, position);
 		});
 
 		cyNode.on('unselect', () => {
-			showNodeMenu = false;
+			selectedNodes.removeNode(node.id);
 		});
 	});
 	onDestroy(() => {
 		cyInstance.getElementById(node.id).remove();
+    	selectedNodes.removeNode(node.id);
 	});
 </script>
