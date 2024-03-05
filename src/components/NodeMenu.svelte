@@ -12,12 +12,19 @@
 		if (nodes)
 		nodes.forEach((node)=> {modelStoreActions.removeVariable(node.id)});
 	}
+
+	function handleConnectionFrom() {
+		modelStoreActions.createRegulation(nodes[0].id, nodes[1].id);
+	}
+	function handleConnectionTo() {
+		modelStoreActions.createRegulation(nodes[1].id, nodes[0].id);
+	}
 </script>
 
 <!-- A menu element that is shown for selected graph nodes in the editor. -->
 <div id="node-menu" class="float-menu" class:hidden={!nodes?.length} style={menuStyle}>
 	<div class="button-row">
-		{#if nodes?.length === 1}
+		{#if nodes.length === 1}
 		<button>
 			<img alt="Edit name (E)" id="node-menu-edit-name" class="button" src="img/edit-24px.svg" />
 		</button>
@@ -28,6 +35,14 @@
 				class="button"
 				src="img/functions-24px.svg"
 			/>
+		</button>
+		{/if}
+		{#if nodes.length === 2}
+		<button  on:click={handleConnectionFrom}>
+			edge from here
+		</button>
+		<button on:click={handleConnectionTo}>
+			edge to here
 		</button>
 		{/if}
 		<button on:click={handleRemove}>
