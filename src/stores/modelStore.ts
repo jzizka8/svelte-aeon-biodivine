@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import { type Model, type Variable, type Regulation, EdgeMonotonicity } from '../types/types'; // Adjust the import path to where your types are defined
 import { generateRegulationId } from '$lib/utils/utils';
 import { idStore } from './idStore';
@@ -134,8 +134,15 @@ const modelStoreActions = {
                 edge.id === edgeId ? { ...edge, observable: !edge.observable } : edge
             )
         }));
+    },
+    getVariableId(name: string) {
+        const model = get(modelStore);
+        const variable = model.variables.find(v => v.name === name);
+        if (!variable) {
+            throw new Error(`Variable with name ${name} not found`);
+        }
+        return variable.id;
     }
-
 };
 
 export { modelStore, modelStoreActions };
