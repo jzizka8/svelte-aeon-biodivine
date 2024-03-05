@@ -1,11 +1,12 @@
-<script>
+<script lang="ts">
+	import { importAeon } from '$lib/importExport/importModel';
 	import Examples from '../script/Examples';
 	import UI from '../script/UI';
 	import { activeTabStore } from '../stores/activeTabStore';
-	import { liveModelStore } from '../stores/liveModelStore';
-	$: LiveModel = $liveModelStore;
-	function importModel(model) {
-		LiveModel.importAeon(model);
+	
+	function importModel(model:string) {
+
+		importAeon(model);
 		activeTabStore.close();
 	}
 </script>
