@@ -3,6 +3,7 @@
     import cytoscape from 'cytoscape'
     import dagre from 'cytoscape-dagre'
     import GraphStyles from './graphStyles'
+	import { modelStoreActions } from '../../stores/modelStore';
   
     setContext('graphSharedState', {
       getCyInstance: () => cyInstance
@@ -27,7 +28,12 @@
             nodeSep: 150
           })
           .run()
-      })
+      });
+      cyInstance.on('dblclick', (e) =>{
+        console.log(e.target);
+        modelStoreActions.createVariable(undefined);
+      });   
+      
     })
   
   </script>
