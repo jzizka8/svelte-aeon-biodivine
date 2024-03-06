@@ -22,13 +22,14 @@
 </svelte:head>
 <main class="index-page">
 	<!-- active tab can be opened from side menu and from the tab wrapper -->
+	
 	<SideMenu />
 	<TabWrapper />
 	<CytoScapeEditor />
 
 	<NodeMenu />
 	<EdgeMenu />
-
+	<div id="cytoscape-editor"></div>
 	<!-- absolutely positioned stuff -->
 	<LogoType />
 	<LoadingIndicator />
