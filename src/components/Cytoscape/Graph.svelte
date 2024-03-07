@@ -2,9 +2,11 @@
 	import { onMount, setContext } from 'svelte';
 	import cytoscape from 'cytoscape';
 	import dagre from 'cytoscape-dagre';
-	import GraphStyles from './graphStyles';
 	import { modelStoreActions } from '../../stores/modelStore';
 	import { cytoscapeStore } from '../../stores/cytoscapeStore';
+	import cytoscapeEdgehandles from 'cytoscape-edgehandles';
+	import edgeOptions from './config/edgeOptions';
+	import graphStyles from './config/graphStyles';
 
 	setContext('graphSharedState', {
 		getCyInstance: () => cyInstance
@@ -15,11 +17,13 @@
 
 	onMount(() => {
 		cytoscape.use(dagre);
-
+        cytoscape.use(cytoscapeEdgehandles)
+        
 		cyInstance = cytoscape({
-			container: refElement,
-			style: GraphStyles
+            container: refElement,
+			style: graphStyles
 		});
+        cyInstance.edgehandles(edgeOptions)
 
 		cyInstance.on('add', () => {
 			cyInstance
@@ -40,7 +44,6 @@
 		cyInstance.on('dblclick', (e) => {
 			modelStoreActions.createVariable(undefined);
 		});
-
 
 		cytoscapeStore.set(cyInstance);
 	});
