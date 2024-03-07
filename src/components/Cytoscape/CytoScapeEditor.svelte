@@ -5,20 +5,29 @@
 	import { modelStore } from '../../stores/modelStore';
 
 	$: nodes = $modelStore.variables.map((variable) => ({
-        id: variable.id,
-        label: variable.name
-    }));
+		id: variable.id,
+		label: variable.name
+	}));
 
 	$: edges = $modelStore.regulations.map((regulation) => ({
+		id: regulation.id,
+		source: regulation.source.id,
+		target: regulation.target.id,
+		monotonicity: regulation.monotonicity,
         observable: regulation.observable
+	}));
+
+    $: graphDependencies = { edges };
 </script>
 
 <Graph>
-	{#each nodes as node (node.id)}
-		<GraphNode {node} />
-	{/each}
+	<!-- {#key graphDependencies} -->
+		{#each nodes as node (node.id)}
+			<GraphNode {node} />
+		{/each}
 
-	{#each edges as edge (edge.id)}
-		<GraphEdge {edge} />
-	{/each}
+		{#each edges as edge (edge.id)}
+			<GraphEdge {edge} />
+		{/each}
+	<!-- {/key} -->
 </Graph>
