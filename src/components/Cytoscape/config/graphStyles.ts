@@ -1,4 +1,5 @@
 import type { Stylesheet } from 'cytoscape';
+import { _add_box_svg } from '../../../script/CytoscapeEditor';
 
 const graphStyles: Stylesheet[] = [
   {
@@ -7,18 +8,19 @@ const graphStyles: Stylesheet[] = [
       'label': 'data(label)',
       // put label in the middle of the node (vertically)
       'text-valign': 'center',
-      'width': 'label', 'height': 'label',
+      'width': 'label',
+      'height': 'label',
       // a rectangle with slightly sloped edges
       'shape': 'round-rectangle',
       // when selecting, do not display any overlay
       'overlay-opacity': 0,
       // other visual styles
       'padding': 12,
-      'background-color': '#dddddd',
+      'background-color': '#eee',
       'font-family': 'FiraMono',
       'font-size': '12pt',
       'border-width': '1px',
-      'border-color': '#bbbbbb',
+      'border-color': '#ddd',
       'border-style': 'solid',
     }
   },
@@ -34,7 +36,7 @@ const graphStyles: Stylesheet[] = [
     'selector': 'node:selected',
     'style': {
       'border-width': '2.0px',
-      'border-color': '#6a7ea5',
+      'border-color': '#5f9bff',
       'border-style': 'solid',
     }
   },
@@ -122,5 +124,7 @@ const graphStyles: Stylesheet[] = [
     'selector': '.eh-ghost-edge.eh-preview-active',
     'style': { 'opacity': 0 }
   }
-]
+];
+
+
 export default graphStyles;
