@@ -11,10 +11,10 @@
 		dispatch('delete', { variable });
 	}
 	function dispatchMonotonicity(regulation: Regulation) {
-		dispatch('changeMonotonicity', { id: regulation.id, current: regulation.monotonicity });
+		dispatch('changeMonotonicity', {regulation: regulation});
 	}
 	function dispatchToggleObservable(regulation: Regulation) {
-		dispatch('toggleObservable', { id: regulation.id });
+		dispatch('toggleObservable', {regulation: regulation});
 	}
 	function dispatchRenameVariable() {
 		dispatch('renameVariable', { newName: variable.name });
@@ -32,7 +32,13 @@
 	}
 </script>
 
-<div class="model-variable" class:hover={isHover} role="presentation" on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
+<div
+	class="model-variable"
+	class:hover={isHover}
+	role="presentation"
+	on:mouseenter={handleMouseEnter}
+	on:mouseleave={handleMouseLeave}
+>
 	<div class="invisible-input">
 		<input
 			class="variable-name"
