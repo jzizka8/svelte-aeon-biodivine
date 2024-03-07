@@ -4,7 +4,7 @@
 	import dagre from 'cytoscape-dagre';
 	import GraphStyles from './graphStyles';
 	import { modelStoreActions } from '../../stores/modelStore';
-    import { cytoscapeStore } from '../../stores/cytoscapeStore';
+	import { cytoscapeStore } from '../../stores/cytoscapeStore';
 
 	setContext('graphSharedState', {
 		getCyInstance: () => cyInstance
