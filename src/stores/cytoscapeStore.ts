@@ -2,7 +2,19 @@ import { writable } from 'svelte/store';
 
 function createCyStore() {
     const { subscribe, set, update } = writable<cytoscape.Core | null>(null); // Store holding cyInstance
-
+    function updateElementData(id: string, attributeName: string, newValue: any) {
+        update(cy => {
+            if (!cy) {
+                return null;
+            }
+            const element = cy.getElementById(id);
+            if (element) {
+                element.data()[attributeName] = newValue;
+                cy.style().update(); // Redraw graph to reflect the change
+            }
+            return cy;
+        });
+    };
     return {
         subscribe,
         set,
@@ -22,7 +34,16 @@ function createCyStore() {
                 return cy; // Return the current instance
             });
         },
-        // You can add more methods here as needed
+
+        updateNodeLabel(id: string, name: string) {
+            updateElementData(id, 'label', name);
+        },
+        updateEdgeMonotonicity(id: string, monotonicity: string) {
+            updateElementData(id, 'monotonicity', monotonicity);
+        },
+        updateEdgeObservable(id: string, observable: boolean) {
+            updateElementData(id, 'observable', observable);
+        }
     };
 }
 

@@ -10,11 +10,7 @@
     }));
 
 	$: edges = $modelStore.regulations.map((regulation) => ({
-        id: regulation.id,
-        source: regulation.source.id,
-        target: regulation.target.id,
-        monotonicity: regulation.monotonicity
-    }));
+        observable: regulation.observable
 </script>
 
 <Graph>

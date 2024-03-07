@@ -8,20 +8,28 @@
 	import { modelStore, modelStoreActions } from '../stores/modelStore';
 	import { calculateMaxDegrees } from '$lib/utils/modelStats';
 	import { nextMonotonicity } from '$lib/utils/utils';
-
-	const LiveModel = liveModelStore;
+	import { cytoscapeStore } from '../stores/cytoscapeStore';
 
 	function handleMonotonicityChange(event: CustomEvent) {
-		const { id, current } = event.detail;
-		modelStoreActions.changeMonotonicity(id, nextMonotonicity(current));
+		const regulation = event.detail.regulation;
+		const newMonotonicity = nextMonotonicity(regulation.monotonicity);
+		modelStoreActions.changeMonotonicity(regulation.id, newMonotonicity);
+		cytoscapeStore.updateEdgeMonotonicity(regulation.id, newMonotonicity);
 	}
 
 	function handleObservableToggle(event: CustomEvent) {
-		modelStoreActions.toggleObservable(event.detail.id);
+		const regulation = event.detail.regulation;
+		modelStoreActions.toggleObservable(regulation.id);
+		cytoscapeStore.updateEdgeObservable(regulation.id, !regulation.observable);
 	}
 
 	function handleNameChange(event: Event) {
 		modelStoreActions.setName((event.target as HTMLInputElement).value);
+	}
+
+	function handleVariableRename(id: string, name: string) {
+		modelStoreActions.renameVariable(id, name);
+		cytoscapeStore.updateNodeLabel(id, name);
 	}
 
 	$: [maxIn, maxOut] = calculateMaxDegrees($modelStore.regulations);
@@ -128,7 +136,7 @@
 			on:delete={() => modelStoreActions.removeVariable(variable.id)}
 			on:changeMonotonicity={handleMonotonicityChange}
 			on:toggleObservable={handleObservableToggle}
-			on:renameVariable={() => modelStoreActions.renameVariable(variable.id, variable.name)}
+			on:renameVariable={() => handleVariableRename(variable.id, variable.name)}
 		/>
 	{/each}
 </div>

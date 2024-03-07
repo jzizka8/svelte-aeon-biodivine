@@ -42,7 +42,7 @@
 		});
 
 
-        cytoscapeStore.set(cyInstance);
+		cytoscapeStore.set(cyInstance);
 	});
 </script>
 
