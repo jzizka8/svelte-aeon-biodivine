@@ -17,11 +17,9 @@
         observable: regulation.observable
 	}));
 
-    $: graphDependencies = { edges };
 </script>
 
 <Graph>
-	<!-- {#key graphDependencies} -->
 		{#each nodes as node (node.id)}
 			<GraphNode {node} />
 		{/each}
@@ -29,5 +27,4 @@
 		{#each edges as edge (edge.id)}
 			<GraphEdge {edge} />
 		{/each}
-	<!-- {/key} -->
 </Graph>
