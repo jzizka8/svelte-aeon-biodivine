@@ -1,7 +1,10 @@
-import { EdgeMonotonicity } from "../../types/types";
+import { EdgeMonotonicity, type Position } from "../../types/types";
 import { modelStoreActions } from "../../stores/modelStore";
 
-type parsedData = { modelName: string; modelDescription: string; regulations: parsedRegulation[]; updateFunctions: { [key: string]: string; }; }
+type parsedData = { modelName: string; modelDescription: string;
+     regulations: parsedRegulation[]; 
+     updateFunctions: { [key: string]: string; };
+      positions: { [key: string]: Position; }; }
 type parsedRegulation = { regulatorName: string; targetName: string; monotonicity: EdgeMonotonicity; observable: boolean; }
 
 export function importAeon(modelString: string) {
@@ -29,6 +32,7 @@ function parseAeon(modelString: string) {
     let modelName = '';
     let modelDescription = '';
     const regulations = [];
+    const positions: { [key: string]: Position; } = {};
     const updateFunctions: { [key: string]: string; } = {};
 
     // First, parse all lines into intermediate objects:
@@ -63,6 +67,16 @@ function parseAeon(modelString: string) {
             continue;
         }
 
+        match = line.match(positionRegex);
+        if (match !== null) {
+            const x = parseFloat(match[2]);
+            const y = parseFloat(match[3]);
+            if (!isNaN(x) && !isNaN(y)) {
+                positions[match[1]] = {x, y};
+            }
+            continue;
+        }
+
         match = line.match(updateFunctionRegex);
         if (match !== null) {
             updateFunctions[match[1]] = match[2];
@@ -72,11 +86,11 @@ function parseAeon(modelString: string) {
             throw new Error(`Unexpected line in file:  + ${line}`);
         }
     }
-    return { modelName, modelDescription, regulations, updateFunctions };
+    return { modelName, modelDescription, regulations, updateFunctions, positions };
 }
 
 function updateModelFromParsedData(parsedData: parsedData) {
-    const { modelName, modelDescription, regulations, updateFunctions } = parsedData;
+    const { modelName, modelDescription, regulations, updateFunctions, positions } = parsedData;
 
     modelStoreActions.clearModel();
     modelStoreActions.setName(modelName);
@@ -84,7 +98,7 @@ function updateModelFromParsedData(parsedData: parsedData) {
 
     // Logic to create variables and regulations from the parsed data
     const allVariableNames = new Set(regulations.flatMap(reg => [reg.regulatorName, reg.targetName]));
-    allVariableNames.forEach(name => modelStoreActions.createVariable(name));
+    allVariableNames.forEach(name => modelStoreActions.createVariable(name, positions[name] || null));
 
     regulations.forEach(reg => {
         const sourceId = modelStoreActions.getVariableId(reg.regulatorName);
