@@ -9,6 +9,7 @@
 	import { calculateMaxDegrees } from '$lib/utils/modelStats';
 	import { nextMonotonicity } from '$lib/utils/utils';
 	import { cytoscapeStore } from '../stores/cytoscapeStore';
+	import { selectedNodesStore } from '../stores/selectedNodesStore';
 
 	function handleMonotonicityChange(event: CustomEvent) {
 		const regulation = event.detail.regulation;
@@ -131,6 +132,7 @@
 
 	{#each $modelStore.variables as variable (variable.id)}
 		<ModelVariable
+			isSelected={$selectedNodesStore.nodes.some(node=> node.id == variable.id)}
 			{variable}
 			regulations={$modelStore.regulations.filter((v) => v.target.id == variable.id)}
 			on:delete={() => modelStoreActions.removeVariable(variable.id)}

@@ -5,6 +5,7 @@
 
 	export let variable: Variable;
 	export let regulations: Regulation[];
+	export let isSelected = false;
 
 	const dispatch = createEventDispatcher();
 	function dispatchDelete() {
@@ -35,6 +36,7 @@
 <div
 	class="model-variable"
 	class:hover={isHover}
+	class:selected={isSelected}
 	role="presentation"
 	on:mouseenter={handleMouseEnter}
 	on:mouseleave={handleMouseLeave}

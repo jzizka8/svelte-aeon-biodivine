@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { onMount, getContext, onDestroy } from 'svelte';
 	import type { Node } from '../../types/types';
-	import { selectedNodes } from '../../stores/selectedNodesStore';
-
+	import { selectedNodesStore } from '../../stores/selectedNodesStore';
 	export let node: Node;
 
 	const { getCyInstance } = getContext('graphSharedState') as { getCyInstance: () => any };
@@ -17,15 +16,15 @@
 
 		cyNode.on('select', () => {
 			const position = cyNode.renderedPosition();
-			selectedNodes.addNode(node, position);
+			selectedNodesStore.addNode(node, position);
 		});
-
 		cyNode.on('unselect', () => {
-			selectedNodes.removeNode(node.id);
+			selectedNodesStore.removeNode(node.id);
 		});
 	});
 	onDestroy(() => {
 		cyInstance.getElementById(node.id).remove();
-    	selectedNodes.removeNode(node.id);
+    	selectedNodesStore.removeNode(node.id);
+        console.log(`NselectedNodesStore} ${node.label} removed from graph`)
 	});
 </script>

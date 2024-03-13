@@ -20,4 +20,4 @@ function createSelectedNodesStore() {
     };
 }
 
-export const selectedNodes = createSelectedNodesStore();
+export const selectedNodesStore = createSelectedNodesStore();
