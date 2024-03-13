@@ -23,24 +23,8 @@
             container: refElement,
 			style: graphStyles
 		});
-        cyInstance.edgehandles(edgeOptions)
+        cyInstance.edgehandles(edgeOptions);
 
-		cyInstance.on('add', () => {
-			cyInstance
-				.makeLayout({
-					name: 'cose',
-					padding: 50,
-					animate: false,
-					nodeRepulsion: function (node) {
-						return 100000;
-					},
-					animationDuration: 300,
-					refresh: 20,
-					fit: true,
-					nodeDimensionsIncludeLabels: true
-				})
-				.run();
-		});
 		cyInstance.on('dblclick', (e) => {
 			modelStoreActions.createVariable(null, e.position);
 		});
