@@ -20,7 +20,7 @@ const modelStoreActions = {
     clearModel: function () {
         modelStore.set(initialState);
     },
-    createVariable: function (name: string | null, position: Position | null) {
+    createVariable: function (name: string | null, position: Position | null = null) {
 
         modelStore.update((currentModel) => {
             const id = idStore.increment().toString();
