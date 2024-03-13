@@ -1,11 +1,17 @@
 import { EdgeMonotonicity } from "../../types/types";
 import { modelStoreActions } from "../../stores/modelStore";
 
-export function importAeon(modelString: string) {
+type parsedData = { modelName: string; modelDescription: string; regulations: parsedRegulation[]; updateFunctions: { [key: string]: string; }; }
+type parsedRegulation = { regulatorName: string; targetName: string; monotonicity: EdgeMonotonicity; observable: boolean; }
 
+export function importAeon(modelString: string) {
     modelStoreActions.clearModel();
 
+    const parsedData: parsedData = parseAeon(modelString);
+    updateModelFromParsedData(parsedData);
+}
 
+function parseAeon(modelString: string) {
     const lines = modelString.split('\n');
     // name1 -> name2
     const regulationRegex = /^\s*([a-zA-Z0-9_{}]+)\s*-([>|?])(\??)\s*([a-zA-Z0-9_{}]+)\s*$/;
@@ -23,7 +29,7 @@ export function importAeon(modelString: string) {
     let modelName = '';
     let modelDescription = '';
     const regulations = [];
-    const updateFunctions: { [key: string]: string } = {};
+    const updateFunctions: { [key: string]: string; } = {};
 
     // First, parse all lines into intermediate objects:
     for (let line of lines) {
@@ -63,31 +69,31 @@ export function importAeon(modelString: string) {
             continue;
         }
         if (!line.match(commentRegex) && !line.match(positionRegex)) {
-            throw new Error(`Unexpected line in file:  + ${line}`)
+            throw new Error(`Unexpected line in file:  + ${line}`);
         }
     }
+    return { modelName, modelDescription, regulations, updateFunctions };
+}
 
+function updateModelFromParsedData(parsedData: parsedData) {
+    const { modelName, modelDescription, regulations, updateFunctions } = parsedData;
+
+    modelStoreActions.clearModel();
     modelStoreActions.setName(modelName);
     modelStoreActions.setDescription(modelDescription);
 
-    const allVariableNames = new Set(regulations.flatMap(template => [template.regulatorName, template.targetName]));
-    allVariableNames.forEach(name => {
-        modelStoreActions.createVariable(name);
+    // Logic to create variables and regulations from the parsed data
+    const allVariableNames = new Set(regulations.flatMap(reg => [reg.regulatorName, reg.targetName]));
+    allVariableNames.forEach(name => modelStoreActions.createVariable(name));
+
+    regulations.forEach(reg => {
+        const sourceId = modelStoreActions.getVariableId(reg.regulatorName);
+        const targetId = modelStoreActions.getVariableId(reg.targetName);
+        modelStoreActions.createRegulation(sourceId, targetId, reg.monotonicity, reg.observable);
     });
 
-    regulations.forEach(template => {
-        const sourceId = modelStoreActions.getVariableId(template.regulatorName);
-        const targetId = modelStoreActions.getVariableId(template.targetName);
-        modelStoreActions.createRegulation(sourceId, targetId, template.monotonicity, template.observable);
-    });
-
-
-    Object.entries(updateFunctions).forEach(([name, updateFunction]) => {
-        if (!allVariableNames.has(name)) {
-            modelStoreActions.createVariable(name);
-        }
+    Object.entries(updateFunctions).forEach(([name, func]) => {
         const variableId = modelStoreActions.getVariableId(name);
-        modelStoreActions.setVariableUpdateFunction(variableId, updateFunction);
+        modelStoreActions.setVariableUpdateFunction(variableId, func);
     });
-
 }
