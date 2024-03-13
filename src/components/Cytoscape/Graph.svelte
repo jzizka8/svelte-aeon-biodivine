@@ -42,7 +42,7 @@
 				.run();
 		});
 		cyInstance.on('dblclick', (e) => {
-			modelStoreActions.createVariable(undefined);
+			modelStoreActions.createVariable(null, e.position);
 		});
 
 		cytoscapeStore.set(cyInstance);

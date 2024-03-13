@@ -1,5 +1,5 @@
 import { get, writable } from 'svelte/store';
-import { type Model, type Variable, type Regulation, EdgeMonotonicity } from '../types/types'; // Adjust the import path to where your types are defined
+import { type Model, type Variable, type Regulation, EdgeMonotonicity, type Position } from '../types/types'; // Adjust the import path to where your types are defined
 import { generateRegulationId } from '$lib/utils/utils';
 import { idStore } from './idStore';
 
@@ -20,7 +20,7 @@ const modelStoreActions = {
     clearModel: function () {
         modelStore.set(initialState);
     },
-    createVariable: function (name: string | undefined) {
+    createVariable: function (name: string | null, position: Position | null) {
 
         modelStore.update((currentModel) => {
             const id = idStore.increment().toString();
@@ -28,7 +28,8 @@ const modelStoreActions = {
             const newVariable: Variable = {
                 id,
                 name: usedName,
-                updateFunction: ''
+                updateFunction: '',
+                initPosition: position
             };
             return {
                 ...currentModel,

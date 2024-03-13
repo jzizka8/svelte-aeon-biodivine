@@ -11,7 +11,8 @@
 	onMount(() => {
 		const cyNode = cyInstance.add({
 			group: 'nodes',
-			data: { ...node }
+			data: { ...node },
+			position: node.initPosition
 		});
 
 		cyNode.on('select', () => {
@@ -25,6 +26,6 @@
 	onDestroy(() => {
 		cyInstance.getElementById(node.id).remove();
     	selectedNodesStore.removeNode(node.id);
-        console.log(`NselectedNodesStore} ${node.label} removed from graph`)
+        console.log(` ${node.label} removed from graph`)
 	});
 </script>

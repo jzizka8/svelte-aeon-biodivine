@@ -24,11 +24,13 @@ export type Variable = {
 	id: string;
 	name: string;
 	updateFunction: string;
+	initPosition: null | Position;
 };
 
 export type Node = {
 	id: string;
 	label: string;
+	initPosition: null | Position;
 }
 
 export type Position = {

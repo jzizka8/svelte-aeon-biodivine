@@ -6,7 +6,8 @@
 
 	$: nodes = $modelStore.variables.map((variable) => ({
 		id: variable.id,
-		label: variable.name
+		label: variable.name,
+		initPosition: variable.initPosition
 	}));
 
 	$: edges = $modelStore.regulations.map((regulation) => ({
