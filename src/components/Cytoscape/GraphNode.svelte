@@ -2,6 +2,7 @@
 	import { onMount, getContext, onDestroy } from 'svelte';
 	import type { Node } from '../../types/types';
 	import { selectedNodesStore } from '../../stores/selectedNodesStore';
+	import { repositionNodeMenu } from './utils';
 	export let node: Node;
 
 	const { getCyInstance } = getContext('graphSharedState') as { getCyInstance: () => any };
@@ -21,6 +22,13 @@
 		});
 		cyNode.on('unselect', () => {
 			selectedNodesStore.removeNode(node.id);
+			repositionNodeMenu();
+		});
+		cyNode.on('mouseover', () => {
+			cyNode.addClass('hover');
+		});
+		cyNode.on('mouseout', () => {
+			cyNode.removeClass('hover');
 		});
 	});
 	onDestroy(() => {

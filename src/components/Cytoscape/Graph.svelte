@@ -8,6 +8,8 @@
 	import edgeOptions from './config/edgeOptions';
 	import graphStyles from './config/graphStyles';
 
+	import { repositionContextMenus } from './utils';
+
 	setContext('graphSharedState', {
 		getCyInstance: () => cyInstance
 	});
@@ -28,6 +30,14 @@
 		cyInstance.on('dblclick', (e) => {
 			modelStoreActions.createVariable(null, e.position);
 		});
+
+		cyInstance.on('pan', repositionContextMenus);
+
+
+        cyInstance.on('ehcomplete', (event, sourceNode, targetNode, addedEdge) => {
+            addedEdge.remove();
+            modelStoreActions.createRegulation(sourceNode.data('id'), targetNode.data('id'));
+        });
 
 		cytoscapeStore.set(cyInstance);
 	});

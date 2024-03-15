@@ -16,7 +16,11 @@ function createSelectedNodesStore() {
             const updatedNodes = selection.nodes.filter(n => n.id !== nodeId);
             return { nodes: updatedNodes, position: selection.position };
         }),
-        clear: () => set({ nodes: [], position: null }) // Method to clear the selection
+        clear: () => set({ nodes: [], position: null }),
+
+        updatePosition: (position: Position) => update(selection => {
+            return { ...selection, position };
+        }),
     };
 }
 
