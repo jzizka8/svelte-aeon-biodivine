@@ -30,6 +30,7 @@
 		cyNode.on('mouseout', () => {
 			cyNode.removeClass('hover');
 		});
+		cyNode.on('position', repositionNodeMenu);
 	});
 	onDestroy(() => {
 		cyInstance.getElementById(node.id).remove();
