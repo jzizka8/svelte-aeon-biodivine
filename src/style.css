@@ -27,8 +27,9 @@
 }
 
 :root {
-	--primary-color: hsl(0, 67%, 60%);
-	--primary-color-light: hsl(0, 57%, 65%);
+	--primary-color: hsl(0, 67%, 65%);
+	--primary-color-light: hsl(0, 67%, 75%);
+	--primary-color-ultralight: hsl(0, 67%, 90%);
 	--soft-navy: hsl(221, 34%, 43%);
 	--soft-navy-light: hsl(221, 34%, 53%);
 	--green: hsl(122, 75%, 45%);
@@ -143,44 +144,39 @@ body {
 	/* Initially, menu is off screen */
 	left: -200px;
 	top: -200px;
-	/* This is to accommodate longer hints */
-	width: 190px;
-	/* Ensure hint is in the middle */
 	text-align: center;
 	/* Ensures the zoom is properly applied when needed */
 	transform-origin: 0% 0%;
-	/* We don't animate other stuff because that needs to be in sync with the graph */
-	transition: opacity 0.3s;
-}
-
-.float-menu .button {
-	width: 24px;
-	height: 24px;
-	padding: 12px;
-	border-radius: 24px;
-	transition: 0.3s;
-}
-
-.float-menu .button:hover {
-	background-color: #cfd8dc;
 }
 
 .float-menu .button-row {
 	display: flex;
-	height: 48px;
-	width: 153px;
+	background-color: var(--primary-color-ultralight);
+	
 	margin: 0 auto;
 	border-radius: 24px;
-	background-color: #eceff1;
 }
 
-.float-menu .hint {
-	font-weight: bold;
-	transition: opacity 0.3s;
-	pointer-events: none;
-	text-shadow: 0px 2px 5px #d0d0d0;
+.float-menu button {
+	background-color: var(--primary-color-ultralight);
+	padding: 10px;
+	border-radius: 8px;
+	transition: 0.3s;
+	border:none;
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap:5px;
 }
 
+.float-menu button:hover {
+	background-color: var(--primary-color-light);
+}
+
+.float-menu img{
+	width: 24px;
+}
 /*
     The menu with main buttons/panels
 */
