@@ -7,7 +7,7 @@ export function repositionContextMenus () {
 };
 
 export function repositionNodeMenu() {
-    const lastNode = get(selectedNodesStore).nodes.findLast(() => true)?.id;
+    const lastNode = get(selectedNodesStore).items.findLast(() => true)?.id;
     if (lastNode) {
         selectedNodesStore.updatePosition(get(cytoscapeStore)!.$id(lastNode).renderedPosition());
     }

@@ -2,7 +2,7 @@
 	import { cytoscapeStore } from '../stores/cytoscapeStore';
 	import { modelStore, modelStoreActions } from '../stores/modelStore';
 	import { selectedNodesStore } from '../stores/selectedNodesStore';
-	$: nodes = $selectedNodesStore?.nodes;
+	$: nodes = $selectedNodesStore?.items;
 	$: position = $selectedNodesStore?.position;
 	$: menuStyle =
 		nodes && position ? `position: absolute; top: ${position.y+15}px; left: ${position.x+120}px;` : '';

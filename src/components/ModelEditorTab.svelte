@@ -136,7 +136,7 @@
 
 	{#each $modelStore.variables as variable (variable.id)}
 		<ModelVariable
-			isSelected={$selectedNodesStore.nodes.some(node=> node.id == variable.id)}
+			isSelected={$selectedNodesStore.items.some(node=> node.id == variable.id)}
 			{variable}
 			regulations={$modelStore.regulations.filter((v) => v.target.id == variable.id)}
 			on:delete={() => modelStoreActions.removeVariable(variable.id)}

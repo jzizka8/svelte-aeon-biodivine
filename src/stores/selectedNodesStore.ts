@@ -1,27 +1,34 @@
 import { writable } from "svelte/store";
-import type { Node, Position } from "../types/types";
+import type { Node, Position, Regulation } from "../types/types";
 
-function createSelectedNodesStore() {
-    const { subscribe, set, update } = writable<{ nodes: Node[] } & { position: Position | null }>({ nodes: [], position: null });
+type Identifiable = { id: string };
+
+type Selection<T> = {
+    items: T[];
+    position: Position | null;
+};
+
+function createSelectionStore<T extends Identifiable>() {
+    const { subscribe, set, update } = writable<Selection<T>>({ items: [], position: null });
 
     return {
         subscribe,
-        addNode: (node: Node, position: Position) => update(selection => {
-            if (!selection.nodes.find(n => n.id === node.id)) {
-                return { nodes: [...selection.nodes, node], position };
+        addItem: (item: T, position: Position) => update(selection => {
+            if (!selection.items.find(i => i.id === item.id)) {
+                return { items: [...selection.items, item], position };
             }
             return { ...selection, position };
         }),
-        removeNode: (nodeId: string) => update(selection => {
-            const updatedNodes = selection.nodes.filter(n => n.id !== nodeId);
-            return { nodes: updatedNodes, position: selection.position };
+        removeItem: (itemId: string) => update(selection => {
+            const updatedItems = selection.items.filter(i => i.id !== itemId);
+            return { items: updatedItems, position: selection.position };
         }),
-        clear: () => set({ nodes: [], position: null }),
-
+        clear: () => set({ items: [], position: null }),
         updatePosition: (position: Position) => update(selection => {
             return { ...selection, position };
         }),
     };
 }
 
-export const selectedNodesStore = createSelectedNodesStore();
+export const selectedNodesStore = createSelectionStore<Node>();
+export const selectedRegulationsStore = createSelectionStore<Regulation>();

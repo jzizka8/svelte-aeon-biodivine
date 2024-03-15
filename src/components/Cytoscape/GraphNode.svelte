@@ -18,10 +18,10 @@
 
 		cyNode.on('select', () => {
 			const position = cyNode.renderedPosition();
-			selectedNodesStore.addNode(node, position);
+			selectedNodesStore.addItem(node, position);
 		});
 		cyNode.on('unselect', () => {
-			selectedNodesStore.removeNode(node.id);
+			selectedNodesStore.removeItem(node.id);
 			repositionNodeMenu();
 		});
 		cyNode.on('mouseover', () => {
@@ -34,7 +34,7 @@
 	});
 	onDestroy(() => {
 		cyInstance.getElementById(node.id).remove();
-    	selectedNodesStore.removeNode(node.id);
+    	selectedNodesStore.removeItem(node.id);
         console.log(` ${node.label} removed from graph`)
 	});
 </script>
