@@ -8,7 +8,7 @@
 	import { calculateMaxDegrees } from '$lib/utils/modelStats';
 	import { nextMonotonicity } from '$lib/utils/utils';
 	import { cytoscapeStore } from '../stores/cytoscapeStore';
-	import { selectedNodesStore } from '../stores/selectedNodesStore';
+	import { selectedNodesStore } from '../stores/selectedItemsStore';
 
 	function handleMonotonicityChange(event: CustomEvent) {
 		const regulation = event.detail.regulation;

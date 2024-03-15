@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, getContext, onDestroy } from 'svelte';
 	import type { Node } from '../../types/types';
-	import { selectedNodesStore } from '../../stores/selectedNodesStore';
+	import { selectedNodesStore } from '../../stores/selectedItemsStore';
 	import { repositionNodeMenu } from './utils';
 	export let node: Node;
 

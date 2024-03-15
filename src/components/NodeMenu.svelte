@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cytoscapeStore } from '../stores/cytoscapeStore';
 	import { modelStore, modelStoreActions } from '../stores/modelStore';
-	import { selectedNodesStore } from '../stores/selectedNodesStore';
+	import { selectedNodesStore } from '../stores/selectedItemsStore';
 	$: nodes = $selectedNodesStore?.items;
 	$: position = $selectedNodesStore?.position;
 	$: menuStyle =

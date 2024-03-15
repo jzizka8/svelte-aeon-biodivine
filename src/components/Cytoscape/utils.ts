@@ -1,5 +1,5 @@
 import { get } from 'svelte/store';
-import { selectedNodesStore } from '../../stores/selectedNodesStore';
+import { selectedNodesStore } from '../../stores/selectedItemsStore';
 import { cytoscapeStore } from '../../stores/cytoscapeStore';
 
 export function repositionContextMenus () {
