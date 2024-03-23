@@ -4,11 +4,12 @@
 	import dagre from 'cytoscape-dagre';
 	import { modelStoreActions } from '../../stores/modelStore';
 	import { cytoscapeStore } from '../../stores/cytoscapeStore';
-	import cytoscapeEdgehandles from 'cytoscape-edgehandles';
+	import cytoscapeEdgehandles, { type EdgeHandlesInstance } from 'cytoscape-edgehandles';
 	import edgeOptions from './config/edgeOptions';
 	import graphStyles from './config/graphStyles';
 
 	import { repositionContextMenus } from './utils';
+	import { edgehandlesStore } from '../../stores/edgehandlesStore';
 
 	setContext('graphSharedState', {
 		getCyInstance: () => cyInstance
@@ -16,7 +17,7 @@
 
 	let refElement: HTMLDivElement;
 	let cyInstance: cytoscape.Core;
-
+	let edgehandles: EdgeHandlesInstance;
 	onMount(() => {
 		cytoscape.use(dagre);
         cytoscape.use(cytoscapeEdgehandles)
@@ -25,7 +26,8 @@
             container: refElement,
 			style: graphStyles
 		});
-        cyInstance.edgehandles(edgeOptions);
+        edgehandles = cyInstance.edgehandles(edgeOptions);
+		edgehandles.enable();
 
 		cyInstance.on('dblclick', (e) => {
 			modelStoreActions.createVariable(null, e.position);
@@ -40,6 +42,7 @@
         });
 
 		cytoscapeStore.set(cyInstance);
+		edgehandlesStore.set(edgehandles);
 	});
 </script>
 

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { cytoscapeStore } from '../stores/cytoscapeStore';
+	import { edgehandlesStore } from '../stores/edgehandlesStore';
 	import { modelStore, modelStoreActions } from '../stores/modelStore';
 	import { selectedNodesStore } from '../stores/selectedItemsStore';
 	$: nodes = $selectedNodesStore?.items;
@@ -8,7 +9,6 @@
 		nodes && position ? `position: absolute; top: ${position.y+15}px; left: ${position.x+120}px;` : '';
 
 	function handleRemove() {
-		console.log('remove');
 		if (nodes) {
 			nodes.forEach((node) => {
 				modelStoreActions.removeVariable(node.id);
@@ -29,8 +29,13 @@
 	}
 
 	function handleNewEdgeHandle() {
-		$cytoscapeStore?.edgehandles().start(nodes[0].id);
+		const cyNode = $cytoscapeStore?.$id(nodes[0].id);
+		if(cyNode && $edgehandlesStore){
+
+			$edgehandlesStore.start(cyNode);
+		}
 	}
+
 </script>
 
 <!-- A menu element that is shown for selected graph nodes in the editor. -->
@@ -47,6 +52,10 @@
 					id="node-menu-edit-function"
 					src="img/functions-24px.svg"
 				/>
+			</button>
+			<button on:mousedown={handleNewEdgeHandle}>
+				<img src="img/dot-arrow-up.svg" alt="" />
+				Add edge
 			</button>
 			<button on:click={handleLoopCreation}> <img src="img/loop.svg" alt="" />add Loop </button>
 			<!-- <button on:click={handleNewEdgeHandle}> edge from here </button> -->
