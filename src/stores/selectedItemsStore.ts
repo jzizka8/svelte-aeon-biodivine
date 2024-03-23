@@ -31,4 +31,4 @@ function createSelectionStore<T extends Identifiable>() {
 }
 
 export const selectedNodesStore = createSelectionStore<Node>();
-export const selectedRegulationsStore = createSelectionStore<Regulation>();
+export const selectedEdgesStore = createSelectionStore<Regulation>();
