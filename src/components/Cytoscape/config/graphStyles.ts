@@ -1,5 +1,4 @@
 import type { Stylesheet } from 'cytoscape';
-import { _add_box_svg } from '../../../script/CytoscapeEditor';
 
 const graphStyles: Stylesheet[] = [
   {
@@ -91,24 +90,6 @@ const graphStyles: Stylesheet[] = [
     'selector': 'edge:selected',
     'style': {
       'overlay-opacity': 0.1,
-    }
-  },
-  {	// Edge handles pseudo-node for adding
-    'selector': '.eh-handle',
-    'style': {
-      'width': '32px',
-      'height': '32px',
-      'shape': 'rectangle',
-      'background-opacity': 0,
-      'background-image': function (e) {
-        return 'data:image/svg+xml;utf8,' + encodeURIComponent(_add_box_svg);
-      },
-      'background-width': '32px',
-      'background-height': '32px',
-      'padding': 0,
-      'overlay-opacity': 0,
-      'border-width': 0,
-      'border-opacity': 0,
     }
   },
   {	// Change ghost edge preview colors
