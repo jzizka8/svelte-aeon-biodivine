@@ -31,8 +31,7 @@
 	function handleNewEdgeHandle() {
 		const cyNode = $cytoscapeStore?.$id(nodes[0].id);
 		if(cyNode && $edgehandlesStore){
-
-			$edgehandlesStore.start(cyNode);
+			$edgehandlesStore.start(cyNode as any);
 		}
 	}
 
