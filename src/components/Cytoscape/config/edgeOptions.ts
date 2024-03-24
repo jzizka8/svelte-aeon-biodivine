@@ -1,11 +1,9 @@
 import type { EdgeHandlesOptions } from "cytoscape-edgehandles";
-import { modelStoreActions } from "../../../stores/modelStore";
 import { EdgeMonotonicity } from "../../../types/types";
 
 const edgeOptions: EdgeHandlesOptions = {
     preview: true, // whether to show added edges preview before releasing selection
     hoverDelay: 150, // time spent hovering over a target node before it is considered selected
-    handleNodes: 'node', // selector/filter function for whether edges can be made from a given node
     snap: false,
     snapThreshold: 50,
     snapFrequency: 15,
@@ -28,10 +26,10 @@ const edgeOptions: EdgeHandlesOptions = {
     edgeParams: function (sourceNode, targetNode) {
         return { data: { observable: true, monotonicity: EdgeMonotonicity.unspecified } };
     },
-    // Add the edge to the live model
-    complete: function (sourceNode, targetNode, addedEles) {
-        modelStoreActions.createRegulation(sourceNode.id(), targetNode.id());
+    canConnect: function (sourceNode, targetNode) {
+        return true;
     }
+
 }
 
 export default edgeOptions;
