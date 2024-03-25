@@ -10,6 +10,7 @@
 
 	import { repositionContextMenus } from './utils';
 	import { edgehandlesStore } from '../../stores/edgehandlesStore';
+	import hotkeys from 'hotkeys-js';
 
 	setContext('graphSharedState', {
 		getCyInstance: () => cyInstance
@@ -43,6 +44,10 @@
 
 		cytoscapeStore.set(cyInstance);
 		edgehandlesStore.set(edgehandles);
+		hotkeys('n', function (event, handler) {
+			event.preventDefault();
+			modelStoreActions.createVariable(null);
+		});
 	});
 </script>
 
