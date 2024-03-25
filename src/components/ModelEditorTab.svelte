@@ -73,7 +73,7 @@
 		data-placeholder="(model description)"
 		style="display:none"
 	/>
-	<div class="invisible-input full-line" contenteditable>{@html $modelStore.description}</div>
+	<div class="invisible-input full-line" contenteditable bind:innerHTML={$modelStore.description}></div>
 	<div style="height: 30px;">
 		<h3 style="font-family: 'FiraMono'; text-transform: uppercase;">● Overview</h3>
 	</div>
