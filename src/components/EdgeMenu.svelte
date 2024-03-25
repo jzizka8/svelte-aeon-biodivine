@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { nextMonotonicity } from '$lib/utils/utils';
+	import { onMount } from 'svelte';
 	import { cytoscapeStore } from '../stores/cytoscapeStore';
 	import { modelStoreActions } from '../stores/modelStore';
 	import { selectedEdgesStore } from '../stores/selectedItemsStore';
 	import { EdgeMonotonicity, type Regulation } from '../types/types';
+	import hotkeys from 'hotkeys-js';
 
 	$: edges = $selectedEdgesStore?.items;
 	$: position = $selectedEdgesStore?.position;
@@ -24,7 +26,7 @@
 		: ['img/visibility_on-24px.svg', 'Make observable (O)'];
 
 	$: menuStyle = edges && position ? `top: ${position.y + 15}px; left: ${position.x + 120}px;` : '';
-	let hint: string = 'dasdsdasddasdsadsa';
+	let hint: string;
 
 	function hintAction(node: HTMLButtonElement, hintText: string) {
 		const setHint = () => {
@@ -47,10 +49,10 @@
 	}
 	function handleMonotonicityChange() {
 		const newMonotonicity = nextMonotonicity(regulation.monotonicity);
-		
+
 		modelStoreActions.changeMonotonicity(regulation.id, newMonotonicity);
 		cytoscapeStore.updateEdgeMonotonicity(regulation.id, newMonotonicity);
-		
+
 		// this is only needed for this menu
 		regulation.monotonicity = newMonotonicity;
 	}
@@ -69,6 +71,23 @@
 			});
 		}
 	}
+	onMount(() => {
+		hotkeys('m', function (event, handler) {
+			if (edges.length != 1) return;
+			event.preventDefault();
+			handleMonotonicityChange();
+		});
+		hotkeys('o', function (event, handler) {
+			if (edges.length != 1) return;
+			event.preventDefault();
+			handleObservableToggle();
+		});
+		hotkeys('backspace', { keyup: true, keydown: true }, function (event, handler) {
+			if (!edges.length) return;
+			event.preventDefault();
+			handleRemove();
+		});
+	});
 </script>
 
 {#if edges.length > 0}
