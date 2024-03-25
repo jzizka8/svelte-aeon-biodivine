@@ -97,7 +97,7 @@ export function init() {
 			);
 		}
 	}
-	initHotkeys();
+	// initHotkeys();
 }
 
 /* This can be used to properly show placeholder for content editable stuff */
