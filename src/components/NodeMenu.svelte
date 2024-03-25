@@ -56,22 +56,22 @@
 	}
 
 	onMount(() => {
-		hotkeys('e', { keyup: true, keydown: true }, function (event, handler) {
+		hotkeys('e', function (event, handler) {
 			if (nodes.length != 1) return;
 			event.preventDefault();
 			handleNodeNameEdit();
 		});
-		hotkeys('f', { keyup: true, keydown: true }, function (event, handler) {
+		hotkeys('f', function (event, handler) {
 			if (nodes.length != 1) return;
 			event.preventDefault();
 			handleNodeFunctionEdit();
 		});
-		hotkeys('backspace', { keyup: true, keydown: true }, function (event, handler) {
+		hotkeys('backspace', function (event, handler) {
 			if (!nodes.length) return;
 			event.preventDefault();
 			handleRemove();
 		});
-		hotkeys('l', { keyup: true, keydown: true }, function (event, handler) {
+		hotkeys('l', function (event, handler) {
 			if (!loopAllowed) return;
 			event.preventDefault();
 			handleLoopCreation();
