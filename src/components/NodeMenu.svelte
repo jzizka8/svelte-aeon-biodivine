@@ -1,6 +1,10 @@
 <script lang="ts">
+	import hotkeys from 'hotkeys-js';
+	import { onMount } from 'svelte';
+	import { activeTabStore } from '../stores/activeTabStore';
 	import { cytoscapeStore } from '../stores/cytoscapeStore';
 	import { edgehandlesStore } from '../stores/edgehandlesStore';
+	import { focusedInputStore } from '../stores/focusedVariableInput';
 	import { modelStore, modelStoreActions } from '../stores/modelStore';
 	import { selectedNodesStore } from '../stores/selectedItemsStore';
 	$: nodes = $selectedNodesStore?.items;
@@ -34,6 +38,15 @@
 			$edgehandlesStore.start(cyNode as any);
 		}
 	}
+	function handleNodeNameEdit() {
+		activeTabStore.set('model-editor');
+		focusedInputStore.set('name');
+	}
+	function handleNodeFunctionEdit() {
+		activeTabStore.set('model-editor');
+		focusedInputStore.set('function');
+	}
+
 
 </script>
 
@@ -41,11 +54,11 @@
 <div id="node-menu" class="float-menu" class:hidden={!nodes?.length} style={menuStyle}>
 	<div class="button-row">
 		{#if nodes.length === 1}
-			<button>
+			<button on:click={handleNodeNameEdit}>
 				<img alt="Edit name (E)" id="node-menu-edit-name" src="img/edit-24px.svg" />
 				Edit node
 			</button>
-			<button>
+			<button on:click={handleNodeFunctionEdit}>
 				<img
 					alt="Edit update function (F)"
 					id="node-menu-edit-function"
@@ -53,10 +66,9 @@
 				/>
 			</button>
 			<button on:mousedown={handleNewEdgeHandle}>
-				<img src="img/dot-arrow-up.svg" alt="" />
+				<img src="img/dot-arrow-up.svg" alt="" draggable="false" />
 				Add edge
 			</button>
-			<button on:click={handleLoopCreation}> <img src="img/loop.svg" alt="" />add Loop </button>
 			<!-- <button on:click={handleNewEdgeHandle}> edge from here </button> -->
 		{/if}
 		{#if nodes.length === 2}
@@ -65,7 +77,7 @@
 				Connect from
 			</button>
 			<button on:click={handleConnectionTo}
-				><img src="img/dot-arrow-down.svg" alt="" /> 
+				><img src="img/dot-arrow-down.svg" alt="" />
 				Connect here
 			</button>
 		{/if}

@@ -2,21 +2,41 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Regulation, Variable } from '../types/types';
 	import { regulationShortcut } from '$lib/utils/utils';
+	import { cytoscapeStore } from '../stores/cytoscapeStore';
+	import { hoveredNodeStore } from '../stores/hoveredNodeStore';
+	import { focusedInputStore } from '../stores/focusedVariableInput';
 
 	export let variable: Variable;
 	export let regulations: Regulation[];
 	export let isSelected = false;
+
 	$: isHover = $hoveredNodeStore === variable.id;
+	let updateFunctionInput: HTMLDivElement;
+	let variableNameInput: HTMLInputElement;
+
+	focusedInputStore.subscribe((focusedInput) => {
+		if (!isSelected || !focusedInput) {
+			console.log(`not selected ${variable.name}`);
+			return;
+		}
+		// the null coallescing '?.'' here is important, otherwise the value can get bound to null.
+		if (focusedInput == 'function') {
+			updateFunctionInput?.focus();
+		} else if (focusedInput == 'name') {
+			variableNameInput?.focus();
+		}
+		focusedInputStore.set(null);
+	});
 
 	const dispatch = createEventDispatcher();
 	function dispatchDelete() {
 		dispatch('delete', { variable });
 	}
 	function dispatchMonotonicity(regulation: Regulation) {
-		dispatch('changeMonotonicity', {regulation: regulation});
+		dispatch('changeMonotonicity', { regulation: regulation });
 	}
 	function dispatchToggleObservable(regulation: Regulation) {
-		dispatch('toggleObservable', {regulation: regulation});
+		dispatch('toggleObservable', { regulation: regulation });
 	}
 	function dispatchRenameVariable() {
 		dispatch('renameVariable', { newName: variable.name });
@@ -46,6 +66,7 @@
 			type="text"
 			name="variable-name"
 			bind:value={variable.name}
+			bind:this={variableNameInput}
 			placeholder={variable.name}
 			style="font-size: 18px;"
 			spellcheck="false"
@@ -87,6 +108,7 @@
 		spellcheck="false"
 		autocorrect="off"
 		style="font-size: 16px; text-align: center;"
+		bind:this={updateFunctionInput}
 	>
 		{variable.updateFunction}
 	</div>
