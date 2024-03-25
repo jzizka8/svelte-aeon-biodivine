@@ -3,6 +3,7 @@
 	import type { Node } from '../../types/types';
 	import { selectedNodesStore } from '../../stores/selectedItemsStore';
 	import { repositionNodeMenu } from './utils';
+	import { hoveredNodeStore } from '../../stores/hoveredNodeStore';
 	export let node: Node;
 
 	const { getCyInstance } = getContext('graphSharedState') as { getCyInstance: () => any };
@@ -26,9 +27,11 @@
 		});
 		cyNode.on('mouseover', () => {
 			cyNode.addClass('hover');
+			hoveredNodeStore.set(node.id);
 		});
 		cyNode.on('mouseout', () => {
 			cyNode.removeClass('hover');
+			hoveredNodeStore.set(null);
 		});
 		cyNode.on('position', repositionNodeMenu);
 	});

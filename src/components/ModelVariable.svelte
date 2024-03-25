@@ -6,6 +6,7 @@
 	export let variable: Variable;
 	export let regulations: Regulation[];
 	export let isSelected = false;
+	$: isHover = $hoveredNodeStore === variable.id;
 
 	const dispatch = createEventDispatcher();
 	function dispatchDelete() {
@@ -21,15 +22,13 @@
 		dispatch('renameVariable', { newName: variable.name });
 	}
 
-	$: isHover = false;
-
 	function handleMouseEnter() {
-		// TODO: handle highlighting in the model
-		isHover = true;
+		hoveredNodeStore.set(variable.id);
+		$cytoscapeStore?.$id(variable.id)?.addClass('hover');
 	}
 	function handleMouseLeave() {
-		// TODO: handle highlighting in the model
-		isHover = false;
+		hoveredNodeStore.set(null);
+		$cytoscapeStore?.$id(variable.id)?.removeClass('hover');
 	}
 </script>
 
