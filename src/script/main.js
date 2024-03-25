@@ -97,7 +97,6 @@ export function init() {
 			);
 		}
 	}
-	// initHotkeys();
 }
 
 /* This can be used to properly show placeholder for content editable stuff */
@@ -122,52 +121,6 @@ export function ensurePlaceholder(el) {
 	}
 */
 
-function initHotkeys() {
-	hotkeys('e', function (event, handler) {
-		if (UI.isNodeMenuVisible()) {
-			event.preventDefault();
-			fireEvent(document.getElementById('node-menu-edit-name'), 'click');
-		}
-	});
-
-	hotkeys('f', function (event, handler) {
-		if (UI.isNodeMenuVisible()) {
-			event.preventDefault();
-			fireEvent(document.getElementById('node-menu-edit-function'), 'click');
-		}
-	});
-
-	hotkeys('backspace', function (event, handler) {
-		if (UI.isNodeMenuVisible()) {
-			event.preventDefault();
-			fireEvent(document.getElementById('node-menu-remove'), 'click');
-		}
-		if (UI.isEdgeMenuVisible()) {
-			event.preventDefault();
-			fireEvent(document.getElementById('edge-menu-remove'), 'click');
-		}
-	});
-
-	hotkeys('o', function (event, handler) {
-		if (UI.isEdgeMenuVisible()) {
-			event.preventDefault();
-			fireEvent(document.getElementById('edge-menu-observability'), 'click');
-		}
-	});
-
-	hotkeys('m', function (event, handler) {
-		if (UI.isEdgeMenuVisible()) {
-			event.preventDefault();
-			fireEvent(document.getElementById('edge-menu-monotonicity'), 'click');
-		}
-	});
-
-	hotkeys('n,+', function (event, handler) {
-		event.preventDefault();
-		let id = LiveModel.addVariable();
-		CytoscapeEditor.showNode(id);
-	});
-}
 
 // utility function to fire events on UI elements - we mainly need it to simulate clicks
 function fireEvent(el, etype) {
