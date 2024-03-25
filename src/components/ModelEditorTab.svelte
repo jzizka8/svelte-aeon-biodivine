@@ -82,7 +82,7 @@
 	<button
 		id="button-add-variable"
 		class="image-button"
-		on:click={() => modelStoreActions.createVariable(undefined)}
+		on:click={() => modelStoreActions.createVariable(null)}
 		style="float: right;">Add variable (N) <img src="img/add_box-24px.svg" /></button
 	>
 
