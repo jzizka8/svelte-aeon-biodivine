@@ -79,8 +79,8 @@
 	});
 </script>
 
-<!-- A menu element that is shown for selected graph nodes in the editor. -->
-<div id="node-menu" class="float-menu" class:hidden={!nodes?.length} style={menuStyle}>
+{#if nodes.length > 0}
+<div id="node-menu" class="float-menu" style={menuStyle}>
 	<div class="button-row">
 		{#if nodes.length === 1}
 			<button on:click={handleNodeNameEdit}>
@@ -98,7 +98,6 @@
 				<img src="img/dot-arrow-up.svg" alt="" draggable="false" />
 				<!-- Add edge -->
 			</button>
-			<!-- <button on:click={handleNewEdgeHandle}> edge from here </button> -->
 		{/if}
 		{#if loopAllowed}
 			<button on:click={handleLoopCreation}>
@@ -122,3 +121,4 @@
 		</button>
 	</div>
 </div>
+{/if}
