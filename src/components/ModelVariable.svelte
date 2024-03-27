@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import type { Regulation, Variable } from '../types/types';
 	import { regulationShortcut } from '$lib/utils/utils';
 	import { cytoscapeStore } from '../stores/cytoscapeStore';
@@ -14,19 +14,6 @@
 	$: isHover = $hoveredNodeStore === variable.id;
 	let updateFunctionInput: HTMLDivElement;
 	let variableNameInput: HTMLInputElement;
-
-	focusedInputStore.subscribe((focusedInput) => {
-		if (!isSelected || !focusedInput) {
-			return;
-		}
-		// the null coallescing '?.' here is important, otherwise the value can get bound to null.
-		if (focusedInput === 'function') {
-			updateFunctionInput?.focus();
-		} else if (focusedInput === 'name') {
-		}
-		// focusedInputStore.set(null);
-		setTimeout(() => focusedInputStore.set(null), 0);
-	});
 
 	const dispatch = createEventDispatcher();
 	function dispatchDelete() {
@@ -50,6 +37,21 @@
 		hoveredNodeStore.set(null);
 		$cytoscapeStore?.$id(variable.id)?.removeClass('hover');
 	}
+
+	onMount(() =>
+		focusedInputStore.subscribe((focusedInput) => {
+			if (!isSelected || !focusedInput) {
+				return;
+			}
+			if (focusedInput === 'function') {
+				updateFunctionInput.focus();
+			} else if (focusedInput === 'name') {
+				variableNameInput.focus();
+			}
+			// focusedInputStore.set(null);
+			setTimeout(() => focusedInputStore.set(null), 0);
+		})
+	);
 </script>
 
 <div
