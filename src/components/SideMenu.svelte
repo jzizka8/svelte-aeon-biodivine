@@ -4,9 +4,11 @@
 	import Version from './Version.svelte';
 	import { computeEngineStore } from '../stores/ComputeEngineStore';
 	import { liveModelStore } from '../stores/liveModelStore';
-	import CytoscapeEditor from '../script/CytoscapeEditor';
+	import { modelStore, modelStoreActions } from '../stores/modelStore';
+	import { cytoscapeStore } from '../stores/cytoscapeStore';
+
 	let startAnalysisDisabled = false;
-	let applyLayoutDisabled = false;
+	$: modelEmpty = $modelStore.variables.length === 0;
 
 	$: ComputeEngine = $computeEngineStore;
 	$: LiveModel = $liveModelStore;
@@ -30,11 +32,22 @@
 		</li>
 		<li>
 			<button
-				class="button button--half-round button--primary {applyLayoutDisabled ? 'disabled' : ''}"
-				disabled={applyLayoutDisabled}
-				on:click={() => CytoscapeEditor.layoutCose()}
+				class="button button--half-round button--primary"
+				class:disabled={modelEmpty}
+				disabled={modelEmpty}
+				on:click={() => cytoscapeStore.applyLayout()}
 			>
 				<img src="img/view_quilt-48px.svg" alt="" /> Apply Layout
+			</button>
+		</li>
+		<li>
+			<button
+				class="button button--half-round button--primary"
+				class:disabled={modelEmpty}
+				disabled={modelEmpty}
+				on:click={() => modelStoreActions.clearModel()}
+			>
+				<img src="img/delete-24px.svg" alt="" /> Clear Model
 			</button>
 		</li>
 	</ul>

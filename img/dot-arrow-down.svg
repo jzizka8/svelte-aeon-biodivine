@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 24 24" stroke-width="1.5" fill="none" color="#000000" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 22C10.8954 22 10 21.1046 10 20C10 18.8954 10.8954 18 12 18C13.1046 18 14 18.8954 14 20C14 21.1046 13.1046 22 12 22Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 12 15 L 12 2 M 12 2 L 15 5 M 12 2 L 9 5" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="transform-origin: 12px 8.5px;" transform="matrix(-1, 0, 0, -1, 3.57628e-7, 2.5332e-7)"/>
+</svg>

@@ -24,8 +24,19 @@ export type Variable = {
 	id: string;
 	name: string;
 	updateFunction: string;
+	initPosition: null | Position;
 };
 
+export type Node = {
+	id: string;
+	label: string;
+	initPosition: null | Position;
+}
+
+export type Position = {
+	x: number;
+	y: number;
+}
 export type Regulation = {
 	id: string;
 	source: Variable;
@@ -43,3 +54,4 @@ export type ModelStatistics = {
 	stateSpace: string;
 	explicitParameters: string[]
 }
+

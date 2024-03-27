@@ -90,7 +90,7 @@ const ModelEditor = {
 
 	// Create a new variable box for the given id (without any regulations).
 	addVariable(id, name) {
-		modelStoreActions.addVariable({ id, name, updateFunction: '' });
+		modelStoreActions.createVariable(name)
 		console.log(get(modelStore));
 
 		let variableBox = this._variableTemplate.cloneNode(true);

@@ -33,8 +33,8 @@ let UI = {
 			this._tabsAndButtons.push({ tab: tab, button: button });
 		}
 
-		this._initNodeMenu(this._nodeMenu);
-		this._initEdgeMenu(this._edgeMenu);
+		//this._initNodeMenu(this._nodeMenu);
+		// this._initEdgeMenu(this._edgeMenu);
 
 		// Init fake button (sadly we have to do this explicitly
 		// because it is not a proper menu button).

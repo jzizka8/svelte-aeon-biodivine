@@ -3,7 +3,7 @@
 
 	import QuickHelp from './components/QuickHelp.svelte';
 	import SideMenu from '../components/SideMenu.svelte';
-	import CytoScapeEditor from '../components/CytoScapeEditor.svelte';
+	import CytoScapeEditor from '../components/Cytoscape/CytoScapeEditor.svelte';
 	import LogoType from '../components/LogoType.svelte';
 	import NodeMenu from '../components/NodeMenu.svelte';
 	import EdgeMenu from '../components/EdgeMenu.svelte';
@@ -22,13 +22,14 @@
 </svelte:head>
 <main class="index-page">
 	<!-- active tab can be opened from side menu and from the tab wrapper -->
+	
 	<SideMenu />
 	<TabWrapper />
 	<CytoScapeEditor />
 
 	<NodeMenu />
 	<EdgeMenu />
-
+	<div id="cytoscape-editor"></div>
 	<!-- absolutely positioned stuff -->
 	<LogoType />
 	<LoadingIndicator />

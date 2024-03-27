@@ -1,13 +1,14 @@
-import { writable } from 'svelte/store';
-import type { Model, Variable, Regulation, EdgeMonotonicity } from '../types/types'; // Adjust the import path to where your types are defined
+import { get, writable } from 'svelte/store';
+import { type Model, type Variable, type Regulation, EdgeMonotonicity, type Position } from '../types/types'; // Adjust the import path to where your types are defined
 import { generateRegulationId } from '$lib/utils/utils';
+import { idStore } from './idStore';
 
 const initialState: Model = {
     id: '',
     name: 'Untitled Model',
     description: '',
     regulations: [],
-    variables: []
+    variables: [],
 };
 
 const modelStore = writable<Model>(initialState);
@@ -18,6 +19,23 @@ const modelStoreActions = {
     },
     clearModel: function () {
         modelStore.set(initialState);
+    },
+    createVariable: function (name: string | null, position: Position | null = null) {
+
+        modelStore.update((currentModel) => {
+            const id = idStore.increment().toString();
+            const usedName = name || `v_${id}`;
+            const newVariable: Variable = {
+                id,
+                name: usedName,
+                updateFunction: '',
+                initPosition: position
+            };
+            return {
+                ...currentModel,
+                variables: [...currentModel.variables, newVariable]
+            }
+        });
     },
     addVariable: function (variable: Variable) {
         modelStore.update((currentModel) => ({
@@ -40,8 +58,8 @@ const modelStoreActions = {
     createRegulation: function (
         sourceId: string,
         targetId: string,
-        monotonicity: EdgeMonotonicity.unspecified,
-        observable: false
+        monotonicity = EdgeMonotonicity.unspecified,
+        observable = true
     ) {
         modelStore.update((currentModel) => {
             const regulationId = generateRegulationId(sourceId, targetId);
@@ -52,8 +70,8 @@ const modelStoreActions = {
                 return currentModel;
             }
 
-            const source = currentModel.variables.find((node) => node.id === sourceId);
-            const target = currentModel.variables.find((node) => node.id === targetId);
+            const source = currentModel.variables.find((node) => node.id == sourceId);
+            const target = currentModel.variables.find((node) => node.id == targetId);
             if (!source || !target) {
                 return currentModel;
             }
@@ -117,8 +135,15 @@ const modelStoreActions = {
                 edge.id === edgeId ? { ...edge, observable: !edge.observable } : edge
             )
         }));
+    },
+    getVariableId(name: string) {
+        const model = get(modelStore);
+        const variable = model.variables.find(v => v.name === name);
+        if (!variable) {
+            throw new Error(`Variable with name ${name} not found`);
+        }
+        return variable.id;
     }
-
 };
 
 export { modelStore, modelStoreActions };
