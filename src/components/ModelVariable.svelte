@@ -5,6 +5,7 @@
 	import { cytoscapeStore } from '../stores/cytoscapeStore';
 	import { hoveredNodeStore } from '../stores/hoveredNodeStore';
 	import { focusedInputStore } from '../stores/focusedVariableInput';
+	import { selectedNodesStore } from '../stores/selectedItemsStore';
 
 	export let variable: Variable;
 	export let regulations: Regulation[];
@@ -16,16 +17,15 @@
 
 	focusedInputStore.subscribe((focusedInput) => {
 		if (!isSelected || !focusedInput) {
-			console.log(`not selected ${variable.name}`);
 			return;
 		}
-		// the null coallescing '?.'' here is important, otherwise the value can get bound to null.
-		if (focusedInput == 'function') {
+		// the null coallescing '?.' here is important, otherwise the value can get bound to null.
+		if (focusedInput === 'function') {
 			updateFunctionInput?.focus();
-		} else if (focusedInput == 'name') {
-			variableNameInput?.focus();
+		} else if (focusedInput === 'name') {
 		}
-		focusedInputStore.set(null);
+		// focusedInputStore.set(null);
+		setTimeout(() => focusedInputStore.set(null), 0);
 	});
 
 	const dispatch = createEventDispatcher();

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import hotkeys from 'hotkeys-js';
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { activeTabStore } from '../stores/activeTabStore';
 	import { cytoscapeStore } from '../stores/cytoscapeStore';
 	import { edgehandlesStore } from '../stores/edgehandlesStore';
@@ -46,12 +46,14 @@
 			$edgehandlesStore.start(cyNode as any);
 		}
 	}
-	function handleNodeNameEdit() {
+	async function handleNodeNameEdit() {
 		activeTabStore.set('model-editor');
+		await tick(); // Wait for the DOM to update
 		focusedInputStore.set('name');
 	}
-	function handleNodeFunctionEdit() {
+	async function handleNodeFunctionEdit() {
 		activeTabStore.set('model-editor');
+		await tick(); // Wait for the DOM to update
 		focusedInputStore.set('function');
 	}
 
@@ -80,45 +82,45 @@
 </script>
 
 {#if nodes.length > 0}
-<div id="node-menu" class="float-menu" style={menuStyle}>
-	<div class="button-row">
-		{#if nodes.length === 1}
-			<button on:click={handleNodeNameEdit}>
-				<img alt="Edit name (E)" id="node-menu-edit-name" src="img/edit-24px.svg" />
-				<!-- Edit node -->
+	<div id="node-menu" class="float-menu" style={menuStyle}>
+		<div class="button-row">
+			{#if nodes.length === 1}
+				<button on:click={handleNodeNameEdit}>
+					<img alt="Edit name (E)" id="node-menu-edit-name" src="img/edit-24px.svg" />
+					<!-- Edit node -->
+				</button>
+				<button on:click={handleNodeFunctionEdit}>
+					<img
+						alt="Edit update function (F)"
+						id="node-menu-edit-function"
+						src="img/functions-24px.svg"
+					/>
+				</button>
+				<button on:mousedown={handleNewEdgeHandle}>
+					<img src="img/dot-arrow-up.svg" alt="" draggable="false" />
+					<!-- Add edge -->
+				</button>
+			{/if}
+			{#if loopAllowed}
+				<button on:click={handleLoopCreation}>
+					<img src="img/loop.svg" alt="" />
+					<!-- add Loop  -->
+				</button>
+			{/if}
+			{#if nodes.length === 2}
+				<button on:click={handleConnectionFrom}>
+					<img src="img/dot-arrow-up.svg" alt="" />
+					<!-- Connect from -->
+				</button>
+				<button on:click={handleConnectionTo}
+					><img src="img/dot-arrow-down.svg" alt="" />
+					<!-- Connect here -->
+				</button>
+			{/if}
+			<button on:click={handleRemove}>
+				<img alt="Remove (⌫)" id="node-menu-remove" src="img/delete-24px.svg" />
+				<!-- Remove -->
 			</button>
-			<button on:click={handleNodeFunctionEdit}>
-				<img
-					alt="Edit update function (F)"
-					id="node-menu-edit-function"
-					src="img/functions-24px.svg"
-				/>
-			</button>
-			<button on:mousedown={handleNewEdgeHandle}>
-				<img src="img/dot-arrow-up.svg" alt="" draggable="false" />
-				<!-- Add edge -->
-			</button>
-		{/if}
-		{#if loopAllowed}
-			<button on:click={handleLoopCreation}>
-				<img src="img/loop.svg" alt="" />
-				<!-- add Loop  -->
-			</button>
-		{/if}
-		{#if nodes.length === 2}
-			<button on:click={handleConnectionFrom}>
-				<img src="img/dot-arrow-up.svg" alt="" />
-				<!-- Connect from -->
-			</button>
-			<button on:click={handleConnectionTo}
-				><img src="img/dot-arrow-down.svg" alt="" />
-				<!-- Connect here -->
-			</button>
-		{/if}
-		<button on:click={handleRemove}>
-			<img alt="Remove (⌫)" id="node-menu-remove" src="img/delete-24px.svg" />
-			<!-- Remove -->
-		</button>
+		</div>
 	</div>
-</div>
 {/if}
