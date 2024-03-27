@@ -144,11 +144,11 @@ body {
 	display: flex;
     flex-direction: column; 
     align-items: start; 
-	gap: 10px;
-	/* Initially, menu is off screen */
-	left: -200px;
-	top: -200px;
 	text-align: center;
+	gap: 10px;
+	/* Fixed width for variable lengths of hints */
+	width: 200px;
+
 	/* Ensures the zoom is properly applied when needed */
 	transform-origin: 0% 0%;
 }
@@ -188,7 +188,6 @@ body {
 	align-self: center;
 	opacity: 0.8;
 	background-color: var(--primary-color-ultralight);
-	color: black;
 }
 /*
     The menu with main buttons/panels
