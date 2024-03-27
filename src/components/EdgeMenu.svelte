@@ -6,10 +6,14 @@
 	import { selectedEdgesStore } from '../stores/selectedItemsStore';
 	import { EdgeMonotonicity, type Regulation } from '../types/types';
 	import hotkeys from 'hotkeys-js';
+	import { writable, type Writable } from 'svelte/store';
+	import { hintAction } from '$lib/actions/hintAction';
 
 	$: edges = $selectedEdgesStore?.items;
 	$: position = $selectedEdgesStore?.position;
 	$: regulation = edges[0];
+	const hint = writable('');
+
 
 	$: [imgMonotonicitySrc, imgMonotonicityText] = (() => {
 		switch (regulation?.monotonicity) {
@@ -26,27 +30,9 @@
 		: ['img/visibility_on-24px.svg', 'Make observable (O)'];
 
 	$: menuStyle = edges && position ? `top: ${position.y + 15}px; left: ${position.x + 120}px;` : '';
-	let hint: string;
 
-	function hintAction(node: HTMLButtonElement, hintText: string) {
-		const setHint = () => {
-			// Your implementation to set the hint text
-			hint = hintText;
-		};
 
-		node.addEventListener('mouseover', setHint);
-		node.addEventListener('focus', setHint);
-		node.addEventListener('mouseout', () => {
-			hint = '';
-		});
-
-		return {
-			destroy() {
-				node.removeEventListener('mouseover', setHint);
-				node.removeEventListener('focus', setHint);
-			}
-		};
-	}
+	
 	function handleMonotonicityChange() {
 		const newMonotonicity = nextMonotonicity(regulation.monotonicity);
 
@@ -94,19 +80,25 @@
 	<div id="edge-menu" class="float-menu" style={menuStyle}>
 		<div class="button-row">
 			{#if edges.length === 1}
-				<button use:hintAction={imgMonotonicityText} on:click={handleMonotonicityChange}>
+				<button
+					use:hintAction={{ hint, hintText: imgMonotonicityText }}
+					on:click={handleMonotonicityChange}
+				>
 					<img src={imgMonotonicitySrc} alt={imgMonotonicityText} />
 				</button>
-				<button use:hintAction={imgObservabilityText} on:click={handleObservableToggle}>
+				<button
+					use:hintAction={{ hint, hintText: imgObservabilityText }}
+					on:click={handleObservableToggle}
+				>
 					<img src={imgObservabilitySrc} alt={imgObservabilityText} />
 				</button>
 			{/if}
-			<button use:hintAction={'Remove (⌫)'} on:click={handleRemove}>
+			<button use:hintAction={{ hint, hintText: 'Remove (⌫)' }} on:click={handleRemove}>
 				<img alt="Remove (⌫)" id="edge-menu-remove" class="button" src="img/delete-24px.svg" />
 			</button>
 		</div>
-		{#if hint}
-			<div class="hint">{hint}</div>
+		{#if $hint}
+			<div class="hint">{$hint}</div>
 		{/if}
 	</div>
 {/if}
