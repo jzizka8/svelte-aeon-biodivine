@@ -48,7 +48,6 @@
 			} else if (focusedInput === 'name') {
 				variableNameInput.focus();
 			}
-			// focusedInputStore.set(null);
 			setTimeout(() => focusedInputStore.set(null), 0);
 		})
 	);
