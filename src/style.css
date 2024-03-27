@@ -141,6 +141,10 @@ body {
 */
 .float-menu {
 	position: absolute;
+	display: flex;
+    flex-direction: column; 
+    align-items: start; 
+	gap: 10px;
 	/* Initially, menu is off screen */
 	left: -200px;
 	top: -200px;
@@ -151,10 +155,10 @@ body {
 
 .float-menu .button-row {
 	display: flex;
-	background-color: var(--primary-color-ultralight);
-	
+	border-radius: 8px;
 	margin: 0 auto;
-	border-radius: 24px;
+	
+	background-color: var(--primary-color-ultralight);
 }
 
 .float-menu button {
@@ -176,6 +180,15 @@ body {
 
 .float-menu img{
 	width: 24px;
+}
+
+.float-menu .hint{
+	border-radius: 8px;
+	padding: 5px;
+	align-self: center;
+	opacity: 0.8;
+	background-color: var(--primary-color-ultralight);
+	color: black;
 }
 /*
     The menu with main buttons/panels

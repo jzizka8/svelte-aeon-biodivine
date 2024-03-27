@@ -14,7 +14,7 @@
 	$: position = $selectedNodesStore?.position;
 	$: menuStyle =
 		nodes && position
-			? `position: absolute; top: ${position.y + 15}px; left: ${position.x + 120}px;`
+			? `top: ${position.y + 15}px; left: ${position.x + 70}px;`
 			: '';
 
 	$: loopAllowed =

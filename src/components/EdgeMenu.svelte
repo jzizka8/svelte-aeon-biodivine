@@ -29,7 +29,7 @@
 		? ['img/visibility_off-24px.svg', 'Make unobservable (O)']
 		: ['img/visibility_on-24px.svg', 'Make observable (O)'];
 
-	$: menuStyle = edges && position ? `top: ${position.y + 15}px; left: ${position.x + 120}px;` : '';
+	$: menuStyle = edges && position ? `top: ${position.y + 15}px; left: ${position.x + 60}px;` : '';
 
 
 	
