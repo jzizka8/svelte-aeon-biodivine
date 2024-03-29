@@ -4,7 +4,7 @@
 	import LogoType from '$lib/components/LogoType.svelte';
 	import LoadingIndicator from '$lib/components/LoadingIndicator.svelte';
 	import { modelStore } from '$lib/stores/modelStore';
-	import { init } from '$lib/script/treeExplorerMain';
+	import { init } from '../../script/treeExplorerMain';
 
 	import {
 		PrecisionSlider,
