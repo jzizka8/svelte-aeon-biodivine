@@ -191,7 +191,7 @@ const LiveModel = {
 	addRegulation(regulatorId, targetId, isObservable, monotonicity) {
 		console.log('addRegulation', regulatorId, targetId, isObservable, monotonicity);
 		modelStoreActions.createRegulation(regulatorId, targetId, monotonicity, isObservable);
-		console.log(get(modelStore))
+		console.log(get(modelStore));
 		if (this.findRegulation(regulatorId, targetId) !== undefined) return false;
 		let regulation = {
 			regulator: regulatorId,
@@ -491,7 +491,7 @@ const LiveModel = {
 	// Erase the whole model
 	clear() {
 		modelStoreActions.clearModel();
-		console.log('Model cleared')
+		console.log('Model cleared');
 
 		let keys = Object.keys(this._variables);
 		for (var i = 0; i < keys.length; i++) {

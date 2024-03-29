@@ -69,7 +69,7 @@ export let ComputeEngine = {
 	closeConnection() {
 		if (this._pingRepeatToken === undefined) {
 			return false;
-		} 
+		}
 
 		clearTimeout(this._pingRepeatToken);
 		this._pingRepeatToken = undefined;
@@ -77,7 +77,6 @@ export let ComputeEngine = {
 		UI.updateComputeEngineStatus('disconnected');
 
 		return true;
-	
 	},
 
 	// Return current connection status.

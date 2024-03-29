@@ -42,7 +42,6 @@ export function init() {
 	const engineAddress = urlParams.get('engine') ?? DEFAULT_ENGINE_ADDRESS;
 	const reqBeh = urlParams.get('behavior');
 
-
 	let callback = function (e, r) {
 		console.log(e);
 		if (e !== undefined) {
@@ -76,11 +75,7 @@ export function init() {
 		const requestedVariable = urlParams.get('variable');
 		const requestedBehaviour = urlParams.get('behaviour');
 		const requestedVector = urlParams.get('vector');
-		if (
-			requestedVariable === undefined ||
-			requestedVariable === null ||
-			requestedVector === null
-		) {
+		if (requestedVariable === undefined || requestedVariable === null || requestedVector === null) {
 			// Just get node attractors
 			var request = ComputeEngine._backendRequest(
 				'/get_tree_attractors/' + requestedTreeWitness,
@@ -92,20 +87,19 @@ export function init() {
 			// This is attractor stability query
 			var request = ComputeEngine._backendRequest(
 				'/get_stability_attractors/' +
-				requestedTreeWitness +
-				'/' +
-				encodeURI(requestedBehaviour) +
-				'/' +
-				encodeURI(requestedVariable) +
-				'/' +
-				encodeURI('[' + requestedVector + ']'),
+					requestedTreeWitness +
+					'/' +
+					encodeURI(requestedBehaviour) +
+					'/' +
+					encodeURI(requestedVariable) +
+					'/' +
+					encodeURI('[' + requestedVector + ']'),
 				callback,
 				'GET',
 				null
 			);
 		}
 	}
-
 }
 
 function nodeClick(e) {

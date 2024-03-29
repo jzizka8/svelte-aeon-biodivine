@@ -13,11 +13,11 @@ export const SORT_NEGATIVE_MAJORITY = 'sort-negative-majority';
 export const SORT_ALPHABETICAL = 'sort-alphabetical';
 
 export const sortOptions = [
-    { id: SORT_INFORMATION_GAIN, label: 'Information gain' },
-    { id: SORT_TOTAL_CLASSES, label: 'Total classes' },
-    { id: SORT_POSITIVE, label: 'Positive' },
-    { id: SORT_POSITIVE_MAJORITY, label: 'Positive majority' },
-    { id: SORT_NEGATIVE, label: 'Negative' },
-    { id: SORT_NEGATIVE_MAJORITY, label: 'Negative majority' },
-    { id: SORT_ALPHABETICAL, label: 'Alphabetical' }
+	{ id: SORT_INFORMATION_GAIN, label: 'Information gain' },
+	{ id: SORT_TOTAL_CLASSES, label: 'Total classes' },
+	{ id: SORT_POSITIVE, label: 'Positive' },
+	{ id: SORT_POSITIVE_MAJORITY, label: 'Positive majority' },
+	{ id: SORT_NEGATIVE, label: 'Negative' },
+	{ id: SORT_NEGATIVE_MAJORITY, label: 'Negative majority' },
+	{ id: SORT_ALPHABETICAL, label: 'Alphabetical' }
 ];

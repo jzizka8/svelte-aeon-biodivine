@@ -1,3 +1,3 @@
-import { importAeon } from "./importModel";
+import { importAeon } from './importModel';
 
 export default { importAeon };

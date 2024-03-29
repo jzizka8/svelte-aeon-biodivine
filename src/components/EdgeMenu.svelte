@@ -14,7 +14,6 @@
 	$: regulation = edges[0];
 	const hint = writable('');
 
-
 	$: [imgMonotonicitySrc, imgMonotonicityText] = (() => {
 		switch (regulation?.monotonicity) {
 			case EdgeMonotonicity.activation:
@@ -31,8 +30,6 @@
 
 	$: menuStyle = edges && position ? `top: ${position.y + 15}px; left: ${position.x + 60}px;` : '';
 
-
-	
 	function handleMonotonicityChange() {
 		const newMonotonicity = nextMonotonicity(regulation.monotonicity);
 

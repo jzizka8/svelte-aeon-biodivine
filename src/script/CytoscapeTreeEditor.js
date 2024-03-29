@@ -1,6 +1,11 @@
 import cytoscape from 'cytoscape';
 import cytoscapeDagre from 'cytoscape-dagre';
-import { Math_dimPercent, Math_percent, initStabilityButton, renderAttributeTable } from './treeExplorerMain';
+import {
+	Math_dimPercent,
+	Math_percent,
+	initStabilityButton,
+	renderAttributeTable
+} from './treeExplorerMain';
 import ComputeEngine from './ComputeEngine';
 
 /*

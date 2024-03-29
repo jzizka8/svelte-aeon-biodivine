@@ -21,13 +21,13 @@
 	let edgehandles: EdgeHandlesInstance;
 	onMount(() => {
 		cytoscape.use(dagre);
-        cytoscape.use(cytoscapeEdgehandles)
-        
+		cytoscape.use(cytoscapeEdgehandles);
+
 		cyInstance = cytoscape({
-            container: refElement,
+			container: refElement,
 			style: graphStyles
 		});
-        edgehandles = cyInstance.edgehandles(edgeOptions);
+		edgehandles = cyInstance.edgehandles(edgeOptions);
 		edgehandles.enable();
 
 		cyInstance.on('dblclick', (e) => {
@@ -36,11 +36,10 @@
 
 		cyInstance.on('pan', repositionContextMenus);
 
-
-        cyInstance.on('ehcomplete', (event, sourceNode, targetNode, addedEdge) => {
-            addedEdge.remove();
-            modelStoreActions.createRegulation(sourceNode.data('id'), targetNode.data('id'));
-        });
+		cyInstance.on('ehcomplete', (event, sourceNode, targetNode, addedEdge) => {
+			addedEdge.remove();
+			modelStoreActions.createRegulation(sourceNode.data('id'), targetNode.data('id'));
+		});
 
 		cytoscapeStore.set(cyInstance);
 		edgehandlesStore.set(edgehandles);

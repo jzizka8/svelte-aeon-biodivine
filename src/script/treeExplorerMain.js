@@ -1,7 +1,15 @@
-import hotkeys from "hotkeys-js";
-import ComputeEngine from "./ComputeEngine";
-import { CytoscapeEditor } from "./CytoscapeTreeEditor";
-import { SORT_ALPHABETICAL, SORT_INFORMATION_GAIN, SORT_NEGATIVE, SORT_NEGATIVE_MAJORITY, SORT_POSITIVE, SORT_POSITIVE_MAJORITY, SORT_TOTAL_CLASSES } from "../const";
+import hotkeys from 'hotkeys-js';
+import ComputeEngine from './ComputeEngine';
+import { CytoscapeEditor } from './CytoscapeTreeEditor';
+import {
+	SORT_ALPHABETICAL,
+	SORT_INFORMATION_GAIN,
+	SORT_NEGATIVE,
+	SORT_NEGATIVE_MAJORITY,
+	SORT_POSITIVE,
+	SORT_POSITIVE_MAJORITY,
+	SORT_TOTAL_CLASSES
+} from '../const';
 
 export function Math_dimPercent(cardinality, total) {
 	return Math.round(((Math.log2(cardinality) + 1) / (Math.log2(total) + 1)) * 100);
@@ -130,11 +138,11 @@ function compareNegative(a, b) {
 }
 
 function getCurrentSort() {
-    const checkedInput = document.querySelector('input[name="sort"]:checked');
-    if (checkedInput) {
-        return checkedInput.id;
-    }
-    return SORT_INFORMATION_GAIN;
+	const checkedInput = document.querySelector('input[name="sort"]:checked');
+	if (checkedInput) {
+		return checkedInput.id;
+	}
+	return SORT_INFORMATION_GAIN;
 }
 // function getCurrentSort() {
 // 	for (let sort of SORTS) {
@@ -266,33 +274,28 @@ export function renderAttributeTable(id, attributes, totalCardinality) {
 function autoExpandBifurcationTree(node, depth, fit = true) {
 	let loading = document.getElementById('loading-indicator');
 	loading.classList.remove('invisible');
-	ComputeEngine.autoExpandBifurcationTree(
-		node,
-		depth,
-		(e, r) => {
-			if (r !== undefined && r.length > 0) {
-				for (let node of r) {
-					CytoscapeEditor.ensureNode(node);
-				}
-				for (let node of r) {
-					if (node.type == 'decision') {
-						CytoscapeEditor.ensureEdge(node.id, node.left, false);
-						CytoscapeEditor.ensureEdge(node.id, node.right, true);
-					}
-				}
-
-				CytoscapeEditor.applyTreeLayout();
-				if (fit) {
-					CytoscapeEditor.fit();
-				}
-			} else {
-				alert(e);
+	ComputeEngine.autoExpandBifurcationTree(node, depth, (e, r) => {
+		if (r !== undefined && r.length > 0) {
+			for (let node of r) {
+				CytoscapeEditor.ensureNode(node);
 			}
-			loading.classList.add('invisible');
-			CytoscapeEditor.refreshSelection();
-		},
-		
-	);
+			for (let node of r) {
+				if (node.type == 'decision') {
+					CytoscapeEditor.ensureEdge(node.id, node.left, false);
+					CytoscapeEditor.ensureEdge(node.id, node.right, true);
+				}
+			}
+
+			CytoscapeEditor.applyTreeLayout();
+			if (fit) {
+				CytoscapeEditor.fit();
+			}
+		} else {
+			alert(e);
+		}
+		loading.classList.add('invisible');
+		CytoscapeEditor.refreshSelection();
+	});
 }
 
 function loadBifurcationTree(fit = true) {
@@ -508,7 +511,8 @@ function getWitnessPanelForVariable(variable, behaviour, vector) {
 	);
 }
 
-function initHotkeys(){// Keyboard shortcuts for basic navigation:
+function initHotkeys() {
+	// Keyboard shortcuts for basic navigation:
 
 	hotkeys('up', function (event, handler) {
 		let selected = CytoscapeEditor.getSelectedNodeId();

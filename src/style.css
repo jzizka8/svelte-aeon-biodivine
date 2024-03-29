@@ -142,8 +142,8 @@ body {
 .float-menu {
 	position: absolute;
 	display: flex;
-    flex-direction: column; 
-    align-items: start; 
+	flex-direction: column;
+	align-items: start;
 	text-align: center;
 	gap: 10px;
 	/* Fixed width for variable lengths of hints */
@@ -157,7 +157,7 @@ body {
 	display: flex;
 	border-radius: 8px;
 	margin: 0 auto;
-	
+
 	background-color: var(--primary-color-ultralight);
 }
 
@@ -166,23 +166,23 @@ body {
 	padding: 10px;
 	border-radius: 8px;
 	transition: 0.3s;
-	border:none;
+	border: none;
 	cursor: pointer;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap:5px;
+	gap: 5px;
 }
 
 .float-menu button:hover {
 	background-color: var(--primary-color-light);
 }
 
-.float-menu img{
+.float-menu img {
 	width: 24px;
 }
 
-.float-menu .hint{
+.float-menu .hint {
 	border-radius: 8px;
 	padding: 5px;
 	align-self: center;
@@ -480,8 +480,8 @@ div.invisible-input[contenteditable]:empty:not(:focus):before {
 	right: 36px;
 	top: 4px;
 }
-.remove-variable-button{
-	border:none;
+.remove-variable-button {
+	border: none;
 }
 #model-stats {
 	font-family: 'FiraMono', monospace;
@@ -548,21 +548,22 @@ div.invisible-input[contenteditable]:empty:not(:focus):before {
 	width: 110px;
 	text-align: center;
 }
-.model-regulation-monotonicity, .model-regulation-observable{
+.model-regulation-monotonicity,
+.model-regulation-observable {
 	border: none;
 	background: transparent;
 }
-.monotonicity--activation{
+.monotonicity--activation {
 	color: var(--green);
 }
-.monotonicity--inhibition{
+.monotonicity--inhibition {
 	color: red;
 }
-.monotonicity--unspecified{
+.monotonicity--unspecified {
 	color: grey;
 }
-.observable--false{
-	color:grey;
+.observable--false {
+	color: grey;
 }
 
 .variable-function-status {

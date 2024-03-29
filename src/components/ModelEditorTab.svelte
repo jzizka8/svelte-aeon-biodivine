@@ -73,7 +73,7 @@
 		data-placeholder="(model description)"
 		style="display:none"
 	/>
-	<div class="invisible-input full-line" contenteditable bind:innerHTML={$modelStore.description}></div>
+	<div class="invisible-input full-line" contenteditable bind:innerHTML={$modelStore.description} />
 	<div style="height: 30px;">
 		<h3 style="font-family: 'FiraMono'; text-transform: uppercase;">● Overview</h3>
 	</div>
@@ -85,7 +85,6 @@
 		on:click={() => modelStoreActions.createVariable(null)}
 		style="float: right;">Add variable (N) <img src="img/add_box-24px.svg" /></button
 	>
-
 
 	<div class="old-code" style="display: none;">
 		<div style="height: 40px;">
@@ -136,7 +135,7 @@
 
 	{#each $modelStore.variables as variable (variable.id)}
 		<ModelVariable
-			isSelected={$selectedNodesStore.items.some(node=> node.id == variable.id)}
+			isSelected={$selectedNodesStore.items.some((node) => node.id == variable.id)}
 			{variable}
 			regulations={$modelStore.regulations.filter((v) => v.target.id == variable.id)}
 			on:delete={() => modelStoreActions.removeVariable(variable.id)}

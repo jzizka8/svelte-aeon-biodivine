@@ -12,10 +12,7 @@
 
 	$: nodes = $selectedNodesStore?.items;
 	$: position = $selectedNodesStore?.position;
-	$: menuStyle =
-		nodes && position
-			? `top: ${position.y + 15}px; left: ${position.x + 70}px;`
-			: '';
+	$: menuStyle = nodes && position ? `top: ${position.y + 15}px; left: ${position.x + 70}px;` : '';
 
 	$: loopAllowed =
 		nodes?.length === 1 &&
@@ -90,39 +87,42 @@
 	<div id="node-menu" class="float-menu" style={menuStyle}>
 		<div class="button-row">
 			{#if nodes.length === 1}
-				<button use:hintAction={{hint, hintText:'Edit name (E)'}} on:click={handleNodeNameEdit}>
+				<button use:hintAction={{ hint, hintText: 'Edit name (E)' }} on:click={handleNodeNameEdit}>
 					<img alt="Edit name (E)" id="node-menu-edit-name" src="img/edit-24px.svg" />
 					<!-- Edit node -->
 				</button>
-				<button use:hintAction={{hint, hintText:'Edit update function (F)'}} on:click={handleNodeFunctionEdit}>
+				<button
+					use:hintAction={{ hint, hintText: 'Edit update function (F)' }}
+					on:click={handleNodeFunctionEdit}
+				>
 					<img
 						alt="Edit update function (F)"
 						id="node-menu-edit-function"
 						src="img/functions-24px.svg"
 					/>
 				</button>
-				<button use:hintAction={{hint, hintText:'Add edge'}} on:mousedown={handleNewEdgeHandle}>
+				<button use:hintAction={{ hint, hintText: 'Add edge' }} on:mousedown={handleNewEdgeHandle}>
 					<img src="img/dot-arrow-up.svg" alt="" draggable="false" />
 					<!-- Add edge -->
 				</button>
 			{/if}
 			{#if loopAllowed}
-				<button use:hintAction={{hint, hintText:'Add loop (L)'}} on:click={handleLoopCreation}>
+				<button use:hintAction={{ hint, hintText: 'Add loop (L)' }} on:click={handleLoopCreation}>
 					<img src="img/loop.svg" alt="" />
 					<!-- add Loop  -->
 				</button>
 			{/if}
 			{#if nodes.length === 2}
-				<button use:hintAction={{hint, hintText:'Connect from'}} on:click={handleConnectionFrom}>
+				<button use:hintAction={{ hint, hintText: 'Connect from' }} on:click={handleConnectionFrom}>
 					<img src="img/dot-arrow-up.svg" alt="" />
 					<!-- Connect from -->
 				</button>
-				<button use:hintAction={{hint, hintText:'Connect here'}} on:click={handleConnectionTo}
+				<button use:hintAction={{ hint, hintText: 'Connect here' }} on:click={handleConnectionTo}
 					><img src="img/dot-arrow-down.svg" alt="" />
 					<!-- Connect here -->
 				</button>
 			{/if}
-			<button use:hintAction={{hint, hintText:'Remove (⌫)'}} on:click={handleRemove}>
+			<button use:hintAction={{ hint, hintText: 'Remove (⌫)' }} on:click={handleRemove}>
 				<img alt="Remove (⌫)" id="node-menu-remove" src="img/delete-24px.svg" />
 				<!-- Remove -->
 			</button>

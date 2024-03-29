@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { setSort } from "../../../script/treeExplorerMain";
-	import { sortOptions } from "../../../const";
+	import { setSort } from '../../../script/treeExplorerMain';
+	import { sortOptions } from '../../../const';
 </script>
 
 <div id="mixed-info" class="main-panel fira-mono gone">
@@ -105,7 +105,7 @@
 							value={option.id}
 							checked={option.id === sortOptions[0].id}
 							id={option.id}
-							on:change={ setSort}	
+							on:change={setSort}
 						/>
 						{option.label}
 					</label>

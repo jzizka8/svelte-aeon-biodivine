@@ -3,9 +3,8 @@
 	import Examples from '../script/Examples';
 	import UI from '../script/UI';
 	import { activeTabStore } from '../stores/activeTabStore';
-	
-	function importModel(model:string) {
 
+	function importModel(model: string) {
 		importAeon(model);
 		activeTabStore.close();
 	}

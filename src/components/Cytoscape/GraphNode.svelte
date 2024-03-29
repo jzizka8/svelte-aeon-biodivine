@@ -37,7 +37,7 @@
 	});
 	onDestroy(() => {
 		cyInstance.getElementById(node.id).remove();
-    	selectedNodesStore.removeItem(node.id);
-        console.log(` ${node.label} removed from graph`)
+		selectedNodesStore.removeItem(node.id);
+		console.log(` ${node.label} removed from graph`);
 	});
 </script>

@@ -11,7 +11,7 @@
 	import TabWrapper from '../components/TabWrapper.svelte';
 	import { init } from '../script/main';
 	import { modelStore } from '../stores/modelStore';
-	
+
 	onMount(() => {
 		init();
 	});
@@ -22,14 +22,14 @@
 </svelte:head>
 <main class="index-page">
 	<!-- active tab can be opened from side menu and from the tab wrapper -->
-	
+
 	<SideMenu />
 	<TabWrapper />
 	<CytoScapeEditor />
 
 	<NodeMenu />
 	<EdgeMenu />
-	<div id="cytoscape-editor"></div>
+	<div id="cytoscape-editor" />
 	<!-- absolutely positioned stuff -->
 	<LogoType />
 	<LoadingIndicator />

@@ -1,3 +1,3 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte/store';
 
-export const focusedInputStore = writable<'name'|'function'|null>(null);
+export const focusedInputStore = writable<'name' | 'function' | null>(null);

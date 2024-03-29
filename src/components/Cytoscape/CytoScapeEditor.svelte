@@ -15,17 +15,16 @@
 		source: regulation.source.id,
 		target: regulation.target.id,
 		monotonicity: regulation.monotonicity,
-        observable: regulation.observable
+		observable: regulation.observable
 	}));
-
 </script>
 
 <Graph>
-		{#each nodes as node (node.id)}
-			<GraphNode {node} />
-		{/each}
+	{#each nodes as node (node.id)}
+		<GraphNode {node} />
+	{/each}
 
-		{#each edges as edge (edge.id)}
-			<GraphEdge {edge} />
-		{/each}
+	{#each edges as edge (edge.id)}
+		<GraphEdge {edge} />
+	{/each}
 </Graph>

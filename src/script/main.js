@@ -121,7 +121,6 @@ export function ensurePlaceholder(el) {
 	}
 */
 
-
 // utility function to fire events on UI elements - we mainly need it to simulate clicks
 function fireEvent(el, etype) {
 	if (el.fireEvent) {
@@ -132,4 +131,3 @@ function fireEvent(el, etype) {
 		el.dispatchEvent(evObj);
 	}
 }
-

@@ -31,12 +31,12 @@ export type Node = {
 	id: string;
 	label: string;
 	initPosition: null | Position;
-}
+};
 
 export type Position = {
 	x: number;
 	y: number;
-}
+};
 export type Regulation = {
 	id: string;
 	source: Variable;
@@ -52,6 +52,5 @@ export type ModelStatistics = {
 	regulationCount: number;
 	parameterSpace: string;
 	stateSpace: string;
-	explicitParameters: string[]
-}
-
+	explicitParameters: string[];
+};
