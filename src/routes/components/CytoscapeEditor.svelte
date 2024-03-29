@@ -17,8 +17,7 @@
 	}));
 </script>
 
-<NodeMenu />
-<EdgeMenu />
+
 <Graph>
 	{#each nodes as node (node.id)}
 		<GraphNode {node} />
@@ -28,3 +27,5 @@
 		<GraphEdge {edge} />
 	{/each}
 </Graph>
+<NodeMenu />
+<EdgeMenu />
