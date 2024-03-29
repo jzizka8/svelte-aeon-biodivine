@@ -1,18 +1,17 @@
 <script lang="ts">
 	import { getContext, onDestroy, onMount } from 'svelte';
-	import type { Regulation } from '$lib/types/types';
+	import type { Edge} from '$lib/types/types';
 	import { selectedEdgesStore } from '$lib/stores/selectedItemsStore';
 	import { repositionEdgeMenu } from './utils';
 
-	export let edge: Regulation;
+	export let edge: Edge;
 
-	const { getCyInstance } = getContext('graphSharedState');
+	const { getCyInstance } = getContext('graphSharedState') as { getCyInstance: () => cytoscape.Core };
 	const cyInstance = getCyInstance();
 
 	onMount(() => {
 		const cyEdge = cyInstance.add({
 			group: 'edges',
-			id: edge.id,
 			data: { ...edge }
 		});
 

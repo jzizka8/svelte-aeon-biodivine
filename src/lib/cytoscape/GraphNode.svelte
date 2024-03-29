@@ -6,7 +6,7 @@
 	import { hoveredNodeStore } from '$lib/stores/hoveredNodeStore';
 	export let node: Node;
 
-	const { getCyInstance } = getContext('graphSharedState') as { getCyInstance: () => any };
+	const { getCyInstance } = getContext('graphSharedState') as { getCyInstance: () => cytoscape.Core };
 
 	const cyInstance = getCyInstance();
 

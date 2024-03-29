@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import type { Node, Position, Regulation } from '$lib/types/types';
+import type { Edge, Node, Position } from '$lib/types/types';
 
 type Identifiable = { id: string };
 
@@ -34,4 +34,4 @@ function createSelectionStore<T extends Identifiable>() {
 }
 
 export const selectedNodesStore = createSelectionStore<Node>();
-export const selectedEdgesStore = createSelectionStore<Regulation>();
+export const selectedEdgesStore = createSelectionStore<Edge>();

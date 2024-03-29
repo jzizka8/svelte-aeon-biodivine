@@ -24,13 +24,7 @@ export type Variable = {
 	id: string;
 	name: string;
 	updateFunction: string;
-	initPosition: null | Position;
-};
-
-export type Node = {
-	id: string;
-	label: string;
-	initPosition: null | Position;
+	initPosition: undefined | Position;
 };
 
 export type Position = {
@@ -53,4 +47,18 @@ export type ModelStatistics = {
 	parameterSpace: string;
 	stateSpace: string;
 	explicitParameters: string[];
+};
+
+export type Node = {
+	id: string;
+	label: string;
+	initPosition: undefined | Position;
+};
+
+export type Edge = {
+	id: string;
+	source: string;
+	target: string;
+	monotonicity: EdgeMonotonicity;
+	observable: boolean;
 };
