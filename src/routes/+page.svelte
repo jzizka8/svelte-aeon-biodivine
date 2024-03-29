@@ -2,8 +2,8 @@
 	import { onMount } from 'svelte';
 
 	import QuickHelp from './components/QuickHelp.svelte';
+	import CytoscapeEditor from './components/CytoscapeEditor.svelte';
 	import SideMenu from '$lib/components/SideMenu.svelte';
-	import CytoscapeEditor from '$lib/Cytoscape/CytoscapeEditor.svelte';
 	import LogoType from '$lib/components/LogoType.svelte';
 
 	import LoadingIndicator from '$lib/components/LoadingIndicator.svelte';
