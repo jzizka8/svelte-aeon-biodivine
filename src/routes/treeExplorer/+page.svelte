@@ -6,14 +6,8 @@
 	import { modelStore } from '$lib/stores/modelStore';
 	import { init } from '../../script/treeExplorerMain';
 
-	import {
-		PrecisionSlider,
-		TransparencySwitch,
-		MixedInfo,
-		QuickHelp,
-		LeafInfo,
-		DecisionInfo
-	} from './components';
+	import { PrecisionSlider, TransparencySwitch, QuickHelp } from './components';
+	import TabWrapper from '$lib/components/TabWrapper.svelte';
 	onMount(() => {
 		init();
 	});
@@ -28,13 +22,7 @@
 	<QuickHelp />
 
 	<LogoType />
-
-	<DecisionInfo />
-
-	<MixedInfo />
-
-	<LeafInfo />
-
+	<TabWrapper />
 	<TransparencySwitch />
 
 	<PrecisionSlider />

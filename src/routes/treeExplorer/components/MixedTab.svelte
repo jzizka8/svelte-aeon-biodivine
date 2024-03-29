@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { setSort } from '$lib/script/treeExplorerMain';
+	import { setSort } from '../../../script/treeExplorerMain';
 	import { sortOptions } from '$lib//const';
 </script>
 
