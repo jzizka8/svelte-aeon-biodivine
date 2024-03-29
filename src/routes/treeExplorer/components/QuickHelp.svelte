@@ -1,5 +1,5 @@
 <script lang="ts">
-	import QuickHelpWrapper from '../../../components/QuickHelpWrapper.svelte';
+	import QuickHelpWrapper from '$lib/components/QuickHelpWrapper.svelte';
 </script>
 
 <QuickHelpWrapper>

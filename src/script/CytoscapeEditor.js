@@ -1,11 +1,11 @@
 import cytoscape from 'cytoscape';
-// import {liveModelStore as LiveModel} from "../stores/liveModelStore";
+// import {liveModelStore as LiveModel} from "$lib/stores/liveModelStore";
 import LiveModel from './LiveModel';
-import { modelEditorStore as ModelEditor } from '../stores/ModelEditorStore';
+import { modelEditorStore as ModelEditor } from '$lib/stores/ModelEditorStore';
 import UI from './UI';
-import edgehandles from 'cytoscape-edgehandles';
+
 import { get } from 'svelte/store';
-import { DOUBLE_CLICK_DELAY } from '../const';
+
 /*
 	Responsible for managing the cytoscape editor object. It has its own representation of the graph,
 	but it should never be updated directly. Instead, always use LiveModel to specify updates.

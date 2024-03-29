@@ -1,5 +1,5 @@
-import { EdgeMonotonicity, type Position } from '../../types/types';
-import { modelStoreActions } from '../../stores/modelStore';
+import { EdgeMonotonicity, type Position } from '$lib/types/types';
+import { modelStoreActions } from '$lib/stores/modelStore';
 
 type parsedData = {
 	modelName: string;

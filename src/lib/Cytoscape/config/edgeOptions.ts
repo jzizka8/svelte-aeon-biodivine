@@ -1,5 +1,5 @@
 import type { EdgeHandlesOptions } from 'cytoscape-edgehandles';
-import { EdgeMonotonicity } from '../../../types/types';
+import { EdgeMonotonicity } from '$lib/types/types';
 
 const edgeOptions: EdgeHandlesOptions = {
 	snap: false,

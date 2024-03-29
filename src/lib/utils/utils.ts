@@ -1,4 +1,4 @@
-import { EdgeMonotonicity, type Regulation } from '../../types/types';
+import { EdgeMonotonicity, type Regulation } from '$lib/types/types';
 
 export function generateRegulationId(sourceId: string, targetId: string) {
 	return `${sourceId}_${targetId}`;

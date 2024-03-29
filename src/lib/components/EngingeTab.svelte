@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { EXPECTED_ENGINE_VERSION } from '../const';
-	import { computeEngineStore } from '../stores/ComputeEngineStore';
-	import { activeTabStore } from '../stores/activeTabStore';
+	import { EXPECTED_ENGINE_VERSION } from '$lib/const';
+	import { computeEngineStore } from '$lib/stores/ComputeEngineStore';
+	import { activeTabStore } from '$lib/stores/activeTabStore';
 
 	$: ComputeEngine = $computeEngineStore;
 	$: engineConnected = ComputeEngine.isConnected();

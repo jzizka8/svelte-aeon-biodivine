@@ -5,7 +5,7 @@ import {
 	type Regulation,
 	EdgeMonotonicity,
 	type Position
-} from '../types/types'; // Adjust the import path to where your types are defined
+} from '$lib/types/types'; // Adjust the import path to where your types are defined
 import { generateRegulationId } from '$lib/utils/utils';
 import { idStore } from './idStore';
 

@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { tabType } from '../types/types';
+	import type { tabType } from '$lib/types/types';
 	import HelpTab from './HelpTab.svelte';
 	import ImportExportTab from './ImportExportTab.svelte';
 	import ModelEditorTab from './ModelEditorTab.svelte';
 	import ResultsTab from './ResultsTab.svelte';
 	import EngingeTab from './EngingeTab.svelte';
-	import { activeTabStore } from '../stores/activeTabStore';
+	import { activeTabStore } from '$lib/stores/activeTabStore';
 	import hotkeys from 'hotkeys-js';
 	import { onMount } from 'svelte';
 

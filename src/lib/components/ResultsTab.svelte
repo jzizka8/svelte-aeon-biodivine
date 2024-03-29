@@ -1,5 +1,5 @@
 <script>
-	import UI from '../script/UI';
+	import UI from '../../script/UI';
 </script>
 
 <div id="tab-results" class="main-panel">

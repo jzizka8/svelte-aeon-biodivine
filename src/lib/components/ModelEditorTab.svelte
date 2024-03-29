@@ -2,13 +2,13 @@
 	import ModelStats from './ModelStats.svelte';
 
 	import ModelVariable from './ModelVariable.svelte';
-	import type { ModelStatistics } from '../types/types';
+	import type { ModelStatistics } from '$lib/types/types';
 
-	import { modelStore, modelStoreActions } from '../stores/modelStore';
+	import { modelStore, modelStoreActions } from '$lib/stores/modelStore';
 	import { calculateMaxDegrees } from '$lib/utils/modelStats';
 	import { nextMonotonicity } from '$lib/utils/utils';
-	import { cytoscapeStore } from '../stores/cytoscapeStore';
-	import { selectedNodesStore } from '../stores/selectedItemsStore';
+	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
+	import { selectedNodesStore } from '$lib/stores/selectedItemsStore';
 
 	function handleMonotonicityChange(event: CustomEvent) {
 		const regulation = event.detail.regulation;

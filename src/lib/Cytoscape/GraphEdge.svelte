@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext, onDestroy, onMount } from 'svelte';
-	import type { Regulation } from '../../types/types';
-	import { selectedEdgesStore } from '../../stores/selectedItemsStore';
+	import type { Regulation } from '$lib/types/types';
+	import { selectedEdgesStore } from '$lib/stores/selectedItemsStore';
 	import { repositionEdgeMenu } from './utils';
 
 	export let edge: Regulation;

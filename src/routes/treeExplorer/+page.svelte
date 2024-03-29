@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import LogoType from '../../components/LogoType.svelte';
-	import LoadingIndicator from '../../components/LoadingIndicator.svelte';
-	import { modelStore } from '../../stores/modelStore';
-	import { init } from '../../script/treeExplorerMain';
+	import LogoType from '$lib/components/LogoType.svelte';
+	import LoadingIndicator from '$lib/components/LoadingIndicator.svelte';
+	import { modelStore } from '$lib/stores/modelStore';
+	import { init } from '$lib/script/treeExplorerMain';
 
 	import {
 		PrecisionSlider,

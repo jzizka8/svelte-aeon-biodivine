@@ -1,6 +1,6 @@
 import { get } from 'svelte/store';
-import { selectedNodesStore } from '../../stores/selectedItemsStore';
-import { cytoscapeStore } from '../../stores/cytoscapeStore';
+import { selectedNodesStore } from '$lib/stores/selectedItemsStore';
+import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
 
 export function repositionContextMenus() {
 	repositionNodeMenu();

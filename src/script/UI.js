@@ -1,7 +1,7 @@
 import ComputeEngine from './ComputeEngine';
 import LiveModel from './LiveModel';
-// import { liveModelStore as LiveModel } from "../stores/liveModelStore";
-import { modelEditorStore as ModelEditor } from '../stores/ModelEditorStore';
+// import { liveModelStore as LiveModel } from "$lib/stores/liveModelStore";
+import { modelEditorStore as ModelEditor } from '$lib/stores/ModelEditorStore';
 import CytoscapeEditor from './CytoscapeEditor';
 import Results from './Results';
 import Messages from './messages';

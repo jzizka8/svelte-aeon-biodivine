@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { activeTabStore } from '../stores/activeTabStore';
-	import type { tabType } from '../types/types';
+	import { activeTabStore } from '$lib/stores/activeTabStore';
+	import type { tabType } from '$lib/types/types';
 	import Version from './Version.svelte';
-	import { computeEngineStore } from '../stores/ComputeEngineStore';
-	import { liveModelStore } from '../stores/liveModelStore';
-	import { modelStore, modelStoreActions } from '../stores/modelStore';
-	import { cytoscapeStore } from '../stores/cytoscapeStore';
+	import { computeEngineStore } from '$lib/stores/ComputeEngineStore';
+	import { liveModelStore } from '$lib/stores/liveModelStore';
+	import { modelStore, modelStoreActions } from '$lib/stores/modelStore';
+	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
 
 	let startAnalysisDisabled = false;
 	$: modelEmpty = $modelStore.variables.length === 0;

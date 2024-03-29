@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { setSort } from '../../../script/treeExplorerMain';
-	import { sortOptions } from '../../../const';
+	import { setSort } from '$lib/script/treeExplorerMain';
+	import { sortOptions } from '$lib//const';
 </script>
 
 <div id="mixed-info" class="main-panel fira-mono gone">

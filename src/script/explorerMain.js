@@ -1,4 +1,4 @@
-import { DEFAULT_ENGINE_ADDRESS } from '../const';
+import { DEFAULT_ENGINE_ADDRESS } from '$lib//const';
 import ComputeEngine from './ComputeEngine';
 import { Network } from 'vis';
 

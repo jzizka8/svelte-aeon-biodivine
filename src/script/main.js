@@ -2,11 +2,11 @@ import hotkeys from 'hotkeys-js';
 import ComputeEngine from './ComputeEngine';
 import LiveModel from './LiveModel';
 import CytoscapeEditor from './CytoscapeEditor';
-import { modelEditorStore as ModelEditor } from '../stores/ModelEditorStore';
+import { modelEditorStore as ModelEditor } from '$lib/stores/ModelEditorStore';
 import UI from './UI';
 import Messages from './messages';
 import { get } from 'svelte/store';
-import { activeTabStore } from '../stores/activeTabStore';
+import { activeTabStore } from '$lib/stores/activeTabStore';
 
 export function init() {
 	console.log('Initializing AEON');

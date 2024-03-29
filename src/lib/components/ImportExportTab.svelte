@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { importAeon } from '$lib/importExport/importModel';
-	import Examples from '../script/Examples';
-	import UI from '../script/UI';
-	import { activeTabStore } from '../stores/activeTabStore';
+	import Examples from '../../script/Examples';
+	import UI from '../../script/UI';
+	import { activeTabStore } from '$lib/stores/activeTabStore';
 
 	function importModel(model: string) {
 		importAeon(model);

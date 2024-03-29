@@ -9,7 +9,7 @@ import {
 	SORT_POSITIVE,
 	SORT_POSITIVE_MAJORITY,
 	SORT_TOTAL_CLASSES
-} from '../const';
+} from '$lib//const';
 
 export function Math_dimPercent(cardinality, total) {
 	return Math.round(((Math.log2(cardinality) + 1) / (Math.log2(total) + 1)) * 100);

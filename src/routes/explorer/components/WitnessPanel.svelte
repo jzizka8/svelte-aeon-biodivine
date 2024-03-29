@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { witnessPanelVisible } from '../../../script/explorerMain';
+	import { witnessPanelVisible } from '$lib/script/explorerMain';
 </script>
 
 <div style="position:absolute" id="explorer-witness-panel" class="main-panel gone">

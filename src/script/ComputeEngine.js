@@ -1,4 +1,4 @@
-import { EXPECTED_ENGINE_VERSION } from '../const';
+import { EXPECTED_ENGINE_VERSION } from '$lib/const';
 import UI from './UI';
 /*
 	Compute engine object maintains connection to the rust backend that will actually

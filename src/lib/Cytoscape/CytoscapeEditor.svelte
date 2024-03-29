@@ -2,7 +2,9 @@
 	import Graph from './Graph.svelte';
 	import GraphNode from './GraphNode.svelte';
 	import GraphEdge from './GraphEdge.svelte';
-	import { modelStore } from '../../stores/modelStore';
+	import { modelStore } from '$lib/stores/modelStore';
+	import NodeMenu from './NodeMenu.svelte';
+	import EdgeMenu from './EdgeMenu.svelte';
 
 	$: nodes = $modelStore.variables.map((variable) => ({
 		id: variable.id,
@@ -19,6 +21,8 @@
 	}));
 </script>
 
+<NodeMenu />
+<EdgeMenu />
 <Graph>
 	{#each nodes as node (node.id)}
 		<GraphNode {node} />

@@ -1,4 +1,4 @@
-import type { Regulation } from '../../types/types';
+import type { Regulation } from '$lib/types/types';
 
 type DegreeMap = Record<
 	string,

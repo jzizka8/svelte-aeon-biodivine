@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { nextMonotonicity } from '$lib/utils/utils';
 	import { onMount } from 'svelte';
-	import { cytoscapeStore } from '../stores/cytoscapeStore';
-	import { modelStoreActions } from '../stores/modelStore';
-	import { selectedEdgesStore } from '../stores/selectedItemsStore';
-	import { EdgeMonotonicity, type Regulation } from '../types/types';
+	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
+	import { modelStoreActions } from '$lib/stores/modelStore';
+	import { selectedEdgesStore } from '$lib/stores/selectedItemsStore';
+	import { EdgeMonotonicity, type Regulation } from '$lib/types/types';
 	import hotkeys from 'hotkeys-js';
 	import { writable, type Writable } from 'svelte/store';
 	import { hintAction } from '$lib/actions/hintAction';

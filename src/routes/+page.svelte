@@ -2,15 +2,14 @@
 	import { onMount } from 'svelte';
 
 	import QuickHelp from './components/QuickHelp.svelte';
-	import SideMenu from '../components/SideMenu.svelte';
-	import CytoScapeEditor from '../components/Cytoscape/CytoScapeEditor.svelte';
-	import LogoType from '../components/LogoType.svelte';
-	import NodeMenu from '../components/NodeMenu.svelte';
-	import EdgeMenu from '../components/EdgeMenu.svelte';
-	import LoadingIndicator from '../components/LoadingIndicator.svelte';
-	import TabWrapper from '../components/TabWrapper.svelte';
+	import SideMenu from '$lib/components/SideMenu.svelte';
+	import CytoscapeEditor from '$lib/Cytoscape/CytoscapeEditor.svelte';
+	import LogoType from '$lib/components/LogoType.svelte';
+
+	import LoadingIndicator from '$lib/components/LoadingIndicator.svelte';
+	import TabWrapper from '$lib/components/TabWrapper.svelte';
 	import { init } from '../script/main';
-	import { modelStore } from '../stores/modelStore';
+	import { modelStore } from '$lib/stores/modelStore';
 
 	onMount(() => {
 		init();
@@ -25,10 +24,8 @@
 
 	<SideMenu />
 	<TabWrapper />
-	<CytoScapeEditor />
+	<CytoscapeEditor />
 
-	<NodeMenu />
-	<EdgeMenu />
 	<div id="cytoscape-editor" />
 	<!-- absolutely positioned stuff -->
 	<LogoType />

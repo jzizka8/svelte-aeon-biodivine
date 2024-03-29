@@ -1,9 +1,9 @@
 import LiveModel from './LiveModel';
 import CytoscapeEditor from './CytoscapeEditor';
-import { EdgeMonotonicity } from '../types/types';
+import { EdgeMonotonicity } from '$lib/types/types';
 import { ensurePlaceholder } from './main';
-import { activeTabStore } from '../stores/activeTabStore';
-import { modelStore, modelStoreActions } from '../stores/modelStore';
+import { activeTabStore } from '$lib/stores/activeTabStore';
+import { modelStore, modelStoreActions } from '$lib/stores/modelStore';
 import { get } from 'svelte/store';
 import { generateRegulationId } from '$lib/utils/utils';
 

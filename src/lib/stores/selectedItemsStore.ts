@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import type { Node, Position, Regulation } from '../types/types';
+import type { Node, Position, Regulation } from '$lib/types/types';
 
 type Identifiable = { id: string };
 

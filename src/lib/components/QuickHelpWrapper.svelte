@@ -1,7 +1,7 @@
 <script lang="ts">
 	import hotkeys from 'hotkeys-js';
 	import { onMount } from 'svelte';
-	import { modelStore } from '../stores/modelStore';
+	import { modelStore } from '$lib/stores/modelStore';
 	$: hidden = $modelStore.variables.length !== 0;
 
 	//https://www.okupter.com/blog/sveltekit-document-is-not-defined

@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import type { tabType } from '../types/types';
+import type { tabType } from '$lib/types/types';
 
 const createActiveTabStore = () => {
 	const { subscribe, set } = writable<tabType | null>(null);

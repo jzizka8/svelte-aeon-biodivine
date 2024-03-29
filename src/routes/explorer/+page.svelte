@@ -1,9 +1,9 @@
 <script lang="ts">
 	import WitnessPanel from './components/WitnessPanel.svelte';
 
-	import { modelStore } from '../../stores/modelStore';
+	import { modelStore } from '$lib/stores/modelStore';
 	import { onMount } from 'svelte';
-	import { witnessPanelVisible, init } from '../../script/explorerMain';
+	import { witnessPanelVisible, init } from '$lib/script/explorerMain';
 	onMount(() => {
 		init();
 	});

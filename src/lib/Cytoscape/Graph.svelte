@@ -2,14 +2,14 @@
 	import { onMount, setContext } from 'svelte';
 	import cytoscape from 'cytoscape';
 	import dagre from 'cytoscape-dagre';
-	import { modelStoreActions } from '../../stores/modelStore';
-	import { cytoscapeStore } from '../../stores/cytoscapeStore';
+	import { modelStoreActions } from '$lib/stores/modelStore';
+	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
 	import cytoscapeEdgehandles, { type EdgeHandlesInstance } from 'cytoscape-edgehandles';
 	import edgeOptions from './config/edgeOptions';
 	import graphStyles from './config/graphStyles';
 
 	import { repositionContextMenus } from './utils';
-	import { edgehandlesStore } from '../../stores/edgehandlesStore';
+	import { edgehandlesStore } from '$lib/stores/edgehandlesStore';
 	import hotkeys from 'hotkeys-js';
 
 	setContext('graphSharedState', {

@@ -1,12 +1,12 @@
 import ComputeEngine from './ComputeEngine';
 import CytoscapeEditor from './CytoscapeEditor';
-import { EdgeMonotonicity } from '../types/types';
-import { modelEditorStore as ModelEditor } from '../stores/ModelEditorStore';
+import { EdgeMonotonicity } from '$lib/types/types';
+import { modelEditorStore as ModelEditor } from '$lib/stores/ModelEditorStore';
 
 import UI from './UI';
 import Messages from './messages';
 import { get } from 'svelte/store';
-import { modelStore, modelStoreActions } from '../stores/modelStore';
+import { modelStore, modelStoreActions } from '$lib/stores/modelStore';
 
 /*
 	Stores the PBN currently loaded into the editor. This is what you should interact with when

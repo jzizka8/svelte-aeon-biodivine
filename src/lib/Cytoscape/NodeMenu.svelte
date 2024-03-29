@@ -1,12 +1,12 @@
 <script lang="ts">
 	import hotkeys from 'hotkeys-js';
 	import { onMount, tick } from 'svelte';
-	import { activeTabStore } from '../stores/activeTabStore';
-	import { cytoscapeStore } from '../stores/cytoscapeStore';
-	import { edgehandlesStore } from '../stores/edgehandlesStore';
-	import { focusedInputStore } from '../stores/focusedVariableInput';
-	import { modelStore, modelStoreActions } from '../stores/modelStore';
-	import { selectedNodesStore } from '../stores/selectedItemsStore';
+	import { activeTabStore } from '$lib/stores/activeTabStore';
+	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
+	import { edgehandlesStore } from '$lib/stores/edgehandlesStore';
+	import { focusedInputStore } from '$lib/stores/focusedVariableInput';
+	import { modelStore, modelStoreActions } from '$lib/stores/modelStore';
+	import { selectedNodesStore } from '$lib/stores/selectedItemsStore';
 	import { writable } from 'svelte/store';
 	import { hintAction } from '$lib/actions/hintAction';
 

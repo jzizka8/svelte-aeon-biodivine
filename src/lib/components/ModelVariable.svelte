@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
-	import type { Regulation, Variable } from '../types/types';
+	import type { Regulation, Variable } from '$lib/types/types';
 	import { regulationShortcut } from '$lib/utils/utils';
-	import { cytoscapeStore } from '../stores/cytoscapeStore';
-	import { hoveredNodeStore } from '../stores/hoveredNodeStore';
-	import { focusedInputStore } from '../stores/focusedVariableInput';
-	import { selectedNodesStore } from '../stores/selectedItemsStore';
+	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
+	import { hoveredNodeStore } from '$lib/stores/hoveredNodeStore';
+	import { focusedInputStore } from '$lib/stores/focusedVariableInput';
+	import { selectedNodesStore } from '$lib/stores/selectedItemsStore';
 
 	export let variable: Variable;
 	export let regulations: Regulation[];
