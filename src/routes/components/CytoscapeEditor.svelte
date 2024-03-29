@@ -17,7 +17,6 @@
 	}));
 </script>
 
-
 <Graph>
 	{#each nodes as node (node.id)}
 		<GraphNode {node} />
