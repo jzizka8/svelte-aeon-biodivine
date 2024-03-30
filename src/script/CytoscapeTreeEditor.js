@@ -7,6 +7,7 @@ import {
 	renderAttributeTable
 } from './treeExplorerMain';
 import ComputeEngine from './ComputeEngine';
+import { activeTabStore } from '$lib/stores/activeTabStore';
 
 /*
 	Responsible for managing the cytoscape editor object. It has its own representation of the graph,
@@ -30,7 +31,9 @@ export const CytoscapeEditor = {
 				this.removeNode(data.targetId);
 			} else if (data.type == 'leaf') {
 				this._showLeafPanel(data);
+				activeTabStore.set('leaf')
 			} else if (data.type == 'decision') {
+				activeTabStore.set('decision')
 				this._showDecisionPanel(data);
 				let currentPosition = e.target.position();
 				// Show close button
@@ -55,6 +58,7 @@ export const CytoscapeEditor = {
 					node.removeClass('hover');
 				});
 			} else if (data.type == 'unprocessed') {
+				activeTabStore.set('mixed')
 				this._showMixedPanel(data);
 			}
 		});
@@ -62,12 +66,7 @@ export const CytoscapeEditor = {
 			// Clear remove button
 			CytoscapeEditor._cytoscape.$('.remove-button').remove();
 			// Close panels
-			let leafInfo = document.getElementById('leaf-info');
-			leafInfo.classList.add('gone');
-			let decisionInfo = document.getElementById('decision-info');
-			decisionInfo.classList.add('gone');
-			let mixedInfo = document.getElementById('mixed-info');
-			mixedInfo.classList.add('gone');
+			activeTabStore.close();
 			// Clear decision attribute list:
 			document.getElementById('button-add-variable').classList.remove('gone');
 			document.getElementById('mixed-attributes').classList.add('gone');

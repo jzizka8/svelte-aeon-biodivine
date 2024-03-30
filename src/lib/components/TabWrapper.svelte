@@ -8,13 +8,17 @@
 	import { activeTabStore } from '$lib/stores/activeTabStore';
 	import hotkeys from 'hotkeys-js';
 	import { onMount } from 'svelte';
+	import {LeafTab, DecisionTab, MixedTab }from '../../routes/treeExplorer/components/';
 
 	const tabComponents = {
 		about: HelpTab,
 		'import-export': ImportExportTab,
 		'model-editor': ModelEditorTab,
 		results: ResultsTab,
-		'compute-engine': EngingeTab
+		'compute-engine': EngingeTab,
+		'leaf': LeafTab,
+		'decision': DecisionTab,
+		'mixed': MixedTab
 	};
 	onMount(() => {
 		hotkeys('esc', { keyup: true, keydown: true }, function (event, handler) {

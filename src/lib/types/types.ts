@@ -4,6 +4,9 @@ export type tabType =
 	| 'import-export'
 	| 'results'
 	| 'model-editor'
+	| 'leaf'
+	| 'decision'
+	| 'mixed'
 	| null;
 
 export enum EdgeMonotonicity {
