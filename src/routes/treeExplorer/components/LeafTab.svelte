@@ -1,4 +1,5 @@
 <div id="leaf-info" class="main-panel fira-mono gone">
+	<slot />
 	<div class="center" style="margin: 16px;">
 		<span style="position: relative; top: -20px; font-size: 14px;">Phenotype</span><br />
 		<span class="symbols" id="leaf-phenotype" style="font-size: 50px;">DDS</span>

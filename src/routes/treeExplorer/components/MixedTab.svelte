@@ -4,6 +4,7 @@
 </script>
 
 <div id="mixed-info" class="main-panel fira-mono gone">
+	<slot />
 	<div class="center" style="margin: 16px;">
 		<span style="position: relative; top: -20px; font-size: 14px;">Mixed</span><br />
 		<span id="mixed-type-label" style="font-size: 30px;">X types</span>

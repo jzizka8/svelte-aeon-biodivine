@@ -1,4 +1,5 @@
 <div id="decision-info" class="main-panel fira-mono gone">
+	<slot />
 	<div class="center" style="margin: 16px;">
 		<span style="position: relative; top: -20px; font-size: 14px;">Decision</span><br />
 		<span id="decision-attribute" style="font-size: 30px;">Lorem_Ipsum</span>
