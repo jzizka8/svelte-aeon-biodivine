@@ -28,6 +28,7 @@ export enum NodeType {
 
 export type CardinalityClass = {
 	cardinality: number;
+	// currently: '["Stability", "Disorder"]', TODO: make this a list of enums
 	class: string;
 };
 
@@ -37,15 +38,17 @@ export type TreeNode = {
 	treeData: TreeData;
 	subtype?: string;
 };
+// TODO: make it use camelCase
 export type TreeData = {
 	type: NodeType;
 	cardinality: number;
 	attribute_id?: number;
 	attribute_name?: string;
+	// TODO: unify these two
 	classes?: CardinalityClass[];
+	all_classes?: CardinalityClass[];
 	left?: number;
 	right?: number;
-	all_classes?: CardinalityClass[];
 };
 
 export type Condition = {
