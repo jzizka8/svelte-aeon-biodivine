@@ -1,3 +1,7 @@
+<script>
+	import StabilityAnalysisButton from "./StabilityAnalysisButton.svelte";
+
+</script>
 <div id="leaf-info" class="main-panel fira-mono gone">
 	<slot />
 	<div class="center" style="margin: 16px;">
@@ -29,12 +33,7 @@
 	<div id="leaf-necessary-conditions">Lorem Ipsum</div>
 
 	<div style="text-align: right; margin-bottom: 16px; margin-right: 8px; margin-top: 16px;">
-		<button
-			id="leaf-stability-analysis-button"
-			class="image-button"
-			style="float: right; margin-bottom: 16px; margin-right: 16px;"
-			>Stability analysis (S) <img src="img/stability_analysis-24px.svg" /></button
-		>
+		<StabilityAnalysisButton />
 		<select id="leaf-stability-dropdown" class="stability-dropdown" style="float: right;">
 			<option value="total">Total</option>
 			<option value="S">Stability</option>
