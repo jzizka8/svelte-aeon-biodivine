@@ -251,7 +251,7 @@ export const CytoscapeEditor = {
 		leafDataStore.set({
 			conditions,
 			totalCardinality: this._totalCardinality,
-			...data
+			...data.treeData
 		});
 
 		let stabilityButton = document.getElementById('leaf-stability-analysis-button');

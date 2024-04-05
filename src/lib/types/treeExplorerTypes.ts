@@ -55,7 +55,7 @@ export type Condition = {
 	attribute: string;
 	isPositive: boolean;
 };
-export type LeafData = TreeNode & {
+export type LeafData = TreeData & {
 	conditions: Condition[];
 	totalCardinality: number;
 };
