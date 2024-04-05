@@ -254,9 +254,8 @@ export const CytoscapeEditor = {
 		let conditions = this.computeConditions(data.id);
 		leafDataStore.set({
 			conditions,
-			phenotype: data.label,
-			cardinality: data.treeData.cardinality,
-			totalCardinality: this._totalCardinality
+			totalCardinality: this._totalCardinality,
+			...data
 		});
 
 		let stabilityButton = document.getElementById('leaf-stability-analysis-button');

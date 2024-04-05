@@ -5,11 +5,11 @@ export type Stability = {
 		colors: number;
 	}[];
 };
-export type CardinalityClass = {
-	cardinality: number;
-	class: string;
-	fraction: number;
-};
+// export type CardinalityClass = {
+// 	cardinality: number;
+// 	class: string;
+// 	fraction: number;
+// };
 
 export type DecisionAttribute = {
 	id: number;
@@ -26,30 +26,33 @@ export enum NodeType {
 	Leaf = 'leaf'
 }
 
-export type Class = {
+export type CardinalityClass = {
 	cardinality: number;
 	class: string;
 };
 
 export type TreeNode = {
+	id: number;
+	label: string;
+	treeData: TreeData;
+	subtype?: string;
+};
+export type TreeData = {
 	type: NodeType;
 	cardinality: number;
-	classes: Class[];
-	id: number;
 	attribute_id?: number;
+	attribute_name?: string;
+	classes?: CardinalityClass[];
 	left?: number;
 	right?: number;
-	attribute_name?: string;
-	all_classes?: Class[];
+	all_classes?: CardinalityClass[];
 };
 
 export type Condition = {
 	attribute: string;
 	isPositive: boolean;
 };
-export type LeafData = {
+export type LeafData = TreeNode & {
 	conditions: Condition[];
-	phenotype: string;
-	cardinality: number;
 	totalCardinality: number;
 };

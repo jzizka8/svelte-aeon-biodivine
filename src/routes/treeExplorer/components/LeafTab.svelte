@@ -5,21 +5,17 @@
 	import { onDestroy } from 'svelte';
 
 	$: leafData = $leafDataStore ?? {
-		phenotype: '',
-		cardinality: 0,
+		treeData: { phenotype: '', cardinality: 0 },
 		totalCardinality: 0,
-		conditions: [],
+		conditions: []
 	};
-	$: dimPercent = leafData
-		? calcDimPercent(leafData.cardinality, leafData.totalCardinality)
-		: 0;
-	$: percent = leafData
-		? calcPercent(leafData.cardinality, leafData.totalCardinality)
-		: 0;
-	$: witnessCount = `${leafData?.cardinality} (${percent}% / ${dimPercent}٪)`;
+	$: treeData = leafData.treeData;
+	$: dimPercent = treeData ? calcDimPercent(treeData.cardinality, leafData.totalCardinality) : 0;
+	$: percent = treeData ? calcPercent(treeData.cardinality, leafData.totalCardinality) : 0;
+	$: witnessCount = `${treeData.cardinality} (${percent}% / ${dimPercent}٪)`;
 
 	onDestroy(() => {
-		console.log('LeafTab destroyed')
+		console.log('LeafTab destroyed');
 		// TODO: unselect the node in cytoscape
 	});
 </script>
@@ -28,14 +24,12 @@
 	<slot />
 	<div class="center" style="margin: 16px;">
 		<span style="position: relative; top: -20px; font-size: 14px;">Phenotype</span><br />
-		<span class="symbols" id="leaf-phenotype" style="font-size: 50px;"
-			>{leafData?.phenotype}</span
-		>
+		<span class="symbols" id="leaf-phenotype" style="font-size: 50px;">{leafData?.label}</span>
 	</div>
 	<div>
 		<span style="float: left;">
 			Witness count:
-			<span id="leaf-witness-count" >{witnessCount}</span>
+			<span id="leaf-witness-count">{witnessCount}</span>
 		</span>
 		<span class="inline-button" onclick="openTreeWitness();" style="float: right;">Witness</span>
 		<div style="clear: both;" />
