@@ -69,16 +69,16 @@ export const CytoscapeEditor = {
 			// Close panels
 			activeTabStore.close();
 			// Clear decision attribute list:
-			document.getElementById('button-add-variable').classList.remove('gone');
-			document.getElementById('mixed-attributes').classList.add('gone');
-			document.getElementById('mixed-attributes-list').innerHTML = '';
-			// Reset stability analysis buttons:
-			document.getElementById('mixed-stability-analysis-button').classList.remove('gone');
-			document.getElementById('leaf-stability-analysis-button').classList.remove('gone');
-			document.getElementById('decision-stability-analysis-button').classList.remove('gone');
-			document.getElementById('mixed-stability-analysis').innerHTML = '';
-			document.getElementById('leaf-stability-analysis').innerHTML = '';
-			document.getElementById('decision-stability-analysis').innerHTML = '';
+			// document.getElementById('button-add-variable').classList.remove('gone');
+			// document.getElementById('mixed-attributes').classList.add('gone');
+			// document.getElementById('mixed-attributes-list').innerHTML = '';
+			// // Reset stability analysis buttons:
+			// document.getElementById('mixed-stability-analysis-button').classList.remove('gone');
+			// document.getElementById('leaf-stability-analysis-button').classList.remove('gone');
+			// document.getElementById('decision-stability-analysis-button').classList.remove('gone');
+			// document.getElementById('mixed-stability-analysis').innerHTML = '';
+			// document.getElementById('leaf-stability-analysis').innerHTML = '';
+			// document.getElementById('decision-stability-analysis').innerHTML = '';
 		});
 	},
 
