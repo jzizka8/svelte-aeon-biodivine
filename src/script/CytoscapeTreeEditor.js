@@ -262,15 +262,6 @@ export const CytoscapeEditor = {
 		let stabilityDropdown = document.getElementById('leaf-stability-dropdown');
 		let stabilityContainer = document.getElementById('leaf-stability-analysis');
 		initStabilityButton(data.treeData.id, stabilityButton, stabilityDropdown, stabilityContainer);
-
-		// Show additional phenotypes if this is a leaf that was created due to precision.
-		let table = document.getElementById('leaf-behavior-table');
-		if (data.treeData['all_classes'] !== undefined) {
-			table.classList.remove('gone');
-			this._renderBehaviorTable(data.treeData['all_classes'], data.treeData.cardinality, table);
-		} else {
-			table.classList.add('gone');
-		}
 	},
 	computeConditions(pathId) {
 		const conditionsList = [];

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import BehaviorTable from './BehaviorTable.svelte';
+
 	import { leafDataStore } from '$lib/stores/leafDataStore';
 	import StabilityAnalysisButton from './StabilityAnalysisButton.svelte';
 	import { calcDimPercent, calcPercent } from '$lib/utils/mathUtils';
@@ -36,17 +38,7 @@
 		<span class="inline-button" onclick="openTreeAttractor();" style="float: right;">Attractor</span
 		>
 	</div>
-
-	<table id="leaf-behavior-table" class="behavior-table gone" style="margin-top: 16px;">
-		<tr><td colspan="3">All phenotypes:</td></tr>
-		<tr class="behavior-table-header">
-			<td class="cell-behavior">Behavior</td>
-			<td class="cell-witness-count">Witness Count</td>
-			<td class="cell-distribution">Distribution</td>
-		</tr>
-		<tr class="empty-space"><td /></tr>
-	</table>
-
+	<BehaviorTable classes={treeData?.all_classes} cardinality={leafData?.totalCardinality} />
 	<span style="font-weight: bold; margin-top: 16px; display: inline-block; margin-bottom: 8px;">
 		Necessary conditions:
 	</span>
