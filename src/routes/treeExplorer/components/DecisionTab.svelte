@@ -1,29 +1,22 @@
-<div id="decision-info" class="main-panel fira-mono gone">
+<script lang="ts">
+	import { decisionStore } from '$lib/stores/decisionStore';
+	import BehaviorTable from './BehaviorTable.svelte';
+</script>
+
+<div id="decision-info" class="main-panel fira-mono">
 	<slot />
 	<div class="center" style="margin: 16px;">
 		<span style="position: relative; top: -20px; font-size: 14px;">Decision</span><br />
-		<span id="decision-attribute" style="font-size: 30px;">Lorem_Ipsum</span>
+		<span id="decision-attribute" style="font-size: 30px;">{$decisionStore?.attribute_name}</span>
 	</div>
 
 	<span
 		id="decision-phenotype-label"
 		style="font-weight: bold; margin-top: 16px; display: inline-block; margin-bottom: 8px;"
-		>Phenotypes (X):</span
+		>Phenotypes ({$decisionStore?.classes?.length}):</span
 	>
 
-	<table id="decision-behavior-table" class="behavior-table">
-		<tr id="behavior-table-row-template" class="gone">
-			<td class="cell-behavior symbols">S O</td>
-			<td class="cell-witness-count">1234</td>
-			<td class="cell-distribution">24% / 14٪</td>
-		</tr>
-		<tr class="behavior-table-header">
-			<td class="cell-behavior">Behavior</td>
-			<td class="cell-witness-count">Witness Count</td>
-			<td class="cell-distribution">Distribution</td>
-		</tr>
-		<tr class="empty-space"><td /></tr>
-	</table>
+	<BehaviorTable classes={$decisionStore?.classes} cardinality={$decisionStore?.cardinality ?? 0} />
 
 	<div style="text-align: right; margin-bottom: 16px; margin-right: 8px; margin-top: 16px;">
 		<button

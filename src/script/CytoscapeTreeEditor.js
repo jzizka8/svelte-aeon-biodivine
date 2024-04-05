@@ -9,6 +9,7 @@ import {
 import ComputeEngine from './ComputeEngine';
 import { activeTabStore } from '$lib/stores/activeTabStore';
 import { leafDataStore } from '$lib/stores/leafDataStore';
+import { decisionStore } from '$lib/stores/decisionStore';
 
 /*
 	Responsible for managing the cytoscape editor object. It has its own representation of the graph,
@@ -159,12 +160,7 @@ export const CytoscapeEditor = {
 	},
 
 	_showDecisionPanel(data) {
-		document.getElementById('decision-info').classList.remove('gone');
-		document.getElementById('decision-attribute').innerHTML = data.treeData.attribute_name;
-		document.getElementById('decision-phenotype-label').innerHTML =
-			'Phenotypes (' + data.treeData.classes.length + '):';
-		let behaviorTable = document.getElementById('decision-behavior-table');
-		this._renderBehaviorTable(data.treeData.classes, data.treeData.cardinality, behaviorTable);
+		decisionStore.set(data.treeData);
 
 		let stabilityButton = document.getElementById('decision-stability-analysis-button');
 		let stabilityDropdown = document.getElementById('decision-stability-dropdown');
