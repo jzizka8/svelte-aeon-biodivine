@@ -8,6 +8,7 @@ import {
 } from './treeExplorerMain';
 import ComputeEngine from './ComputeEngine';
 import { activeTabStore } from '$lib/stores/activeTabStore';
+import { leafDataStore } from '$lib/stores/leafDataStore';
 
 /*
 	Responsible for managing the cytoscape editor object. It has its own representation of the graph,
@@ -31,9 +32,9 @@ export const CytoscapeEditor = {
 				this.removeNode(data.targetId);
 			} else if (data.type == 'leaf') {
 				this._showLeafPanel(data);
-				activeTabStore.set('leaf')
+				activeTabStore.set('leaf');
 			} else if (data.type == 'decision') {
-				activeTabStore.set('decision')
+				activeTabStore.set('decision');
 				this._showDecisionPanel(data);
 				let currentPosition = e.target.position();
 				// Show close button
@@ -58,7 +59,7 @@ export const CytoscapeEditor = {
 					node.removeClass('hover');
 				});
 			} else if (data.type == 'unprocessed') {
-				activeTabStore.set('mixed')
+				activeTabStore.set('mixed');
 				this._showMixedPanel(data);
 			}
 		});
@@ -250,25 +251,14 @@ export const CytoscapeEditor = {
 	},
 
 	_showLeafPanel(data) {
-		document.getElementById('leaf-info').classList.remove('gone');
-		document.getElementById('leaf-phenotype').innerHTML = data.label;
-		let percent = Math_percent(data.treeData.cardinality, this._totalCardinality);
-		let dimPercent = Math_dimPercent(data.treeData.cardinality, this._totalCardinality);
-		document.getElementById('leaf-witness-count').innerHTML =
-			data.treeData.cardinality + ' (' + percent + '% / ' + dimPercent + '٪)';
-		let conditions = '';
-		let pathId = data.id;
-		let source = this._cytoscape.edges('[target = "' + pathId + '"]');
-		while (source.length != 0) {
-			let data = source.data();
-			let is_positive = data.positive === 'true';
-			let color = is_positive ? 'green' : 'red';
-			let pathId = data.source;
-			let attribute = this._cytoscape.getElementById(pathId).data().treeData.attribute_name;
-			conditions += "<span class='" + color + "'> ‣ " + attribute + '</span><br>';
-			source = this._cytoscape.edges('[target = "' + pathId + '"]');
-		}
-		document.getElementById('leaf-necessary-conditions').innerHTML = conditions;
+		let conditions = this.computeConditions(data.id);
+		leafDataStore.set({
+			conditions,
+			phenotype: data.label,
+			cardinality: data.treeData.cardinality,
+			totalCardinality: this._totalCardinality
+		});
+
 		let stabilityButton = document.getElementById('leaf-stability-analysis-button');
 		let stabilityDropdown = document.getElementById('leaf-stability-dropdown');
 		let stabilityContainer = document.getElementById('leaf-stability-analysis');
@@ -283,7 +273,20 @@ export const CytoscapeEditor = {
 			table.classList.add('gone');
 		}
 	},
+	computeConditions(pathId) {
+		const conditionsList = [];
+		let source = this._cytoscape.edges(`[target = "${pathId}"]`);
 
+		while (source.length !== 0) {
+			let data = source.data();
+			let attribute = this._cytoscape.getElementById(data.source).data().treeData.attribute_name;
+			conditionsList.push({ attribute, isPositive: data.positive === 'true' });
+
+			source = this._cytoscape.edges(`[target = "${data.source}"]`);
+		}
+
+		return conditionsList;
+	},
 	initOptions: function () {
 		return {
 			container: document.getElementById('cytoscape-editor'),

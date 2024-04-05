@@ -42,3 +42,14 @@ export type TreeNode = {
 	attribute_name?: string;
 	all_classes?: Class[];
 };
+
+export type Condition = {
+	attribute: string;
+	isPositive: boolean;
+};
+export type LeafData = {
+	conditions: Condition[];
+	phenotype: string;
+	cardinality: number;
+	totalCardinality: number;
+};
