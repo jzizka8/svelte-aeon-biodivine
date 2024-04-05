@@ -39,7 +39,17 @@
 		</svelte:component>
 	</div>
 {/each}
-
+<!-- TODO: use this when possible -->
+<!-- 
+	{#if component}
+	<div class=" temp-main">
+		<svelte:component this={component}>
+			<button class="button button--close" on:click={activeTabStore.close}>
+				<img src="img/close-24px.svg" alt="" />
+			</button>
+		</svelte:component>
+	</div>
+{/if} -->
 <style>
 	.button--close {
 		display: flex;
