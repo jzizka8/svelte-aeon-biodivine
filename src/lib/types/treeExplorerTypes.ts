@@ -40,6 +40,7 @@ export type TreeNode = {
 };
 // TODO: make it use camelCase
 export type TreeData = {
+	id: number;
 	type: NodeType;
 	cardinality: number;
 	attribute_id?: number;

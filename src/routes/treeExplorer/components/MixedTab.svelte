@@ -5,7 +5,7 @@
 	import BehaviorTable from './BehaviorTable.svelte';
 
 	function handleAutoExpand() {
-		autoExpandBifurcationTree($mixedDataStore?.attribute_id, depthValue);
+		autoExpandBifurcationTree($mixedDataStore?.id, depthValue);
 	}
 
 	let depthValue = 1;
