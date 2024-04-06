@@ -59,4 +59,5 @@ export type Condition = {
 export type LeafData = TreeData & {
 	conditions: Condition[];
 	totalCardinality: number;
+	behavior: Behavior;
 };

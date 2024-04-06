@@ -27,7 +27,9 @@
 	<slot />
 	<div class="center" style="margin: 16px;">
 		<span style="position: relative; top: -20px; font-size: 14px;">Phenotype</span><br />
-		<span class="symbols" id="leaf-phenotype" style="font-size: 50px;">{$leafDataStore?.label}</span>
+		<span class="symbols" id="leaf-phenotype" style="font-size: 50px;"
+			>{$leafDataStore?.behavior}</span
+		>
 	</div>
 	<div>
 		<span style="float: left;">
