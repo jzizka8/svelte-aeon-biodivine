@@ -3,6 +3,7 @@
 	import { Behavior } from '$lib/types/treeExplorerTypes';
 	import type { Stability } from '$lib/types/treeExplorerTypes';
 	import hotkeys from 'hotkeys-js';
+	import { onDestroy, onMount } from 'svelte';
 
 	export let id: number;
 
@@ -45,9 +46,17 @@
 			']'
 		);
 	}
-    hotkeys('s', function (event, handler) {
-		loadStabilityData(id, selectedBehavior);
-	});
+    onMount(() => {
+        hotkeys('s', function (event, handler) {
+            if(id){
+                event.preventDefault();
+                loadStabilityData(id, selectedBehavior);
+            }
+        });
+    });
+    onDestroy(() => {
+        hotkeys.unbind('s');
+    });
 </script>
 
 <select bind:value={selectedBehavior} class="stability-dropdown">
