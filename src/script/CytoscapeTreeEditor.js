@@ -1,11 +1,6 @@
 import cytoscape from 'cytoscape';
 import cytoscapeDagre from 'cytoscape-dagre';
-import {
-	Math_dimPercent,
-	Math_percent,
-	initStabilityButton,
-	renderAttributeTable
-} from './treeExplorerMain';
+import { Math_dimPercent, Math_percent, renderAttributeTable } from './treeExplorerMain';
 import ComputeEngine from './ComputeEngine';
 import { activeTabStore } from '$lib/stores/activeTabStore';
 import { leafDataStore } from '$lib/stores/leafDataStore';
@@ -161,11 +156,6 @@ export const CytoscapeEditor = {
 
 	_showDecisionPanel(data) {
 		decisionStore.set(data.treeData);
-
-		let stabilityButton = document.getElementById('decision-stability-analysis-button');
-		let stabilityDropdown = document.getElementById('decision-stability-dropdown');
-		let stabilityContainer = document.getElementById('decision-stability-analysis');
-		initStabilityButton(data.treeData.id, stabilityButton, stabilityDropdown, stabilityContainer);
 	},
 
 	_showMixedPanel(data) {
@@ -205,10 +195,6 @@ export const CytoscapeEditor = {
 				renderAttributeTable(data.id, data.treeData['attributes'], data.treeData.cardinality);
 			}
 		};
-		let stabilityButton = document.getElementById('mixed-stability-analysis-button');
-		let stabilityDropdown = document.getElementById('mixed-stability-dropdown');
-		let stabilityContainer = document.getElementById('mixed-stability-analysis');
-		initStabilityButton(data.treeData.id, stabilityButton, stabilityDropdown, stabilityContainer);
 	},
 
 	_renderBehaviorTable(classes, totalCardinality, table) {
@@ -248,13 +234,9 @@ export const CytoscapeEditor = {
 		leafDataStore.set({
 			conditions,
 			totalCardinality: this._totalCardinality,
+			behavior: data.label,
 			...data.treeData
 		});
-
-		let stabilityButton = document.getElementById('leaf-stability-analysis-button');
-		let stabilityDropdown = document.getElementById('leaf-stability-dropdown');
-		let stabilityContainer = document.getElementById('leaf-stability-analysis');
-		initStabilityButton(data.treeData.id, stabilityButton, stabilityDropdown, stabilityContainer);
 	},
 	computeConditions(pathId) {
 		const conditionsList = [];

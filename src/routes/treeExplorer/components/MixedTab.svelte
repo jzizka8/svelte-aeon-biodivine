@@ -3,6 +3,7 @@
 	import { sortOptions } from '$lib//const';
 	import { mixedDataStore } from '$lib/stores/decisionStore';
 	import BehaviorTable from './BehaviorTable.svelte';
+	import StabilityAnalysis from './StabilityAnalysis.svelte';
 
 	function handleAutoExpand() {
 		autoExpandBifurcationTree($mixedDataStore?.id, depthValue);
@@ -50,22 +51,6 @@
 		</div>
 		<div style="clear: both;" />
 		<div class="expand-button">more...</div>
-	</div>
-
-	<div>
-		<button
-			id="mixed-stability-analysis-button"
-			class="image-button"
-			style="float: right; margin-bottom: 16px; margin-right: 16px;"
-		>
-			Stability analysis (S) <img src="img/stability_analysis-24px.svg" />
-		</button>
-		<select id="mixed-stability-dropdown" class="stability-dropdown" style="float: right;">
-			<option value="total">Total</option>
-			<option value="S">Stability</option>
-			<option value="O">Oscillation</option>
-			<option value="D">Disorder</option>
-		</select>
 	</div>
 
 	<div id="auto-expand" style="clear: both; text-align: right; padding-right: 16px;">
@@ -138,6 +123,7 @@
 			>ᴛᴄ = total class count</span
 		>
 	</div>
+	<StabilityAnalysis id={$mixedDataStore?.id ?? 0} />
 </div>
 
 <style>

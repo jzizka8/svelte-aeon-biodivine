@@ -5,16 +5,21 @@
 	import StabilityAnalysisButton from './StabilityAnalysisButton.svelte';
 	import { calcDimPercent, calcPercent } from '$lib/utils/mathUtils';
 	import { onDestroy } from 'svelte';
+	import StabilityAnalysis from './StabilityAnalysis.svelte';
+	import { normalizeClass } from '$lib/utils/utils';
 
-	let percent: number, dimPercent:number;
+	let percent: number, dimPercent: number;
 	$: {
-    if ($leafDataStore) {
-        [percent, dimPercent] = [calcPercent($leafDataStore.cardinality, $leafDataStore.totalCardinality), calcDimPercent($leafDataStore.cardinality, $leafDataStore.totalCardinality)];
-    } else {
-        [percent, dimPercent] = [0, 0];
-    }
-}
-	
+		if ($leafDataStore) {
+			[percent, dimPercent] = [
+				calcPercent($leafDataStore.cardinality, $leafDataStore.totalCardinality),
+				calcDimPercent($leafDataStore.cardinality, $leafDataStore.totalCardinality)
+			];
+		} else {
+			[percent, dimPercent] = [0, 0];
+		}
+	}
+
 	$: witnessCount = `${$leafDataStore?.cardinality} (${percent}% / ${dimPercent}٪)`;
 
 	onDestroy(() => {
@@ -41,7 +46,10 @@
 		<span class="inline-button" onclick="openTreeAttractor();" style="float: right;">Attractor</span
 		>
 	</div>
-	<BehaviorTable classes={$leafDataStore?.all_classes} cardinality={$leafDataStore?.cardinality ?? 0} />
+	<BehaviorTable
+		classes={$leafDataStore?.all_classes}
+		cardinality={$leafDataStore?.cardinality ?? 0}
+	/>
 	<span style="font-weight: bold; margin-top: 16px; display: inline-block; margin-bottom: 8px;">
 		Necessary conditions:
 	</span>
@@ -54,14 +62,5 @@
 		{/if}
 	</div>
 
-	<div style="text-align: right; margin-bottom: 16px; margin-right: 8px; margin-top: 16px;">
-		<StabilityAnalysisButton />
-		<select id="leaf-stability-dropdown" class="stability-dropdown" style="float: right;">
-			<option value="total">Total</option>
-			<option value="S">Stability</option>
-			<option value="O">Oscillation</option>
-			<option value="D">Disorder</option>
-		</select>
-	</div>
-	<div id="leaf-stability-analysis" class="stability-panel" />
+	<StabilityAnalysis id={$leafDataStore?.id ?? 0} />
 </div>
