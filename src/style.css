@@ -257,8 +257,11 @@ body {
 }
 
 .invisible-input .error,
-.invisible-input.error {
+.invisible-input.error, {
 	background-color: rgba(200, 40, 40, 0.4);
+}
+.error-message {
+	color: red;
 }
 
 div.invisible-input[contenteditable] {
