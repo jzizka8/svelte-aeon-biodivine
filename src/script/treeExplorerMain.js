@@ -593,16 +593,6 @@ function initHotkeys() {
 			}
 		}
 	});
-
-	hotkeys('h', { keyup: true }, function (event, handler) {
-		if (event.type === 'keydown') {
-			document.getElementById('quick-help').classList.remove('gone');
-		}
-		if (event.type === 'keyup') {
-			document.getElementById('quick-help').classList.add('gone');
-		}
-	});
-
 	hotkeys('s', function (event, handler) {
 		let panel = document.getElementById('mixed-info');
 		if (!panel.classList.contains('gone')) {
