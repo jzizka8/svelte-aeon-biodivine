@@ -2,6 +2,7 @@
 	import { computeEngineStore } from '$lib/stores/ComputeEngineStore'; // Adjust the import according to your actual file structure
 	import { Behavior } from '$lib/types/treeExplorerTypes';
 	import type { Stability } from '$lib/types/treeExplorerTypes';
+	import hotkeys from 'hotkeys-js';
 
 	export let id: number;
 
@@ -44,6 +45,9 @@
 			']'
 		);
 	}
+    hotkeys('s', function (event, handler) {
+		loadStabilityData(id, selectedBehavior);
+	});
 </script>
 
 <select bind:value={selectedBehavior} class="stability-dropdown">

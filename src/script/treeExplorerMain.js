@@ -535,22 +535,6 @@ function initHotkeys() {
 			}
 		}
 	});
-	hotkeys('s', function (event, handler) {
-		let panel = document.getElementById('mixed-info');
-		if (!panel.classList.contains('gone')) {
-			fireEvent(document.getElementById('mixed-stability-analysis-button'), 'click');
-		}
-
-		panel = document.getElementById('decision-info');
-		if (!panel.classList.contains('gone')) {
-			fireEvent(document.getElementById('decision-stability-analysis-button'), 'click');
-		}
-
-		panel = document.getElementById('leaf-info');
-		if (!panel.classList.contains('gone')) {
-			fireEvent(document.getElementById('leaf-stability-analysis-button'), 'click');
-		}
-	});
 
 	hotkeys('d', function (event, handler) {
 		let panel = document.getElementById('mixed-info');
