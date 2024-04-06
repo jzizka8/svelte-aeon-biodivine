@@ -61,3 +61,10 @@ export type LeafData = TreeData & {
 	totalCardinality: number;
 	behavior: Behavior;
 };
+
+export enum Behavior {
+	Stability = 'S',
+	Disorder = 'D',
+	Oscillation = 'O',
+	Total = 'total'
+}
