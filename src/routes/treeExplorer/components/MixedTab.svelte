@@ -1,23 +1,30 @@
 <script lang="ts">
-	import { setSort } from '../../../script/treeExplorerMain';
+	import { autoExpandBifurcationTree, setSort } from '../../../script/treeExplorerMain';
 	import { sortOptions } from '$lib//const';
+	import { mixedDataStore } from '$lib/stores/decisionStore';
+	import BehaviorTable from './BehaviorTable.svelte';
+
+	function handleAutoExpand() {
+		autoExpandBifurcationTree($mixedDataStore?.attribute_id, depthValue);
+	}
+
+	let depthValue = 1;
+	$: autoExpandText =
+		depthValue == 1 ? `Auto expand (${depthValue} level)` : `Auto expand (${depthValue} levels)`;
 </script>
 
-<div id="mixed-info" class="main-panel fira-mono gone">
+<div id="mixed-info" class="main-panel fira-mono">
 	<slot />
 	<div class="center" style="margin: 16px;">
 		<span style="position: relative; top: -20px; font-size: 14px;">Mixed</span><br />
-		<span id="mixed-type-label" style="font-size: 30px;">X types</span>
+		<span id="mixed-type-label" style="font-size: 30px;"
+			>{$mixedDataStore?.classes?.length} Phenotypes</span
+		>
 	</div>
-
-	<table id="mixed-behavior-table" class="behavior-table">
-		<tr class="behavior-table-header">
-			<td class="cell-behavior">Behavior</td>
-			<td class="cell-witness-count">Witness Count</td>
-			<td class="cell-distribution">Distribution</td>
-		</tr>
-		<tr class="empty-space"><td /></tr>
-	</table>
+	<BehaviorTable
+		classes={$mixedDataStore?.classes}
+		cardinality={$mixedDataStore?.cardinality ?? 0}
+	/>
 
 	<div id="mixed-attributes-list-item-template" class="attribute-panel gone">
 		<div style="float: left;" class="information-gain">0.43 ɪɢ / 4 ᴛᴄ</div>
@@ -50,8 +57,9 @@
 			id="mixed-stability-analysis-button"
 			class="image-button"
 			style="float: right; margin-bottom: 16px; margin-right: 16px;"
-			>Stability analysis (S) <img src="img/stability_analysis-24px.svg" /></button
 		>
+			Stability analysis (S) <img src="img/stability_analysis-24px.svg" />
+		</button>
 		<select id="mixed-stability-dropdown" class="stability-dropdown" style="float: right;">
 			<option value="total">Total</option>
 			<option value="S">Stability</option>
@@ -65,14 +73,17 @@
 			id="button-auto-expand"
 			class="image-button"
 			style="margin-bottom: 16px; margin-right: 16px;"
-			>Auto expand (1 level) <img src="img/graph-24px.svg" /></button
+			on:click={handleAutoExpand}
 		>
+			{autoExpandText}
+			<img src="img/graph-24px.svg" />
+		</button>
 		Depth:
 		<input
 			type="range"
 			min="1"
 			max="10"
-			value="1"
+			bind:value={depthValue}
 			class="seekbar"
 			id="auto-expand-slider"
 			style="width: 100px; position: relative; top: 8px;"
@@ -83,8 +94,9 @@
 			id="button-add-variable"
 			class="image-button"
 			style="float: right; margin-bottom: 16px; margin-right: 16px;"
-			>Make decision (D) <img src="img/add_box-24px.svg" /></button
 		>
+			Make decision (D) <img src="img/add_box-24px.svg" />
+		</button>
 	</div>
 
 	<div id="mixed-stability-analysis" class="stability-panel" />

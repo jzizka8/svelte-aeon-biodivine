@@ -65,22 +65,6 @@ export function init() {
 		output.innerHTML = r / 100.0 + '%';
 	});
 
-	var depth = document.getElementById('auto-expand-slider');
-	var autoExpand = document.getElementById('button-auto-expand');
-
-	depth.oninput = function () {
-		let value = depth.value;
-		if (value == 1) {
-			autoExpand.innerHTML = "Auto expand (1 level)  <img src='img/graph-24px.svg'>";
-		} else {
-			autoExpand.innerHTML = 'Auto expand (' + value + " levels)  <img src='img/graph-24px.svg'>";
-		}
-	};
-
-	autoExpand.onclick = function () {
-		autoExpandBifurcationTree(CytoscapeEditor.getSelectedNodeId(), depth.value);
-	};
-
 	initHotkeys();
 }
 
@@ -271,7 +255,7 @@ export function renderAttributeTable(id, attributes, totalCardinality) {
 	}
 }
 
-function autoExpandBifurcationTree(node, depth, fit = true) {
+export function autoExpandBifurcationTree(node, depth, fit = true) {
 	let loading = document.getElementById('loading-indicator');
 	loading.classList.remove('invisible');
 	ComputeEngine.autoExpandBifurcationTree(node, depth, (e, r) => {

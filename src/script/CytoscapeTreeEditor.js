@@ -9,7 +9,7 @@ import {
 import ComputeEngine from './ComputeEngine';
 import { activeTabStore } from '$lib/stores/activeTabStore';
 import { leafDataStore } from '$lib/stores/leafDataStore';
-import { decisionStore } from '$lib/stores/decisionStore';
+import { decisionStore, mixedDataStore } from '$lib/stores/decisionStore';
 
 /*
 	Responsible for managing the cytoscape editor object. It has its own representation of the graph,
@@ -169,11 +169,8 @@ export const CytoscapeEditor = {
 	},
 
 	_showMixedPanel(data) {
-		document.getElementById('mixed-info').classList.remove('gone');
-		document.getElementById('mixed-type-label').innerHTML =
-			data.treeData.classes.length + ' Phenotypes';
-		let table = document.getElementById('mixed-behavior-table');
-		this._renderBehaviorTable(data.treeData.classes, data.treeData.cardinality, table);
+		mixedDataStore.set(data.treeData);
+
 		let loading = document.getElementById('loading-indicator');
 		let addButton = document.getElementById('button-add-variable');
 		addButton.onclick = function () {
