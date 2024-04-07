@@ -6,7 +6,7 @@
 	import { modelStore } from '$lib/stores/modelStore';
 	import { init } from '../../script/treeExplorerMain';
 
-	import { PrecisionSlider, TransparencySwitch, QuickHelp } from './components';
+	import { PrecisionSlider, QuickHelp } from './components';
 	import TabWrapper from '$lib/components/TabWrapper.svelte';
 	onMount(() => {
 		init();
@@ -23,7 +23,6 @@
 
 	<LogoType />
 	<TabWrapper />
-	<TransparencySwitch />
 
 	<PrecisionSlider />
 
