@@ -31,7 +31,6 @@ const ModelEditor = {
 		this._modelDescription = document.getElementById('model-description');
 		this._variableTemplate = document.getElementById('model-variable-template');
 		this._regulationTemplate = document.getElementById('model-regulation-template');
-		ensurePlaceholder(document.getElementById('model-description'));
 	},
 
 	// Return the name of this model as given by the user, or undefined if no name is set.

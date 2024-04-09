@@ -48,7 +48,6 @@ export function init() {
 		document.getElementById('engine-address').value = engineAddress;
 	}
 
-	UI.init();
 	get(ModelEditor).init();
 	CytoscapeEditor.init();
 	ComputeEngine.openConnection(); // Try to automatically connect when first opened.
