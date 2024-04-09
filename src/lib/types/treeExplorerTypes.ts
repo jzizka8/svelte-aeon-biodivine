@@ -5,11 +5,6 @@ export type Stability = {
 		colors: number;
 	}[];
 };
-// export type CardinalityClass = {
-// 	cardinality: number;
-// 	class: string;
-// 	fraction: number;
-// };
 
 export type DecisionAttribute = {
 	id: number;
@@ -43,6 +38,7 @@ export type TreeData = {
 	id: number;
 	type: NodeType;
 	cardinality: number;
+	attributes: DecisionAttribute[];
 	attribute_id?: number;
 	attribute_name?: string;
 	// TODO: unify these two
