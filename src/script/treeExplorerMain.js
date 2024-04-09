@@ -430,12 +430,6 @@ function initHotkeys() {
 		}
 	});
 
-	hotkeys('d', function (event, handler) {
-		let panel = document.getElementById('mixed-info');
-		if (!panel.classList.contains('gone')) {
-			fireEvent(document.getElementById('button-add-variable'), 'click');
-		}
-	});
 }
 // utility function to fire events on UI elements - we mainly need it to simulate clicks
 function fireEvent(el, etype) {

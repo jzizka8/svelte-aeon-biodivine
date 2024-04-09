@@ -8,7 +8,8 @@
 	import type { DecisionAttribute } from '$lib/types/treeExplorerTypes';
 	import DecisionAttributePanel from './DecisionAttributePanel.svelte';
 	import { compareCardinality } from '$lib/utils/comparators';
-	import { onDestroy, } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
+	import hotkeys from 'hotkeys-js';
 
 	function handleAutoExpand() {
 		autoExpandBifurcationTree($mixedDataStore?.id, depthValue);
@@ -61,9 +62,12 @@
 			}
 		);
 	}
-
+	onMount(() => {
+		hotkeys('d', handleMakeDecision);
+	});
 	onDestroy(() => {
 		mixedDataStore.set(undefined);
+		hotkeys.unbind('d');
 	});
 </script>
 
