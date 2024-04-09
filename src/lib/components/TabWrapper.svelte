@@ -29,18 +29,6 @@
 	$: component = $activeTabStore ? tabComponents[$activeTabStore] : null;
 </script>
 
-<!-- This is only a temporary fix to allow initialization of tabs from global js -->
-{#each Object.entries(tabComponents) as [key, tab]}
-	<div class="{key == $activeTabStore ? '' : 'gone'} temp-main">
-		<svelte:component this={tab}>
-			<button class="button button--close" on:click={activeTabStore.close}>
-				<img src="img/close-24px.svg" alt="" />
-			</button>
-		</svelte:component>
-	</div>
-{/each}
-<!-- TODO: use this when possible -->
-<!-- 
 	{#if component}
 	<div class=" temp-main">
 		<svelte:component this={component}>
@@ -49,7 +37,7 @@
 			</button>
 		</svelte:component>
 	</div>
-{/if} -->
+{/if}
 <style>
 	.button--close {
 		display: flex;
