@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { autoExpandBifurcationTree } from '../../../script/treeExplorerMain';
 	import { sortOptions } from '$lib/const';
-	import { mixedDataStore, selectedMixedId } from '$lib/stores/decisionStore';
+	import { mixedDataStore, selectedTreeNodeId } from '$lib/stores/treeNodeStores';
 	import BehaviorTable from './BehaviorTable.svelte';
 	import StabilityAnalysis from './StabilityAnalysis.svelte';
 	import { computeEngineStore } from '$lib/stores/ComputeEngineStore';
 	import type { DecisionAttribute } from '$lib/types/treeExplorerTypes';
 	import DecisionAttributePanel from './DecisionAttributePanel.svelte';
 	import { compareCardinality } from '$lib/utils/comparators';
+	import { onDestroy, } from 'svelte';
 
 	function handleAutoExpand() {
 		autoExpandBifurcationTree($mixedDataStore?.id, depthValue);
@@ -20,7 +21,7 @@
 	$: decisionsMade = false;
 	$: comparator = sortOptions[0].comparator;
 
-	selectedMixedId.subscribe((id) => {
+	selectedTreeNodeId.subscribe(() => {
 		decisionsMade = false;
 		comparator = sortOptions[0].comparator;
 	});
@@ -40,6 +41,10 @@
 		$computeEngineStore.getDecisionAttributes(
 			$mixedDataStore?.id,
 			(e: string, r: DecisionAttribute[]) => {
+				if (e) {
+					console.error('Error fetching decision attributes:', e);
+					return;
+				}
 				for (let attr of r) {
 					// Prepare data:
 					attr.left.sort(compareCardinality);
@@ -56,6 +61,10 @@
 			}
 		);
 	}
+
+	onDestroy(() => {
+		mixedDataStore.set(undefined);
+	});
 </script>
 
 <div id="mixed-info" class="main-panel fira-mono">

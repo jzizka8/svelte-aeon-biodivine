@@ -1,15 +1,14 @@
 <script lang="ts">
 	import BehaviorTable from './BehaviorTable.svelte';
 
-	import { leafDataStore } from '$lib/stores/leafDataStore';
-	import StabilityAnalysisButton from './StabilityAnalysisButton.svelte';
 	import { calcDimPercent, calcPercent } from '$lib/utils/mathUtils';
 	import { onDestroy } from 'svelte';
 	import StabilityAnalysis from './StabilityAnalysis.svelte';
-	import { normalizeClass } from '$lib/utils/utils';
+	import { leafDataStore, selectedTreeNodeId } from '$lib/stores/treeNodeStores';
 
 	let percent: number, dimPercent: number;
-	$: {
+	
+	selectedTreeNodeId.subscribe(() => {
 		if ($leafDataStore) {
 			[percent, dimPercent] = [
 				calcPercent($leafDataStore.cardinality, $leafDataStore.totalCardinality),
@@ -18,12 +17,13 @@
 		} else {
 			[percent, dimPercent] = [0, 0];
 		}
-	}
+	});
 
 	$: witnessCount = `${$leafDataStore?.cardinality} (${percent}% / ${dimPercent}٪)`;
 
 	onDestroy(() => {
 		console.log('LeafTab destroyed');
+		leafDataStore.set(undefined);
 		// TODO: unselect the node in cytoscape
 	});
 </script>
@@ -62,5 +62,7 @@
 		{/if}
 	</div>
 
-	<StabilityAnalysis id={$leafDataStore?.id ?? 0} />
+	{#if $leafDataStore}
+		<StabilityAnalysis id={$leafDataStore.id} />
+	{/if}
 </div>

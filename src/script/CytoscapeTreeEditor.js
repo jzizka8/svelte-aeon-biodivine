@@ -3,8 +3,7 @@ import cytoscapeDagre from 'cytoscape-dagre';
 import { Math_dimPercent, Math_percent, renderAttributeTable } from './treeExplorerMain';
 import ComputeEngine from './ComputeEngine';
 import { activeTabStore } from '$lib/stores/activeTabStore';
-import { leafDataStore } from '$lib/stores/leafDataStore';
-import { decisionStore, mixedDataStore } from '$lib/stores/decisionStore';
+import { decisionStore, mixedDataStore, leafDataStore } from '$lib/stores/treeNodeStores';
 
 /*
 	Responsible for managing the cytoscape editor object. It has its own representation of the graph,

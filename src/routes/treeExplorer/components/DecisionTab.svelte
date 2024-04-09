@@ -1,7 +1,12 @@
 <script lang="ts">
-	import { decisionStore } from '$lib/stores/decisionStore';
+	import { decisionStore } from '$lib/stores/treeNodeStores';
+	import { onDestroy } from 'svelte';
 	import BehaviorTable from './BehaviorTable.svelte';
 	import StabilityAnalysis from './StabilityAnalysis.svelte';
+
+	onDestroy(() => {
+		decisionStore.set(undefined);
+	});
 </script>
 
 <div id="decision-info" class="main-panel fira-mono">
