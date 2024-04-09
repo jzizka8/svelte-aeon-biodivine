@@ -24,10 +24,6 @@
 
 	function handleCollapse() {
 		collapsed = !collapsed;
-		const table = document.querySelector('.table');
-		if (table) {
-			table.classList.toggle('collapsed');
-		}
 	}
 	$: collapseButtonText = collapsed ? 'more...' : '...less';
 </script>
