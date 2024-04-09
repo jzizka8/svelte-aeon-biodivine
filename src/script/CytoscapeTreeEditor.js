@@ -1,7 +1,6 @@
 import cytoscape from 'cytoscape';
 import cytoscapeDagre from 'cytoscape-dagre';
-import { Math_dimPercent, Math_percent, renderAttributeTable } from './treeExplorerMain';
-import ComputeEngine from './ComputeEngine';
+import { Math_dimPercent } from './treeExplorerMain';
 import { activeTabStore } from '$lib/stores/activeTabStore';
 import { decisionStore, mixedDataStore, leafDataStore } from '$lib/stores/treeNodeStores';
 
@@ -61,19 +60,7 @@ export const CytoscapeEditor = {
 		this._cytoscape.on('unselect', (e) => {
 			// Clear remove button
 			CytoscapeEditor._cytoscape.$('.remove-button').remove();
-			// Close panels
 			activeTabStore.close();
-			// Clear decision attribute list:
-			// document.getElementById('button-add-variable').classList.remove('gone');
-			// document.getElementById('mixed-attributes').classList.add('gone');
-			// document.getElementById('mixed-attributes-list').innerHTML = '';
-			// // Reset stability analysis buttons:
-			// document.getElementById('mixed-stability-analysis-button').classList.remove('gone');
-			// document.getElementById('leaf-stability-analysis-button').classList.remove('gone');
-			// document.getElementById('decision-stability-analysis-button').classList.remove('gone');
-			// document.getElementById('mixed-stability-analysis').innerHTML = '';
-			// document.getElementById('leaf-stability-analysis').innerHTML = '';
-			// document.getElementById('decision-stability-analysis').innerHTML = '';
 		});
 	},
 
@@ -159,9 +146,6 @@ export const CytoscapeEditor = {
 
 	_showMixedPanel(data) {
 		mixedDataStore.set(data.treeData);
-
-		let loading = document.getElementById('loading-indicator');
-		let addButton = document.getElementById('button-add-variable');
 	},
 
 	_showLeafPanel(data) {
@@ -344,34 +328,6 @@ export const CytoscapeEditor = {
 				data: { source: sourceId, target: targetId, positive: positive.toString() }
 			});
 		}
-	},
-
-	setMassEnabled() {
-		this._showMass = true;
-		for (let node of this._cytoscape.nodes()) {
-			let data = node.data();
-			if (data.treeData !== undefined) {
-				data.opacity = this._computeMassOpacity(data.treeData.cardinality);
-			}
-		}
-		this._cytoscape.style().update(); //redraw graph
-	},
-
-	setMassDisabled() {
-		this._showMass = false;
-		for (let node of this._cytoscape.nodes()) {
-			let data = node.data();
-			data.opacity = 1.0;
-		}
-		this._cytoscape.style().update(); //redraw graph
-	},
-
-	_computeMassOpacity(cardinality) {
-		if (cardinality === undefined) {
-			return 1.0;
-		}
-		let percent = Math_dimPercent(cardinality, this._totalCardinality);
-		return (percent / 100.0) * (percent / 100.0);
 	},
 
 	// Pan and zoom the groph to show the whole model.

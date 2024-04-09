@@ -2,7 +2,9 @@
 	import type { DecisionAttribute } from '$lib/types/treeExplorerTypes';
 	import { calcPercent } from '$lib/utils/mathUtils';
 	import { normalizeClass } from '$lib/utils/utils';
+	import { selectAttribute } from '../../../script/treeExplorerMain';
 
+	export let parrentId: number;
 	export let decision: DecisionAttribute;
 
 	const negativeLength = decision.left.length;
@@ -31,7 +33,9 @@
 <div id="" class="attribute-panel">
 	<div style="float: left;" class="information-gain primary">{infoGain} ɪɢ / {totalClass} ᴛᴄ</div>
 	<div style="float: right;" class="attribute-name">
-		<small class="grey">SELECT:</small>{decision.name}
+		<button on:click={()=>selectAttribute(parrentId, decision.id)}>
+		<small class="grey">SELECT:</small>
+			{decision.name}</button>
 	</div>
 	<div style="clear: both;" />
 	<div class="attribute-sub-panel negative">

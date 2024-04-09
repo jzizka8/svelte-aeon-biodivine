@@ -136,7 +136,7 @@
 
 			<div id="mixed-attributes-list">
 				{#each decisionAttributes as decission (decission.id)}
-					<DecisionAttributePanel decision={decission} />
+					<DecisionAttributePanel decision={decission} parrentId={$mixedDataStore.id} />
 				{/each}
 			</div>
 

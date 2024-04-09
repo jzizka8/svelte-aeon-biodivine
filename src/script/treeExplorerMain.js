@@ -224,7 +224,7 @@ function removeNode(nodeId) {
 	});
 }
 
-function selectAttribute(node, attr) {
+export function selectAttribute(node, attr) {
 	ComputeEngine.selectDecisionAttribute(node, attr, (e, r) => {
 		console.log(r);
 		for (let node of r) {
