@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { autoExpandBifurcationTree, setSort } from '../../../script/treeExplorerMain';
+	import { autoExpandBifurcationTree } from '../../../script/treeExplorerMain';
 	import { sortOptions } from '$lib/const';
-	import { mixedDataStore } from '$lib/stores/decisionStore';
+	import { mixedDataStore, selectedMixedId } from '$lib/stores/decisionStore';
 	import BehaviorTable from './BehaviorTable.svelte';
 	import StabilityAnalysis from './StabilityAnalysis.svelte';
 	import { computeEngineStore } from '$lib/stores/ComputeEngineStore';
@@ -18,17 +18,25 @@
 		depthValue == 1 ? `Auto expand (${depthValue} level)` : `Auto expand (${depthValue} levels)`;
 
 	$: decisionsMade = false;
-	$:{
-		if ($mixedDataStore?.id) {
-			decisionsMade = false;
-		}
-	}
+	$: comparator = sortOptions[0].comparator;
+
+	selectedMixedId.subscribe((id) => {
+		decisionsMade = false;
+		comparator = sortOptions[0].comparator;
+	});
+
+	$: decisionAttributes = $mixedDataStore?.attributes
+		? [...$mixedDataStore.attributes].sort(comparator)
+		: [];
+
 	function handleMakeDecision() {
 		decisionsMade = true;
+		console.log('Making decision...');
 		if ($mixedDataStore?.attributes) {
+			console.log('already have decision attributes');
 			return;
 		}
-		console.log('Getting decision attributes...')
+		console.log('Getting decision attributes...');
 		$computeEngineStore.getDecisionAttributes(
 			$mixedDataStore?.id,
 			(e: string, r: DecisionAttribute[]) => {
@@ -38,13 +46,13 @@
 					attr.right.sort(compareCardinality);
 					attr.leftTotal = attr.left.reduce((a, b) => a + b.cardinality, 0.0);
 					attr.rightTotal = attr.right.reduce((a, b) => a + b.cardinality, 0.0);
-
 				}
-				console.log('Decision attributes:', r);
+				console.log('finished fetching, N:', r.length);
 				mixedDataStore.update((d) => {
 					if (d) d.attributes = r;
 					return d;
 				});
+				console.log('updated mixedDataStore');
 			}
 		);
 	}
@@ -97,12 +105,12 @@
 			Make decision (D) <img src="img/add_box-24px.svg" />
 		</button>
 	</div>
-	{#if $mixedDataStore?.attributes && decisionsMade}
+	{#if decisionAttributes && decisionsMade}
 		<div id="mixed-attributes">
 			<span
 				id="mixed-attributes-title"
 				style="font-weight: bold; margin-top: 16px; display: inline-block; margin-bottom: 8px;"
-				>Attributes:</span
+				>Attributes: {decisionAttributes.length}</span
 			>
 
 			<div>
@@ -110,14 +118,7 @@
 				<div class="sort-options-container">
 					{#each sortOptions as option}
 						<label class="sort-checkbox">
-							<input
-								type="radio"
-								name="sort"
-								value={option.id}
-								checked={option.id === sortOptions[0].id}
-								id={option.id}
-								on:change={setSort}
-							/>
+							<input type="radio" name="sort" bind:group={comparator} value={option.comparator} />
 							{option.label}
 						</label>
 					{/each}
@@ -125,7 +126,7 @@
 			</div>
 
 			<div id="mixed-attributes-list">
-				{#each $mixedDataStore?.attributes as decission (decission.id)}
+				{#each decisionAttributes as decission (decission.id)}
 					<DecisionAttributePanel decision={decission} />
 				{/each}
 			</div>
