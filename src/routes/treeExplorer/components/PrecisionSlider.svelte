@@ -4,7 +4,7 @@
 	import { setPrecision } from '../../../script/treeExplorerMain';
 
 	onMount(() => {
-		$computeEngineStore.getTreePrecision((e, r) => {
+		$computeEngineStore.getTreePrecision((e:string, r:number) => {
 			precision = r;
 		});
 	});
