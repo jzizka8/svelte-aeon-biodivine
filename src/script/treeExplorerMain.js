@@ -97,7 +97,7 @@ export function setPrecision(precision) {
 	});
 }
 
-function removeNode(nodeId) {
+export function removeNode(nodeId) {
 	ComputeEngine.deleteDecision(nodeId, (e, r) => {
 		console.log(r);
 		if (r.removed.length > 0) {

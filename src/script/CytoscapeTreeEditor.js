@@ -1,6 +1,6 @@
 import cytoscape from 'cytoscape';
 import cytoscapeDagre from 'cytoscape-dagre';
-import { Math_dimPercent } from './treeExplorerMain';
+import { Math_dimPercent, removeNode } from './treeExplorerMain';
 import { activeTabStore } from '$lib/stores/activeTabStore';
 import { decisionStore, mixedDataStore, leafDataStore } from '$lib/stores/treeNodeStores';
 
@@ -23,7 +23,7 @@ export const CytoscapeEditor = {
 			let data = e.target.data();
 			if (data.action == 'remove') {
 				// This is a remove button for a specifc tree node.
-				this.removeNode(data.targetId);
+				removeNode(data.targetId);
 			} else if (data.type == 'leaf') {
 				this._showLeafPanel(data);
 				activeTabStore.set('leaf');
