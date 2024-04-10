@@ -34,119 +34,7 @@ export function init() {
 		});
 	});
 
-	var slider = document.getElementById('precision-slider');
-	var output = document.getElementById('precision-value');
-	output.innerHTML = slider.value / 100.0 + '%';
-
-	slider.oninput = function () {
-		output.innerHTML = this.value / 100.0 + '%';
-	};
-
-	slider.onmouseup = function () {
-		setPrecision(slider.value);
-	};
-
-	ComputeEngine.getTreePrecision((e, r) => {
-		slider.value = r;
-		output.innerHTML = r / 100.0 + '%';
-	});
-
 	initHotkeys();
-}
-
-
-export function renderAttributeTable(id, attributes, totalCardinality) {
-	document.getElementById('mixed-attributes').classList.remove('gone');
-	document.getElementById('mixed-attributes-title').innerHTML =
-		'Attributes (' + attributes.length + '):';
-	let template = document.getElementById('mixed-attributes-list-item-template');
-	let list = document.getElementById('mixed-attributes-list');
-	list.innerHTML = '';
-	var cut_off = 100;
-	sortAttributes(attributes);
-	for (let attr of attributes) {
-		if (cut_off < 0) break;
-		let attrNode = template.cloneNode(true);
-		attrNode.id = '';
-		attrNode.classList.remove('gone');
-		let nameText = attrNode.getElementsByClassName('attribute-name')[0];
-		nameText.innerHTML = "<small class='grey'>SELECT:</small>" + attr.name;
-		nameText.onclick = new Function('selectAttribute(' + id + ', ' + attr.id + ')');
-		let igText = attrNode.getElementsByClassName('information-gain')[0];
-		igText.innerHTML =
-			attr.gain.toFixed(2) + ' ɪɢ / ' + (attr.left.length + attr.right.length) + ' ᴛᴄ';
-		if (attr.gain <= 0.0) {
-			igText.classList.add('red');
-		} else if (attr.gain >= 0.99) {
-			igText.classList.add('green');
-		} else {
-			igText.classList.add('primary');
-		}
-		list.appendChild(attrNode);
-		let leftNode = attrNode.getElementsByClassName('negative')[0];
-		let rightNode = attrNode.getElementsByClassName('positive')[0];
-		let leftTotal = attr.left.reduce((a, b) => a + b.cardinality, 0.0);
-		let rightTotal = attr.right.reduce((a, b) => a + b.cardinality, 0.0);
-		leftNode.getElementsByClassName('title')[0].innerHTML =
-			'Negative (' +
-			attr.left.length +
-			'|<small>' +
-			Math_percent(leftTotal, totalCardinality) +
-			'%</small>)';
-		rightNode.getElementsByClassName('title')[0].innerHTML =
-			'Positive (' +
-			attr.right.length +
-			'|<small>' +
-			Math_percent(rightTotal, totalCardinality) +
-			'%</small>)';
-		let leftTable = leftNode.getElementsByClassName('table')[0];
-		leftTable.innerHTML = attr.left.reduce((html, cls) => {
-			let style = '';
-			if (html.length > 0) {
-				style = "class='extra'";
-			}
-			let row = `
-				<tr ${style}>
-                	<td class="distribution">${Math_percent(cls.cardinality, leftTotal)}%</td>
-                	<td class="symbols phenotype">${CytoscapeEditor._normalizeClass(cls.class)}</td>
-            	</tr>
-            `;
-			return html + row;
-		}, '');
-		let rightTable = rightNode.getElementsByClassName('table')[0];
-		rightTable.innerHTML = attr.right.reduce((html, cls) => {
-			let style = '';
-			if (html.length > 0) {
-				style = "class='extra'";
-			}
-			let row = `
-				<tr ${style}>
-                	<td class="symbols phenotype">${CytoscapeEditor._normalizeClass(cls.class)}</td>
-                	<td class="distribution">${Math_percent(cls.cardinality, rightTotal)}%</td>
-            	</tr>
-            `;
-			return html + row;
-		}, '');
-		let expandButton = attrNode.getElementsByClassName('expand-button')[0];
-		if (attr.left.length == 1 && attr.right.length == 1) {
-			expandButton.parentNode.removeChild(expandButton);
-		} else {
-			let expandButtonEvent = function () {
-				if (expandButton.innerHTML == 'more...') {
-					// Expand
-					expandButton.innerHTML = '...less';
-					leftTable.classList.remove('collapsed');
-					rightTable.classList.remove('collapsed');
-				} else if (expandButton.innerHTML == '...less') {
-					// Collapse
-					expandButton.innerHTML = 'more...';
-					leftTable.classList.add('collapsed');
-					rightTable.classList.add('collapsed');
-				}
-			};
-			expandButton.onclick = expandButtonEvent;
-		}
-	}
 }
 
 export function autoExpandBifurcationTree(node, depth, fit = true) {
@@ -201,7 +89,7 @@ function loadBifurcationTree(fit = true) {
 	}, true);
 }
 
-function setPrecision(precision) {
+export function setPrecision(precision) {
 	let loading = document.getElementById('loading-indicator');
 	loading.classList.remove('invisible');
 	ComputeEngine.applyTreePrecision(precision, (e, r) => {
