@@ -1,23 +1,6 @@
 import hotkeys from 'hotkeys-js';
 import ComputeEngine from './ComputeEngine';
 import { CytoscapeEditor } from './CytoscapeTreeEditor';
-import {
-	SORT_ALPHABETICAL,
-	SORT_INFORMATION_GAIN,
-	SORT_NEGATIVE,
-	SORT_NEGATIVE_MAJORITY,
-	SORT_POSITIVE,
-	SORT_POSITIVE_MAJORITY,
-	SORT_TOTAL_CLASSES
-} from '$lib//const';
-
-export function Math_dimPercent(cardinality, total) {
-	return Math.round(((Math.log2(cardinality) + 1) / (Math.log2(total) + 1)) * 100);
-}
-
-export function Math_percent(cardinality, total) {
-	return Math.round((cardinality / total) * 100);
-}
 
 export function init() {
 	// Set engine address according to query parameter
@@ -28,11 +11,11 @@ export function init() {
 
 	CytoscapeEditor.init();
 
-	document.fonts.load('1rem "symbols"').then(() => {
-		document.fonts.load('1rem "FiraMono"').then(() => {
-			loadBifurcationTree();
-		});
-	});
+	(async () => {
+		await document.fonts.load('1rem "symbols"');
+		await document.fonts.load('1rem "FiraMono"');
+		loadBifurcationTree();
+	})();
 
 	initHotkeys();
 }
@@ -195,28 +178,6 @@ function openStabilityAttractor(variable, behaviour, vector) {
 	);
 }
 
-function vector_to_string(vector) {
-	let result = '[';
-	let first = true;
-	for (let item of vector) {
-		if (first) {
-			first = false;
-		} else {
-			result += ',';
-		}
-		if (item == 'true') {
-			result += "<span class='green'><b>true</b></span>";
-		} else if (item == 'false') {
-			result += "<span class='red'><b>false</b></span>";
-		} else {
-			result += '<b>' + item + '</b>';
-		}
-	}
-	result += ']';
-	return result;
-}
-
-
 function getWitnessPanelForVariable(variable, behaviour, vector) {
 	return (
 		"<span class='witness-panel'><span class='inline-button' onclick='openStabilityWitness(\"" +
@@ -307,6 +268,5 @@ function initHotkeys() {
 			event.preventDefault();
 		}
 	});
-
 }
 
