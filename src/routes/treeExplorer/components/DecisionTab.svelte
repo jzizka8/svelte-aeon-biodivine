@@ -1,12 +1,21 @@
 <script lang="ts">
 	import { decisionStore } from '$lib/stores/treeNodeStores';
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import BehaviorTable from './BehaviorTable.svelte';
 	import StabilityAnalysis from './StabilityAnalysis.svelte';
+	import { removeNode } from '../../../script/treeExplorerMain';
+	import hotkeys from 'hotkeys-js';
 
+	onMount(() => {
+		hotkeys('backspace', handleUndecide);
+	});
 	onDestroy(() => {
+		hotkeys.unbind('backspace');
 		decisionStore.set(undefined);
 	});
+	function handleUndecide() {
+		removeNode($decisionStore?.id );
+	}
 </script>
 
 <div id="decision-info" class="main-panel fira-mono">
@@ -15,12 +24,18 @@
 		<span style="position: relative; top: -20px; font-size: 14px;">Decision</span><br />
 		<span id="decision-attribute" style="font-size: 30px;">{$decisionStore?.attribute_name}</span>
 	</div>
-
-	<span
-		id="decision-phenotype-label"
-		style="font-weight: bold; margin-top: 16px; display: inline-block; margin-bottom: 8px;"
-		>Phenotypes ({$decisionStore?.classes?.length}):</span
-	>
+	<div class="flex">
+		<div
+			id="decision-phenotype-label"
+			style="font-weight: bold; margin-top: 16px; display: inline-block; margin-bottom: 8px;"
+		>
+			Phenotypes ({$decisionStore?.classes?.length}):
+		</div>
+		<button class="image-button btn-remove" on:click={handleUndecide}>
+			Undecide (⌫)
+			<img src="img/close-24px.svg" alt="">
+		</button>
+	</div>
 
 	{#if $decisionStore}
 		<BehaviorTable classes={$decisionStore.classes} cardinality={$decisionStore.cardinality} />
@@ -28,3 +43,15 @@
 		<StabilityAnalysis id={$decisionStore.id} />
 	{/if}
 </div>
+<style>
+	.flex{
+		display: flex;
+		justify-content: space-between;
+	}
+	.btn-remove{
+		background-color: var(--primary-color-light);
+	}
+	.btn-remove:hover{
+		background-color: var(--primary-color);
+	}
+</style>

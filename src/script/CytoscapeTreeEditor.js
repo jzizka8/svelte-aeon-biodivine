@@ -1,6 +1,6 @@
 import cytoscape from 'cytoscape';
 import cytoscapeDagre from 'cytoscape-dagre';
-import { Math_dimPercent, removeNode } from './treeExplorerMain';
+import { removeNode } from './treeExplorerMain';
 import { activeTabStore } from '$lib/stores/activeTabStore';
 import { decisionStore, mixedDataStore, leafDataStore } from '$lib/stores/treeNodeStores';
 
@@ -21,45 +21,19 @@ export const CytoscapeEditor = {
 			document.getElementById('quick-help').classList.add('gone');
 			console.log(e.target.data());
 			let data = e.target.data();
-			if (data.action == 'remove') {
-				// This is a remove button for a specifc tree node.
-				removeNode(data.targetId);
-			} else if (data.type == 'leaf') {
-				this._showLeafPanel(data);
-				activeTabStore.set('leaf');
-			} else if (data.type == 'decision') {
-				activeTabStore.set('decision');
-				this._showDecisionPanel(data);
-				let currentPosition = e.target.position();
-				// Show close button
-				let closeButton = {
-					classes: ['remove-button'],
-					grabbable: false,
-					data: {
-						action: 'remove',
-						targetId: e.target.data().id
-					},
-					position: {
-						// 12 is half the radius of the close icon
-						x: currentPosition.x + e.target.width() / 2 + 12,
-						y: currentPosition.y - e.target.height() / 2 - 12
-					}
-				};
-				let node = CytoscapeEditor._cytoscape.add(closeButton);
-				node.on('mouseover', (e) => {
-					node.addClass('hover');
-				});
-				node.on('mouseout', (e) => {
-					node.removeClass('hover');
-				});
-			} else if (data.type == 'unprocessed') {
-				activeTabStore.set('mixed');
-				this._showMixedPanel(data);
-			}
+			if (data.type == 'leaf') {
+					this._showLeafPanel(data);
+					activeTabStore.set('leaf');
+				} else if (data.type == 'decision') {
+					activeTabStore.set('decision');
+					this._showDecisionPanel(data);
+				} else if (data.type == 'unprocessed') {
+					activeTabStore.set('mixed');
+					this._showMixedPanel(data);
+				}
 		});
 		this._cytoscape.on('unselect', (e) => {
 			// Clear remove button
-			CytoscapeEditor._cytoscape.$('.remove-button').remove();
 			activeTabStore.close();
 		});
 	},
@@ -335,7 +309,12 @@ export const CytoscapeEditor = {
 		this._cytoscape.fit();
 		this._cytoscape.zoom(this._cytoscape.zoom() * 0.8); // zoom out a bit to have some padding
 	},
-
+	_normalizeClass(cls) {
+		return JSON.parse(cls)
+			.map((x) => x[0])
+			.sort()
+			.join('');
+	},
 	_applyTreeData(data, treeData) {
 		if (data.id != treeData.id) {
 			console.error('Updating wrong node.');
@@ -375,18 +354,9 @@ export const CytoscapeEditor = {
 			data.label = treeData.type + '(' + treeData.id + ')';
 		}
 		let opacity = 1.0;
-		if (this._showMass) {
-			opacity = this._computeMassOpacity(treeData.cardinality);
-		}
+
 		data.opacity = opacity;
 		return data;
-	},
-
-	_normalizeClass(cls) {
-		return JSON.parse(cls)
-			.map((x) => x[0])
-			.sort()
-			.join('');
 	},
 
 	removeNode(nodeId) {

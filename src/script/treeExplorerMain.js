@@ -308,24 +308,5 @@ function initHotkeys() {
 		}
 	});
 
-	hotkeys('backspace', function (event, handler) {
-		let selected = CytoscapeEditor.getSelectedNodeId();
-		if (selected !== undefined && CytoscapeEditor.getNodeType(selected) == 'decision') {
-			event.preventDefault();
-			if (confirm('Delete this node?')) {
-				removeNode(selected);
-			}
-		}
-	});
+}
 
-}
-// utility function to fire events on UI elements - we mainly need it to simulate clicks
-function fireEvent(el, etype) {
-	if (el.fireEvent) {
-		el.fireEvent('on' + etype);
-	} else {
-		var evObj = document.createEvent('Events');
-		evObj.initEvent(etype, true, false);
-		el.dispatchEvent(evObj);
-	}
-}
