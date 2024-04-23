@@ -4,12 +4,15 @@
 	import LogoType from '$lib/components/LogoType.svelte';
 	import LoadingIndicator from '$lib/components/LoadingIndicator.svelte';
 	import { modelStore } from '$lib/stores/modelStore';
-	import { init } from '../../script/treeExplorerMain';
 
 	import { PrecisionSlider, QuickHelp } from './components';
 	import TabWrapper from '$lib/components/TabWrapper.svelte';
+	import CytoscapeTreeExplorer from '$lib/treeCytoscape/CytoscapeTreeExplorer.svelte';
 	onMount(() => {
-		init();
+		(async () => {
+			await document.fonts.load('1rem "symbols"');
+			await document.fonts.load('1rem "FiraMono"');
+		})();
 	});
 </script>
 
@@ -17,8 +20,7 @@
 	<title>{$modelStore.name} | Tree explorer AEON</title>
 </svelte:head>
 <main>
-	<div id="cytoscape-editor" />
-
+	<CytoscapeTreeExplorer />
 	<QuickHelp />
 
 	<LogoType />

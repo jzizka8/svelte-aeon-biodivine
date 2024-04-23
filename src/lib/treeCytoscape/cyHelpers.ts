@@ -1,0 +1,264 @@
+import type { TreeData, TreeNode } from '$lib/types/treeExplorerTypes';
+import type cytoscape from 'cytoscape';
+import ComputeEngine from '../../script/ComputeEngine';
+import { normalizeClass } from '$lib/utils/utils';
+import { activeTabStore } from '$lib/stores/activeTabStore';
+import { decisionStore, leafDataStore, mixedDataStore } from '$lib/stores/treeNodeStores';
+import { get } from 'svelte/store';
+
+// Function to remove all nodes and edges from the graph
+function removeAll(cyInstance: cytoscape.Core): void {
+	cyInstance.nodes(':selected').unselect(); // Triggers reset of other UI.
+	cyInstance.elements().remove();
+}
+
+// Function to refresh the selection of nodes or edges
+function refreshSelection(cyInstance: cytoscape.Core, targetId?: number): void {
+	const selected = cyInstance.$(':selected'); // node or edge that are selected
+	if (selected.length > 0) {
+		selected.unselect();
+	}
+	if (targetId === undefined) {
+		if (selected.length > 0) {
+			selected.select();
+		}
+	} else {
+		cyInstance.getElementById(targetId.toString()).select();
+	}
+}
+
+// Function to get the parent node of a given targetId
+function getParentNode(cyInstance: cytoscape.Core, targetId: number): number | undefined {
+	const parentEdge = cyInstance.edges(`edge[target='${targetId}']`);
+	if (parentEdge.length === 0) {
+		return undefined;
+	}
+	return parseInt(parentEdge.data().source);
+}
+
+// Function to get the child node of a given sourceId and positive value
+function getChildNode(
+	cyInstance: cytoscape.Core,
+	sourceId: number,
+	positive: string
+): number | undefined {
+	const childEdge = cyInstance.edges(`edge[source='${sourceId}'][positive='${positive}']`);
+	if (childEdge.length === 0) {
+		return undefined;
+	}
+	return parseInt(childEdge.data().target);
+}
+
+// Function to get the sibling node of a given targetId
+function getSiblingNode(cyInstance: cytoscape.Core, targetId: number): number | undefined {
+	const parentEdge = cyInstance.edges(`edge[target='${targetId}']`);
+	if (parentEdge.length === 0) {
+		return undefined;
+	}
+	const sourceId = parseInt(parentEdge.data().source);
+	const positive = !(parentEdge.data().positive === 'true');
+	const childEdge = cyInstance.edges(`edge[source='${sourceId}'][positive='${positive}']`);
+	if (childEdge.length === 0) {
+		return undefined;
+	}
+	return parseInt(childEdge.data().target);
+}
+
+// Function to get the ID of the selected node
+function getSelectedNodeId(cyInstance: cytoscape.Core): number | undefined {
+	const node = cyInstance.nodes(':selected');
+	if (node.length === 0) return undefined;
+	return parseInt(node.data().id);
+}
+
+// Function to get the tree data of the selected node
+function getSelectedNodeTreeData(cyInstance: cytoscape.Core): TreeData | undefined {
+	const node = cyInstance.nodes(':selected');
+	if (node.length === 0) return undefined;
+	return node.data().treeData;
+}
+
+// Function to select a node by its ID
+function selectNode(cyInstance: cytoscape.Core, nodeId: number): void {
+	const current = cyInstance.nodes(':selected');
+	current.unselect();
+	cyInstance.getElementById(nodeId.toString()).select();
+}
+
+// Function to get the type of a node by its ID
+function getNodeType(cyInstance: cytoscape.Core, nodeId: number): string {
+	return cyInstance.getElementById(nodeId.toString()).data().type;
+}
+
+function getTotalCardinality(cyInstance: cytoscape.Core): number {
+	console.log('root', cyInstance.$id('0')[0].data().treeData);
+	return cyInstance.$id('0')[0].data().treeData.cardinality;
+}
+
+function ensureNode(cyInstance: cytoscape.Core, treeData: TreeData) {
+	const node = cyInstance.getElementById(treeData.id.toString());
+	if (node.length > 0) {
+		const data = node.data();
+		applyTreeData(data, treeData);
+		cyInstance.style().update(); //redraw graph
+		return node;
+	}
+	const data = applyTreeData({ id: treeData.id }, treeData);
+	return cyInstance.add({
+		// id: data.id,
+		data: data,
+		grabbable: false,
+		position: { x: 0.0, y: 0.0 }
+	});
+}
+
+function ensureEdge(
+	cyInstance: cytoscape.Core,
+	sourceId: number,
+	targetId: number,
+	positive: boolean
+) {
+	const edge = cyInstance.edges('[source = "' + sourceId + '"][target = "' + targetId + '"]');
+	if (edge.length >= 1) {
+		// Edge exists
+		cyInstance.style().update(); //redraw graph
+	} else {
+		// Make new edge
+		cyInstance.add({
+			group: 'edges',
+			data: { source: sourceId, target: targetId, positive: positive.toString() }
+		});
+	}
+}
+function loadBifurcationTree(cyInstance: cytoscape.Core, fit = true) {
+	const loading = document.getElementById('loading-indicator');
+	loading.classList.remove('invisible');
+	ComputeEngine.getBifurcationTree((e, r) => {
+		if (r === undefined || r.length === 0) {
+			console.error('No tree data returned', e);
+			return;
+		}
+		removeAll(cyInstance); // remove old tree if present
+		for (const node of r) {
+			ensureNode(cyInstance, node);
+		}
+		for (let node of r) {
+			if (node.type == 'decision') {
+				ensureEdge(cyInstance, node.id, node.left, false);
+				ensureEdge(cyInstance, node.id, node.right, true);
+			}
+		}
+
+		applyTreeLayout(cyInstance);
+		loading.classList.add('invisible');
+	}, true);
+}
+function applyTreeLayout(cyInstance: cytoscape.Core) {
+	cyInstance
+		.layout({
+			name: 'dagre',
+			roots: [0],
+			directed: true,
+			avoidOverlap: true,
+			animate: true,
+			fit: true
+		})
+		.start();
+	cyInstance.fit();
+	cyInstance.zoom(cyInstance.zoom() * 0.8);
+}
+function applyTreeData(data, treeData) {
+	if (data.id != treeData.id) {
+		console.error('Updating wrong node.');
+	}
+
+	if (treeData.classes !== undefined) {
+		treeData.classes.sort((a, b) => {
+			if (a.cardinality == b.cardinality) {
+				return a.class.localeCompare(b.class);
+			} else if (a.cardinality < b.cardinality) {
+				return 1;
+			} else {
+				return -1;
+			}
+		});
+	}
+	data.treeData = treeData;
+	data.type = treeData.type;
+	if (treeData.type == 'leaf') {
+		let normalizedClass = normalizeClass(treeData.class);
+		if (normalizedClass.includes('D')) {
+			data.subtype = 'disorder';
+		} else if (normalizedClass.includes('O')) {
+			data.subtype = 'oscillation';
+		} else {
+			data.subtype = 'stability';
+		}
+		data.label = normalizedClass;
+		//data.label += "\n(" + treeData.cardinality + ")";
+	} else if (treeData.type == 'decision') {
+		data.label = treeData.attribute_name;
+	} else if (treeData.type == 'unprocessed') {
+		data.label = 'Mixed Phenotype\n' + '(' + treeData.classes.length + ' types)';
+	} else {
+		data.label = treeData.type + '(' + treeData.id + ')';
+	}
+	let opacity = 1.0;
+
+	data.opacity = opacity;
+	return data;
+}
+
+function handleSelect(cyInstance: cytoscape.Core, data: TreeNode) {
+	document.getElementById('quick-help')?.classList.add('gone');
+	const treeData = data.treeData;
+	if (treeData.type == 'leaf') {
+		activeTabStore.set('leaf');
+		showLeafPanel(cyInstance, data);
+	} else if (treeData.type == 'decision') {
+		activeTabStore.set('decision');
+		decisionStore.set(treeData);
+	} else if (treeData.type == 'unprocessed') {
+		activeTabStore.set('mixed');
+		mixedDataStore.set(treeData);
+	}
+}
+
+function showLeafPanel(cyInstance: cytoscape.Core, data: TreeNode) {
+	const conditions = computeConditions(cyInstance, data.id);
+	leafDataStore.set({
+		conditions,
+		totalCardinality: getTotalCardinality(cyInstance),
+		behavior: data.label,
+		...data.treeData
+	});
+}
+function computeConditions(cyInstance: cytoscape.Core, pathId: number) {
+	const conditionsList = [];
+	let source = cyInstance.edges(`[target = "${pathId}"]`);
+
+	while (source.length !== 0) {
+		const data = source.data();
+		const attribute = cyInstance.getElementById(data.source).data().treeData.attribute_name;
+		conditionsList.push({ attribute, isPositive: data.positive === 'true' });
+
+		source = cyInstance.edges(`[target = "${data.source}"]`);
+	}
+
+	return conditionsList;
+}
+export {
+	removeAll,
+	refreshSelection,
+	getParentNode,
+	getChildNode,
+	getSiblingNode,
+	getSelectedNodeId,
+	getSelectedNodeTreeData,
+	selectNode,
+	getNodeType,
+	ensureNode,
+	ensureEdge,
+	loadBifurcationTree,
+	handleSelect
+};

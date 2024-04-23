@@ -3,12 +3,6 @@ import ComputeEngine from './ComputeEngine';
 import { CytoscapeEditor } from './CytoscapeTreeEditor';
 
 export function init() {
-	// Set engine address according to query parameter
-	const urlParams = new URLSearchParams(window.location.search);
-	const engineAddress = urlParams.get('engine');
-	console.log(engineAddress);
-	ComputeEngine.openConnection(undefined, engineAddress);
-
 	CytoscapeEditor.init();
 
 	(async () => {
