@@ -6,6 +6,7 @@
 	import graphStyles from './graphStyles';
 	import { activeTabStore } from '$lib/stores/activeTabStore';
 	import { handleSelect, loadBifurcationTree } from './cyHelpers';
+	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
 
 	let refElement: HTMLDivElement;
 	let cyInstance: cytoscape.Core;
@@ -15,10 +16,10 @@
 			container: refElement,
 			style: graphStyles
 		});
-		cytoscape.use(dagre)
-		
+		cytoscape.use(dagre);
+
 		cyInstance.on('select', (e) => {
-			handleSelect(cyInstance, e.target.data())
+			handleSelect(cyInstance, e.target.data());
 		});
 		cyInstance.on('unselect', (e) => {
 			activeTabStore.close();
@@ -27,10 +28,11 @@
 		// init hotkeys
 		// load the tree
 		loadBifurcationTree(cyInstance);
+		cytoscapeTreeStore.set(cyInstance);
 	});
 </script>
 
-<div class="graph" bind:this={refElement} id="cytoscape-editor"/>
+<div class="graph" bind:this={refElement} id="cytoscape-editor" />
 
 <style>
 	.graph {

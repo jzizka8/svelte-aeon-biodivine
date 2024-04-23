@@ -3,8 +3,9 @@
 	import { onDestroy, onMount } from 'svelte';
 	import BehaviorTable from './BehaviorTable.svelte';
 	import StabilityAnalysis from './StabilityAnalysis.svelte';
-	import { removeNode } from '../../../script/treeExplorerMain';
 	import hotkeys from 'hotkeys-js';
+	import { undecideSubtree } from '$lib/treeCytoscape/cyHelpers';
+	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
 
 	onMount(() => {
 		hotkeys('backspace', handleUndecide);
@@ -14,7 +15,7 @@
 		decisionStore.set(undefined);
 	});
 	function handleUndecide() {
-		removeNode($decisionStore?.id );
+		undecideSubtree($cytoscapeTreeStore, $decisionStore?.id);
 	}
 </script>
 
@@ -33,7 +34,7 @@
 		</div>
 		<button class="image-button btn-remove" on:click={handleUndecide}>
 			Undecide (⌫)
-			<img src="img/close-24px.svg" alt="">
+			<img src="img/close-24px.svg" alt="" />
 		</button>
 	</div>
 
@@ -43,15 +44,16 @@
 		<StabilityAnalysis id={$decisionStore.id} />
 	{/if}
 </div>
+
 <style>
-	.flex{
+	.flex {
 		display: flex;
 		justify-content: space-between;
 	}
-	.btn-remove{
+	.btn-remove {
 		background-color: var(--primary-color-light);
 	}
-	.btn-remove:hover{
+	.btn-remove:hover {
 		background-color: var(--primary-color);
 	}
 </style>

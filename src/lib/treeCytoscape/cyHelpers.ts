@@ -247,8 +247,41 @@ function computeConditions(cyInstance: cytoscape.Core, pathId: number) {
 
 	return conditionsList;
 }
+
+function removeSingleNode(cyInstance: cytoscape.Core, nodeId: string) {
+	const e = cyInstance.getElementById(nodeId);
+	if (e.length > 0) {
+		e.remove();
+	}
+}
+
+function undecideSubtree(cyInstance, nodeId) {
+	ComputeEngine.deleteDecision(nodeId, (e, r) => {
+		if (e) {
+			console.error(e);
+			return;
+		}
+		// removing descendants
+		r.removed.forEach((nodeId: number) => {
+			removeSingleNode(cyInstance, nodeId.toString());
+		});
+
+		if (r.node) {
+			// should not happen
+			console.error('result does not contain node');
+			return;
+		}
+
+		// refreshing the node itself to undecided
+		ensureNode(cyInstance, r.node);
+
+		const newData = cyInstance.$id(r.node.id.toString()).data();
+		handleSelect(cyInstance, newData);
+	});
+}
 export {
 	removeAll,
+	undecideSubtree,
 	refreshSelection,
 	getParentNode,
 	getChildNode,
