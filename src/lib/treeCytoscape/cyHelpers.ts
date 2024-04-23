@@ -248,7 +248,7 @@ function undecideSubtree(cyInstance: cytoscape.Core, nodeId: number) {
 		// refreshing the node itself to undecided
 		ensureNode(cyInstance, r.node);
 
-		refreshSelection(cyInstance, r);
+		refreshSelection(cyInstance, nodeId);
 	});
 }
 
@@ -257,11 +257,11 @@ function refreshSelection(cyInstance: cytoscape.Core, nodeId: number) {
 	handleSelect(cyInstance, newData);
 }
 
-function selectAttribute(cyInstance: cytoscape.Core, node: number, attr: number) {
-	ComputeEngine.selectDecisionAttribute(node, attr, (e, r) => {
+function selectAttribute(cyInstance: cytoscape.Core, nodeId: number, attr: number) {
+	ComputeEngine.selectDecisionAttribute(nodeId, attr, (e, r) => {
 		populateCytoscape(cyInstance, r);
 
-		refreshSelection(cyInstance, r.node.id);
+		refreshSelection(cyInstance, nodeId);
 	});
 }
 
