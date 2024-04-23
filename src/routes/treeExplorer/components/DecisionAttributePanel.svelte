@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { selectAttribute } from '$lib/treeCytoscape/cyHelpers';
 	import type { DecisionAttribute } from '$lib/types/treeExplorerTypes';
 	import { calcPercent } from '$lib/utils/mathUtils';
 	import { normalizeClass } from '$lib/utils/utils';
-	import { selectAttribute } from '../../../script/treeExplorerMain';
+	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
 
 	export let parrentId: number;
 	export let decision: DecisionAttribute;
@@ -27,15 +28,21 @@
 	function handleCollapse() {
 		collapsed = !collapsed;
 	}
+	function handleAttributeSelect() {
+		if ($cytoscapeTreeStore) {
+			selectAttribute($cytoscapeTreeStore, parrentId, decision.id);
+		}
+	}
 	$: collapseButtonText = collapsed ? 'more...' : '...less';
 </script>
 
 <div id="" class="attribute-panel">
 	<div style="float: left;" class="information-gain primary">{infoGain} ɪɢ / {totalClass} ᴛᴄ</div>
 	<div style="float: right;" class="attribute-name">
-		<button on:click={()=>selectAttribute(parrentId, decision.id)}>
-		<small class="grey">SELECT:</small>
-			{decision.name}</button>
+		<button on:click={handleAttributeSelect}>
+			<small class="grey">SELECT:</small>
+			{decision.name}
+		</button>
 	</div>
 	<div style="clear: both;" />
 	<div class="attribute-sub-panel negative">
@@ -43,7 +50,7 @@
 		<table class="table" class:collapsed>
 			<tbody>
 				{#each decision.left as el, i}
-					<tr class:extra={i!=0}>
+					<tr class:extra={i != 0}>
 						<td class="distribution">{calcPercent(el.cardinality, decision.leftTotal)} %</td>
 						<td class="symbols phenotype">{normalizeClass(el.class)}</td>
 					</tr>
@@ -56,7 +63,7 @@
 		<table class="table" class:collapsed>
 			<tbody>
 				{#each decision.right as el, i}
-					<tr class:extra={i!=0}>
+					<tr class:extra={i != 0}>
 						<td class="symbols phenotype">{normalizeClass(el.class)}</td>
 						<td class="distribution">{calcPercent(el.cardinality, decision.rightTotal)} %</td>
 					</tr>
