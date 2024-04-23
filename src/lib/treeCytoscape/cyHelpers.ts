@@ -239,7 +239,7 @@ function undecideSubtree(cyInstance: cytoscape.Core, nodeId: number) {
 			removeSingleNode(cyInstance, nodeId.toString());
 		});
 
-		if (r.node) {
+		if (!r.node) {
 			// should not happen
 			console.error('result does not contain node');
 			return;
