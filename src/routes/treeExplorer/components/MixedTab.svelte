@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { autoExpandBifurcationTree } from '../../../script/treeExplorerMain';
 	import { sortOptions } from '$lib/const';
 	import { mixedDataStore, selectedTreeNodeId } from '$lib/stores/treeNodeStores';
 	import BehaviorTable from './BehaviorTable.svelte';
@@ -10,9 +9,13 @@
 	import { compareCardinality } from '$lib/utils/comparators';
 	import { onDestroy, onMount } from 'svelte';
 	import hotkeys from 'hotkeys-js';
+	import { autoExpandBifurcationTree } from '$lib/treeCytoscape/cyHelpers';
+	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
 
 	function handleAutoExpand() {
-		autoExpandBifurcationTree($mixedDataStore?.id, depthValue);
+		if($cytoscapeTreeStore && $mixedDataStore?.id){
+			autoExpandBifurcationTree($cytoscapeTreeStore, $mixedDataStore?.id, depthValue);
+		}
 	}
 
 	let depthValue = 1;

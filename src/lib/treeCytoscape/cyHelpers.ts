@@ -12,7 +12,6 @@ function removeAll(cyInstance: cytoscape.Core): void {
 	cyInstance.elements().remove();
 }
 
-
 // Function to get the parent node of a given targetId
 function getParentNode(cyInstance: cytoscape.Core, targetId: number): number | undefined {
 	const parentEdge = cyInstance.edges(`edge[target='${targetId}']`);
@@ -258,7 +257,7 @@ function refreshSelection(cyInstance: cytoscape.Core, nodeId: number) {
 	handleSelect(cyInstance, newData);
 }
 
-function selectAttribute(cyInstance: cytoscape.Core, node, attr) {
+function selectAttribute(cyInstance: cytoscape.Core, node: number, attr: number) {
 	ComputeEngine.selectDecisionAttribute(node, attr, (e, r) => {
 		populateCytoscape(cyInstance, r);
 
@@ -266,6 +265,24 @@ function selectAttribute(cyInstance: cytoscape.Core, node, attr) {
 	});
 }
 
+export function autoExpandBifurcationTree(
+	cyInstance: cytoscape.Core,
+	nodeId: number,
+	depth: number
+) {
+	const loading = document.getElementById('loading-indicator');
+	loading.classList.remove('invisible');
+	ComputeEngine.autoExpandBifurcationTree(nodeId, depth, (e, r) => {
+		loading.classList.add('invisible');
+		if (e) {
+			console.error(e);
+			return;
+		}
+		populateCytoscape(cyInstance, r);
+
+		refreshSelection(cyInstance, nodeId);
+	});
+}
 export {
 	removeAll,
 	undecideSubtree,
@@ -296,4 +313,3 @@ function populateCytoscape(cyInstance: cytoscape.Core, r: TreeData[]) {
 	}
 	applyTreeLayout(cyInstance);
 }
-
