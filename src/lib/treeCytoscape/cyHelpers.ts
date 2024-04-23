@@ -115,7 +115,7 @@ function ensureEdge(
 		});
 	}
 }
-function loadBifurcationTree(cyInstance: cytoscape.Core, fit = true) {
+function loadBifurcationTree(cyInstance: cytoscape.Core) {
 	const loading = document.getElementById('loading-indicator');
 	loading.classList.remove('invisible');
 	ComputeEngine.getBifurcationTree((e, r) => {
@@ -281,6 +281,13 @@ export function autoExpandBifurcationTree(
 		populateCytoscape(cyInstance, r);
 
 		refreshSelection(cyInstance, nodeId);
+	});
+}
+export function setPrecision(cyInstance: cytoscape.Core, precision: number) {
+	const loading = document.getElementById('loading-indicator');
+	loading.classList.remove('invisible');
+	ComputeEngine.applyTreePrecision(precision, (e, r) => {
+		loadBifurcationTree(cyInstance);
 	});
 }
 export {
