@@ -1,13 +1,7 @@
 import { selectedTreeNodeId } from '$lib/stores/treeNodeStores';
 import hotkeys from 'hotkeys-js';
 import { get } from 'svelte/store';
-import {
-	selectNode,
-	getParentNode,
-	getSelectedNodeId,
-	getSiblingNode,
-	getChildNode
-} from './cyHelpers';
+import { selectNode, getParentNode, getSiblingNode, getChildNode } from './cyHelpers';
 
 function getHotkeyActions(cy: cytoscape.Core): {
 	[key: string]: (nodeId: number) => number | undefined;
