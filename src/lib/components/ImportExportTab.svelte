@@ -1,12 +1,31 @@
 <script lang="ts">
-	import { importAeon } from '$lib/importExport/importModel';
+	import { importAeon, exportAeon, downloadFile } from '$lib/importExport';
 	import Examples from '../../script/Examples';
 	import UI from '../../script/UI';
 	import { activeTabStore } from '$lib/stores/activeTabStore';
+	import { modelStore } from '$lib/stores/modelStore';
+	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
 
 	function importModel(model: string) {
 		importAeon(model);
 		activeTabStore.close();
+	}
+	function downloadAeon() {
+		const positions = $cytoscapeStore?.nodes().map((node) => ({
+			variable: node.data('label'),
+			position: node.position()
+		}));
+		const aeonData = exportAeon($modelStore, positions);
+		downloadFile(`${$modelStore.name}.aeon`, aeonData);
+	}
+	async function handleAeonFileImport(event: Event) {
+		const input = event.target as HTMLInputElement;
+
+		if (input && input.files && input.files.length > 0) {
+			const file = input.files[0];
+			const text = await file.text();
+			importModel(text);
+		}
 	}
 </script>
 
@@ -49,16 +68,18 @@
 		>
 
 		<input
-			on:change={() => UI.importAeon(this)}
+			on:change={handleAeonFileImport}
 			id="import-aeon-input"
 			style="display:none"
 			type="file"
+			accept=".aeon"
 		/>
 		<input
 			on:change={() => UI.importSBML(this)}
 			id="import-sbml-input"
 			style="display:none"
 			type="file"
+			accept=".sbml"
 		/>
 	</div>
 	<div style="width: 244px; display: inline-block; margin-left: 6px; float: right;">
@@ -72,7 +93,7 @@
 			id="export-aeon"
 			class="compound-button"
 			style="margin-top: 8px; margin-bottom: 8px;"
-			onclick="UI.downloadAeon();"
+			on:click={downloadAeon}
 			><span class="main">.AEON</span><span class="desc">Simple text format</span></button
 		>
 
