@@ -33,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"aeon-wasm": "^0.1.0",
 		"cytoscape-dagre": "^2.5.0",
 		"cytoscape-edgehandles": "^4.0.1",
 		"hotkeys-js": "^3.12.0",
