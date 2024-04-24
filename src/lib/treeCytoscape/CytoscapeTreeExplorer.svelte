@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, setContext } from 'svelte';
+	import { onDestroy, onMount, setContext } from 'svelte';
 	import dagre from 'cytoscape-dagre';
 
 	import cytoscape from 'cytoscape';
@@ -7,16 +7,20 @@
 	import { activeTabStore } from '$lib/stores/activeTabStore';
 	import { handleSelect, loadBifurcationTree } from './cyHelpers';
 	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
+	import { initHotkeys, unbindHotkeys } from './hotkeys';
 
 	let refElement: HTMLDivElement;
 	let cyInstance: cytoscape.Core;
 
 	onMount(() => {
+		cytoscape.use(dagre);
+
 		cyInstance = cytoscape({
 			container: refElement,
 			style: graphStyles
 		});
-		cytoscape.use(dagre);
+		cytoscapeTreeStore.set(cyInstance);
+
 
 		cyInstance.on('select', (e) => {
 			handleSelect(cyInstance, e.target.data());
@@ -25,10 +29,12 @@
 			activeTabStore.close();
 		});
 
-		// init hotkeys
-		// load the tree
 		loadBifurcationTree(cyInstance);
-		cytoscapeTreeStore.set(cyInstance);
+		
+		initHotkeys(cyInstance);
+	});
+	onDestroy(() => {
+		unbindHotkeys();
 	});
 </script>
 
