@@ -4,7 +4,7 @@
 	import BehaviorTable from './BehaviorTable.svelte';
 	import StabilityAnalysis from './StabilityAnalysis.svelte';
 	import hotkeys from 'hotkeys-js';
-	import { undecideSubtree } from '$lib/treeCytoscape/cyHelpers';
+	import { undecideSubtree } from '$lib/treeCytoscape/';
 	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
 
 	onMount(() => {

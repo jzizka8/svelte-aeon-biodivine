@@ -9,7 +9,7 @@
 	import { compareCardinality } from '$lib/utils/comparators';
 	import { onDestroy, onMount } from 'svelte';
 	import hotkeys from 'hotkeys-js';
-	import { autoExpandBifurcationTree } from '$lib/treeCytoscape/cyHelpers';
+	import { autoExpandBifurcationTree } from '$lib/treeCytoscape/';
 	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
 
 	function handleAutoExpand() {

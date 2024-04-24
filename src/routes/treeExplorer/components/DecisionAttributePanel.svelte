@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { selectAttribute } from '$lib/treeCytoscape/cyHelpers';
 	import type { DecisionAttribute } from '$lib/types/treeExplorerTypes';
 	import { calcPercent } from '$lib/utils/mathUtils';
 	import { normalizeClass } from '$lib/utils/utils';
 	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
+	import { selectAttribute } from '$lib/treeCytoscape';
 
 	export let parrentId: number;
 	export let decision: DecisionAttribute;

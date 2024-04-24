@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { onDestroy, onMount, setContext } from 'svelte';
+	import { onDestroy, onMount} from 'svelte';
 	import dagre from 'cytoscape-dagre';
 
 	import cytoscape from 'cytoscape';
 	import graphStyles from './graphStyles';
 	import { activeTabStore } from '$lib/stores/activeTabStore';
-	import { handleSelect, loadBifurcationTree } from './cyHelpers';
+	import { handleSelect} from './cyHelpers';
 	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
 	import { initHotkeys, unbindHotkeys } from './hotkeys';
+	import { loadBifurcationTree } from './services';
 
 	let refElement: HTMLDivElement;
 	let cyInstance: cytoscape.Core;

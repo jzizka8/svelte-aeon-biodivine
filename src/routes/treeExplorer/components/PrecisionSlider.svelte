@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { computeEngineStore } from '$lib/stores/ComputeEngineStore';
 	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
-	import { setPrecision } from '$lib/treeCytoscape/cyHelpers';
+	import { setPrecision } from '$lib/treeCytoscape';
 	import { onMount } from 'svelte';
 
 	onMount(() => {
