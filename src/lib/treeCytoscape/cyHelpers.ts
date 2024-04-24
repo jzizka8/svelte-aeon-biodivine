@@ -1,16 +1,9 @@
-import type { TreeData, TreeNode } from '$lib/types/treeExplorerTypes';
+import type { Behavior, TreeData, TreeNode } from '$lib/types/treeExplorerTypes';
 import type cytoscape from 'cytoscape';
 import ComputeEngine from '../../script/ComputeEngine';
 import { normalizeClass } from '$lib/utils/utils';
 import { activeTabStore } from '$lib/stores/activeTabStore';
 import { decisionStore, leafDataStore, mixedDataStore } from '$lib/stores/treeNodeStores';
-import { get } from 'svelte/store';
-
-// Function to remove all nodes and edges from the graph
-function removeAll(cyInstance: cytoscape.Core): void {
-	cyInstance.nodes(':selected').unselect(); // Triggers reset of other UI.
-	cyInstance.elements().remove();
-}
 
 // Function to get the parent node of a given targetId
 function getParentNode(cyInstance: cytoscape.Core, targetId: number): number | undefined {
@@ -80,18 +73,23 @@ function getTotalCardinality(cyInstance: cytoscape.Core): number {
 	return cyInstance.$id('0')[0].data().treeData.cardinality;
 }
 
+function removeAll(cyInstance: cytoscape.Core): void {
+	cyInstance.nodes(':selected').unselect(); // Triggers reset of other UI.
+	cyInstance.elements().remove();
+}
+
 function ensureNode(cyInstance: cytoscape.Core, treeData: TreeData) {
 	const node = cyInstance.getElementById(treeData.id.toString());
 	if (node.length > 0) {
-		const data = node.data();
-		applyTreeData(data, treeData);
+		const data = createTreeNode(treeData);
+		node.data(data);
 		cyInstance.style().update(); //redraw graph
 		return node;
 	}
-	const data = applyTreeData({ id: treeData.id }, treeData);
+	const data = createTreeNode(treeData);
 	return cyInstance.add({
 		// id: data.id,
-		data: data,
+		data,
 		grabbable: false,
 		position: { x: 0.0, y: 0.0 }
 	});
@@ -118,8 +116,8 @@ function ensureEdge(
 function loadBifurcationTree(cyInstance: cytoscape.Core) {
 	const loading = document.getElementById('loading-indicator');
 	loading.classList.remove('invisible');
-	ComputeEngine.getBifurcationTree((e, r) => {
-		if (r === undefined || r.length === 0) {
+	ComputeEngine.getBifurcationTree((e: string, r: TreeData[]) => {
+		if (e) {
 			console.error('No tree data returned', e);
 			return;
 		}
@@ -142,10 +140,15 @@ function applyTreeLayout(cyInstance: cytoscape.Core) {
 	cyInstance.fit();
 	cyInstance.zoom(cyInstance.zoom() * 0.8);
 }
-function applyTreeData(data, treeData) {
-	if (data.id != treeData.id) {
-		console.error('Updating wrong node.');
-	}
+
+function createTreeNode(treeData: TreeData) {
+	const data = {
+		id: treeData.id.toString(),
+		treeData,
+		type: treeData.type,
+		label: '',
+		subtype: ''
+	};
 
 	if (treeData.classes !== undefined) {
 		treeData.classes.sort((a, b) => {
@@ -158,10 +161,8 @@ function applyTreeData(data, treeData) {
 			}
 		});
 	}
-	data.treeData = treeData;
-	data.type = treeData.type;
 	if (treeData.type == 'leaf') {
-		const normalizedClass = normalizeClass(treeData.class);
+		const normalizedClass = normalizeClass(treeData.class ?? '');
 		if (normalizedClass.includes('D')) {
 			data.subtype = 'disorder';
 		} else if (normalizedClass.includes('O')) {
@@ -172,11 +173,11 @@ function applyTreeData(data, treeData) {
 		data.label = normalizedClass;
 		//data.label += "\n(" + treeData.cardinality + ")";
 	} else if (treeData.type == 'decision') {
-		data.label = treeData.attribute_name;
+		data.label = treeData.attribute_name ?? '';
 	} else if (treeData.type == 'unprocessed') {
-		data.label = 'Mixed Phenotype\n' + '(' + treeData.classes.length + ' types)';
+		data.label = `Mixed Phenotype\n(${treeData.classes?.length} types)`;
 	} else {
-		data.label = treeData.type + '(' + treeData.id + ')';
+		data.label = `${treeData.type}(${treeData.id})`;
 	}
 
 	return data;
@@ -202,11 +203,11 @@ function showLeafPanel(cyInstance: cytoscape.Core, data: TreeNode) {
 	leafDataStore.set({
 		conditions,
 		totalCardinality: getTotalCardinality(cyInstance),
-		behavior: data.label,
+		behavior: data.label as Behavior,
 		...data.treeData
 	});
 }
-function computeConditions(cyInstance: cytoscape.Core, pathId: number) {
+function computeConditions(cyInstance: cytoscape.Core, pathId: string) {
 	const conditionsList = [];
 	let source = cyInstance.edges(`[target = "${pathId}"]`);
 
@@ -229,7 +230,7 @@ function removeSingleNode(cyInstance: cytoscape.Core, nodeId: string) {
 }
 
 function undecideSubtree(cyInstance: cytoscape.Core, nodeId: number) {
-	ComputeEngine.deleteDecision(nodeId, (e, r) => {
+	ComputeEngine.deleteDecision(nodeId, (e: string, r: { removed: number[]; node: TreeData }) => {
 		if (e) {
 			console.error(e);
 			return;
@@ -258,7 +259,7 @@ function refreshSelection(cyInstance: cytoscape.Core, nodeId: number) {
 }
 
 function selectAttribute(cyInstance: cytoscape.Core, nodeId: number, attr: number) {
-	ComputeEngine.selectDecisionAttribute(nodeId, attr, (e, r) => {
+	ComputeEngine.selectDecisionAttribute(nodeId, attr, (e: string, r: TreeData[]) => {
 		populateCytoscape(cyInstance, r);
 
 		refreshSelection(cyInstance, nodeId);
@@ -272,7 +273,7 @@ export function autoExpandBifurcationTree(
 ) {
 	const loading = document.getElementById('loading-indicator');
 	loading.classList.remove('invisible');
-	ComputeEngine.autoExpandBifurcationTree(nodeId, depth, (e, r) => {
+	ComputeEngine.autoExpandBifurcationTree(nodeId, depth, (e: string, r: TreeData[]) => {
 		loading.classList.add('invisible');
 		if (e) {
 			console.error(e);
@@ -287,6 +288,10 @@ export function setPrecision(cyInstance: cytoscape.Core, precision: number) {
 	const loading = document.getElementById('loading-indicator');
 	loading.classList.remove('invisible');
 	ComputeEngine.applyTreePrecision(precision, (e, r) => {
+		if (e) {
+			console.error(e);
+			return;
+		}
 		loadBifurcationTree(cyInstance);
 	});
 }
@@ -308,12 +313,12 @@ export {
 	selectAttribute
 };
 
-function populateCytoscape(cyInstance: cytoscape.Core, r: TreeData[]) {
-	for (const node of r) {
+function populateCytoscape(cyInstance: cytoscape.Core, nodesTreeData: TreeData[]) {
+	for (const node of nodesTreeData) {
 		ensureNode(cyInstance, node);
 	}
-	for (const node of r) {
-		if (node.type == 'decision') {
+	for (const node of nodesTreeData) {
+		if (node.type == 'decision' && node.left && node.right) {
 			ensureEdge(cyInstance, node.id, node.left, false);
 			ensureEdge(cyInstance, node.id, node.right, true);
 		}

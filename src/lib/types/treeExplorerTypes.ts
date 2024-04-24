@@ -28,10 +28,13 @@ export type CardinalityClass = {
 };
 
 export type TreeNode = {
-	id: number;
+	id: string;
 	label: string;
+	type: NodeType;
 	treeData: TreeData;
 	subtype?: string;
+	source: undefined;
+	target: undefined;
 };
 // TODO: make it use camelCase
 export type TreeData = {
@@ -41,6 +44,7 @@ export type TreeData = {
 	attributes: DecisionAttribute[];
 	attribute_id?: number;
 	attribute_name?: string;
+	class?: string;
 	// TODO: unify these two
 	classes?: CardinalityClass[];
 	all_classes?: CardinalityClass[];
