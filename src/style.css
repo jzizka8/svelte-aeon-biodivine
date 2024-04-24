@@ -257,8 +257,11 @@ body {
 }
 
 .invisible-input .error,
-.invisible-input.error {
+.invisible-input.error, {
 	background-color: rgba(200, 40, 40, 0.4);
+}
+.error-message {
+	color: red;
 }
 
 div.invisible-input[contenteditable] {
@@ -785,7 +788,7 @@ div.center {
 }
 
 .attribute-sub-panel td.distribution {
-	width: 39px;
+	width: 48px;
 }
 
 .attribute-sub-panel table.collapsed tr.extra {
@@ -822,6 +825,7 @@ div.center {
 	padding-top: 4px;
 	padding-bottom: 4px;
 	border-radius: 6px;
+	border:none;
 	box-shadow: 0px 2px 5px #d0d0d0;
 	transition: background-color 0.3s;
 	cursor: pointer;

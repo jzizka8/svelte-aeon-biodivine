@@ -53,44 +53,47 @@
 	</ul>
 	<nav>
 		<ul>
-			<li class="">
+			<li>
 				<button
-					class="button button--half-round engine-dot-container {$activeTabStore == 'compute-engine'
-						? 'active'
-						: ''}"
+					class="button button--half-round engine-dot-container"
+					class:active={$activeTabStore == 'compute-engine'}
 					on:click={() => displayTab('compute-engine')}
 				>
 					<img src="img/engine-48px.svg" alt="" /> Compute Engine
 					<span id="engine-dot">●</span>
 				</button>
 			</li>
-			<li class="">
+			<li>
 				<button
-					class="button button--half-round {$activeTabStore == 'import-export' ? 'active' : ''}"
+					class="button button--half-round"
+					class:active={$activeTabStore == 'import-export'}
 					on:click={() => displayTab('import-export')}
 				>
 					<img src="img/file_copy-48px.svg" alt="" /> Import / Export
 				</button>
 			</li>
-			<li class="">
+			<li>
 				<button
-					class="button button--half-round {$activeTabStore == 'model-editor' ? 'active' : ''} "
+					class="button button--half-round"
+					class:active={$activeTabStore == 'model-editor'}
 					on:click={() => displayTab('model-editor')}
 				>
 					<img src="img/model-48px.svg" alt="" /> Model Editor
 				</button>
 			</li>
-			<li class="">
+			<li>
 				<button
-					class="button button--half-round {$activeTabStore == 'results' ? 'active' : ''}"
+					class="button button--half-round"
+					class:active={$activeTabStore == 'results'}
 					on:click={() => displayTab('results')}
 				>
 					<img src="img/call_split-48px.svg" alt="" /> Results
 				</button>
 			</li>
-			<li class="">
+			<li>
 				<button
-					class="button button--half-round {$activeTabStore == 'about' ? 'active' : ''}"
+					class="button button--half-round"
+					class:active={$activeTabStore == 'about'}
 					on:click={() => displayTab('about')}
 				>
 					<img src="img/help-48px.svg" alt="" /> About

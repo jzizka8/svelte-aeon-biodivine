@@ -19,45 +19,6 @@ let UI = {
 	// Contains pairs of elements of the form { button: ..., tab: ... } corresponding to the side menu.
 	_tabsAndButtons: undefined,
 
-	init: function () {
-		this.cytoscapeEditor = document.getElementById('cytoscape-editor');
-		this._nodeMenu = document.getElementById('node-menu');
-		this._edgeMenu = document.getElementById('edge-menu');
-
-		let sideMenu = document.getElementById('side-menu');
-		let sideMenuButtons = sideMenu.getElementsByClassName('button');
-		this._tabsAndButtons = [];
-		for (var i = 0; i < sideMenuButtons.length; i++) {
-			let button = sideMenuButtons[i];
-			let tab = document.getElementById(button.getAttribute('tab-id'));
-			this._tabsAndButtons.push({ tab: tab, button: button });
-		}
-
-		//this._initNodeMenu(this._nodeMenu);
-		// this._initEdgeMenu(this._edgeMenu);
-
-		// Init fake button (sadly we have to do this explicitly
-		// because it is not a proper menu button).
-		// Show hint popup on mouse enter when button is not selected.
-		let fakeButtonGroups = document.getElementsByClassName('button-group-fake');
-		for (let group of fakeButtonGroups) {
-			let button = group.getElementsByClassName('button-fake')[0];
-			let hint = group.getElementsByClassName('hint')[0];
-			button.addEventListener('mouseenter', (e) => {
-				let selected = button.classList.contains('selected');
-				if (!selected) {
-					group.style.width = '272px';
-					hint.classList.remove('invisible');
-				}
-			});
-			// Hide hint popup on mouse leave
-			button.addEventListener('mouseleave', (e) => {
-				group.style.width = '72px';
-				hint.classList.add('invisible');
-			});
-		}
-	},
-
 	updateComputeEngineStatus(status, data) {
 		let connectButton = document.getElementById('button-connect');
 		let statusLabel = document.getElementById('compute-engine-status');

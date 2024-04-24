@@ -8,13 +8,17 @@
 	import { activeTabStore } from '$lib/stores/activeTabStore';
 	import hotkeys from 'hotkeys-js';
 	import { onMount } from 'svelte';
+	import {LeafTab, DecisionTab, MixedTab }from '../../routes/treeExplorer/components/';
 
 	const tabComponents = {
 		about: HelpTab,
 		'import-export': ImportExportTab,
 		'model-editor': ModelEditorTab,
 		results: ResultsTab,
-		'compute-engine': EngingeTab
+		'compute-engine': EngingeTab,
+		'leaf': LeafTab,
+		'decision': DecisionTab,
+		'mixed': MixedTab
 	};
 	onMount(() => {
 		hotkeys('esc', { keyup: true, keydown: true }, function (event, handler) {
@@ -25,17 +29,15 @@
 	$: component = $activeTabStore ? tabComponents[$activeTabStore] : null;
 </script>
 
-<!-- This is only a temporary fix to allow initialization of tabs from global js -->
-{#each Object.entries(tabComponents) as [key, tab]}
-	<div class="{key == $activeTabStore ? '' : 'gone'} temp-main">
-		<svelte:component this={tab}>
+	{#if component}
+	<div class=" temp-main">
+		<svelte:component this={component}>
 			<button class="button button--close" on:click={activeTabStore.close}>
 				<img src="img/close-24px.svg" alt="" />
 			</button>
 		</svelte:component>
 	</div>
-{/each}
-
+{/if}
 <style>
 	.button--close {
 		display: flex;
