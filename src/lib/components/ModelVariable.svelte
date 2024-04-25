@@ -6,13 +6,16 @@
 	import { hoveredNodeStore } from '$lib/stores/hoveredNodeStore';
 	import { focusedInputStore } from '$lib/stores/focusedVariableInput';
 	import { selectedNodesStore } from '$lib/stores/selectedItemsStore';
+	import init, { BooleanNetworkModel, check_update_function, initSync } from 'aeon-wasm';
+	import { exportAeon } from '$lib/importExport';
+	import { modelStore } from '$lib/stores/modelStore';
 
 	export let variable: Variable;
 	export let regulations: Regulation[];
 	export let isSelected = false;
 
 	$: isHover = $hoveredNodeStore === variable.id;
-	let updateFunctionInput: HTMLDivElement;
+	let updateFunctionInput: HTMLElement;
 	let variableNameInput: HTMLInputElement;
 
 	const dispatch = createEventDispatcher();
@@ -37,8 +40,9 @@
 		hoveredNodeStore.set(null);
 		$cytoscapeStore?.$id(variable.id)?.removeClass('hover');
 	}
+	let functionValid = '';
 
-	onMount(() =>
+	onMount(() => {
 		focusedInputStore.subscribe((focusedInput) => {
 			if (!isSelected || !focusedInput) {
 				return;
@@ -49,8 +53,18 @@
 				variableNameInput.focus();
 			}
 			setTimeout(() => focusedInputStore.set(null), 0);
-		})
-	);
+		});
+		// await init();
+	});
+
+	function handleFnChange() {
+		try {
+			const valid = check_update_function(exportAeon($modelStore, []));
+			functionValid = `${valid.cardinality} instantiations`;
+		} catch(e) {
+			functionValid = `Invalid function: ${e}`;
+		}
+	}
 </script>
 
 <div
@@ -105,15 +119,15 @@
 	<div
 		class="invisible-input full-line variable-function"
 		contenteditable
-		data-placeholder={`$f_${variable.name}(...)`}
 		spellcheck="false"
-		autocorrect="off"
+		data-placeholder={`$f_${variable.name}(...)`}
 		style="font-size: 16px; text-align: center;"
 		bind:this={updateFunctionInput}
-	>
-		{variable.updateFunction}
-	</div>
+		bind:innerText={variable.updateFunction}
+		on:blur={handleFnChange}
+	/>
 	<div class="variable-function-status">
 		<!-- TODO: validate the function and display status  -->
+		{functionValid}
 	</div>
 </div>

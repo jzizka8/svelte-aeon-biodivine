@@ -8,11 +8,13 @@
 
 	import LoadingIndicator from '$lib/components/LoadingIndicator.svelte';
 	import TabWrapper from '$lib/components/TabWrapper.svelte';
-	import { init } from '../script/main';
+	import { init as scriptInit } from '../script/main';
+	import init from 'aeon-wasm';
 	import { modelStore } from '$lib/stores/modelStore';
 
-	onMount(() => {
-		init();
+	onMount(async () => {
+		await init();
+		scriptInit();
 	});
 </script>
 
