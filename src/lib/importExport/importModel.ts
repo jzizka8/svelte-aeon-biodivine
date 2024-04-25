@@ -1,5 +1,6 @@
 import { EdgeMonotonicity, type Position } from '$lib/types/types';
 import { modelStoreActions } from '$lib/stores/modelStore';
+import { Conversions } from 'aeon-wasm';
 
 type parsedData = {
 	modelName: string;
@@ -15,6 +16,11 @@ type parsedRegulation = {
 	observable: boolean;
 };
 
+export function importSbml(sbmlString: string) {
+	const aeonModel = Conversions.sbml_to_aeon(sbmlString);
+	console.log(aeonModel);
+	importAeon(aeonModel);
+}
 export function importAeon(modelString: string) {
 	modelStoreActions.clearModel();
 

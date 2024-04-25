@@ -1,31 +1,66 @@
 <script lang="ts">
-	import { importAeon, exportAeon, downloadFile } from '$lib/importExport';
+	import {
+		importAeon,
+		exportAeon,
+		downloadFile,
+		importSbml,
+		exportSbml,
+		exportSbmlInstantiated
+	} from '$lib/importExport';
 	import Examples from '../../script/Examples';
 	import UI from '../../script/UI';
 	import { activeTabStore } from '$lib/stores/activeTabStore';
 	import { modelStore } from '$lib/stores/modelStore';
 	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
-
-	function importModel(model: string) {
-		importAeon(model);
-		activeTabStore.close();
-	}
+	
 	function downloadAeon() {
-		const positions = $cytoscapeStore?.nodes().map((node) => ({
-			variable: node.data('label'),
-			position: node.position()
-		}));
+		const positions = getPositions();
 		const aeonData = exportAeon($modelStore, positions);
 		downloadFile(`${$modelStore.name}.aeon`, aeonData);
 	}
-	async function handleAeonFileImport(event: Event) {
-		const input = event.target as HTMLInputElement;
+	
+	function downloadSbml() {
+		const positions = getPositions();
+		const sbml = exportSbml($modelStore, positions);
+		downloadFile(`${$modelStore.name}.sbml`, sbml);
+	}
+	
+	function downloadSbmlInstantiated() {
+		const positions = getPositions();
+		const sbml = exportSbmlInstantiated($modelStore, positions);
+		downloadFile(`${$modelStore.name}_instantiated.sbml`, sbml);
+	}
+	
+	function handleAeonFileImport(event: Event) {
+		handleFileInputImport(importAeon, event.target as HTMLInputElement);
+	}
+	
+	function handleSbmlFileImport(event: Event) {
+		handleFileInputImport(importSbml, event.target as HTMLInputElement);
+	}
 
-		if (input && input.files && input.files.length > 0) {
-			const file = input.files[0];
-			const text = await file.text();
-			importModel(text);
+	async function handleFileInputImport(
+		fileImportFunction: (data: string) => void,
+		input: HTMLInputElement
+	) {
+		if (!(input && input.files && input.files.length > 0)) {
+			return;
 		}
+		const text = await input.files[0].text();
+		fileImportFunction(text);
+		activeTabStore.close();
+	}
+
+	function getPositions() {
+		return $cytoscapeStore?.nodes().map((node) => ({
+			variable: node.data('label'),
+			position: node.position()
+		}));
+	}
+	
+	function importModel(model: string) {
+		importAeon(model);
+		activeTabStore.close();
 	}
 </script>
 
@@ -75,7 +110,7 @@
 			accept=".aeon"
 		/>
 		<input
-			on:change={() => UI.importSBML(this)}
+			on:change={handleSbmlFileImport}
 			id="import-sbml-input"
 			style="display:none"
 			type="file"
@@ -101,7 +136,7 @@
 			id="export-sbml"
 			class="compound-button"
 			style="margin-top: 8px; margin-bottom: 8px;"
-			onclick="UI.downloadSBML();"
+			on:click={downloadSbml}
 			><span class="main">.SBML<br /><small>(parametrized)</small></span><span class="desc"
 				>Parametrized model</span
 			></button
@@ -111,7 +146,7 @@
 			id="export-sbml"
 			class="compound-button"
 			style="margin-top: 8px; margin-bottom: 8px;"
-			onclick="UI.downloadSBMLInstantiated();"
+			on:click={downloadSbmlInstantiated}
 			><span class="main">.SBML<br /><small>(instantiated)</small></span><span class="desc"
 				>Witness<br />model</span
 			></button

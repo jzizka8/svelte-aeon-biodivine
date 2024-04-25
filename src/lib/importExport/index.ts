@@ -1,7 +1,7 @@
-import { exportAeon } from './exportModel';
-import { importAeon } from './importModel';
+import { exportAeon, exportSbml, exportSbmlInstantiated } from './exportModel';
+import { importAeon, importSbml } from './importModel';
 
-export { importAeon, exportAeon };
+export { importAeon, importSbml, exportAeon, exportSbml, exportSbmlInstantiated };
 
 export function downloadFile(name: string, content: string) {
 	const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
