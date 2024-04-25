@@ -9,7 +9,9 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"format": "prettier --plugin-search-dir . --write .",
+		"wasm": "(cd aeon-wasm; git pull); wasm-pack build ./aeon-wasm --target web; npm run wasm-patch",
+		"wasm-patch": "jq '.type = \"module\"' ./aeon-wasm/pkg/package.json > ./aeon-wasm/pkg/package.json.tmp && mv ./aeon-wasm/pkg/package.json.tmp ./aeon-wasm/pkg/package.json"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.1.0",
@@ -29,7 +31,8 @@
 		"svelte-check": "^3.4.3",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
-		"vite": "^4.4.2"
+		"vite": "^4.5.3",
+		"vite-plugin-wasm-pack": "^0.1.12"
 	},
 	"type": "module",
 	"dependencies": {
