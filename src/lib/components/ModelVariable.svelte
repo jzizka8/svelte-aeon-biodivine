@@ -5,10 +5,9 @@
 	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
 	import { hoveredNodeStore } from '$lib/stores/hoveredNodeStore';
 	import { focusedInputStore } from '$lib/stores/focusedVariableInput';
-	import { selectedNodesStore } from '$lib/stores/selectedItemsStore';
-	import init, { BooleanNetworkModel, check_update_function, initSync } from 'aeon-wasm';
-	import { exportAeon } from '$lib/importExport';
-	import { modelStore } from '$lib/stores/modelStore';
+	import {check_update_function} from 'aeon-wasm';
+
+	import { exportAeonFragment } from '$lib/importExport/';
 
 	export let variable: Variable;
 	export let regulations: Regulation[];
@@ -40,7 +39,25 @@
 		hoveredNodeStore.set(null);
 		$cytoscapeStore?.$id(variable.id)?.removeClass('hover');
 	}
-	let functionValid = '';
+
+	let fnValidityText = '';
+	let functionValid: boolean;
+	// validite the function when the regulations change
+	$: regulations, validateUpdateFunction();
+
+	function validateUpdateFunction() {
+		console.log(`checking function validity for ${variable.name}`)
+		try {
+			const modelFragment = exportAeonFragment(regulations, variable)
+			console.log(modelFragment)
+			const valid = check_update_function(modelFragment);
+			fnValidityText = `Possible instantiations: ${valid.cardinality}`;
+			functionValid = true;
+		} catch (e) {
+			functionValid = false;
+			fnValidityText = `Invalid function: ${e}`;
+		}
+	}
 
 	onMount(() => {
 		focusedInputStore.subscribe((focusedInput) => {
@@ -54,17 +71,8 @@
 			}
 			setTimeout(() => focusedInputStore.set(null), 0);
 		});
-		// await init();
+		validateUpdateFunction();
 	});
-
-	function handleFnChange() {
-		try {
-			const valid = check_update_function(exportAeon($modelStore, []));
-			functionValid = `${valid.cardinality} instantiations`;
-		} catch(e) {
-			functionValid = `Invalid function: ${e}`;
-		}
-	}
 </script>
 
 <div
@@ -124,10 +132,9 @@
 		style="font-size: 16px; text-align: center;"
 		bind:this={updateFunctionInput}
 		bind:innerText={variable.updateFunction}
-		on:blur={handleFnChange}
+		on:blur={validateUpdateFunction}
 	/>
-	<div class="variable-function-status">
-		<!-- TODO: validate the function and display status  -->
-		{functionValid}
+	<div class="variable-function-status" class:red={!functionValid}>
+		{fnValidityText}
 	</div>
 </div>
