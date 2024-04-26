@@ -4,14 +4,21 @@
 	import Version from './Version.svelte';
 	import { modelStore, modelStoreActions } from '$lib/stores/modelStore';
 	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
+	import { exportAeon } from '$lib/importExport';
+	import { ComputationResult } from 'aeon-wasm';
+	import { resultsStore } from '$lib/stores/resultsStore';
 
 	let startAnalysisDisabled = false;
 	$: modelEmpty = $modelStore.variables.length === 0;
-
-
 	const displayTab = (tab: tabType) => {
 		activeTabStore.set(tab);
 	};
+
+	async function startAnalysis(){
+		const result = ComputationResult.start(exportAeon($modelStore));
+		resultsStore.set(await result.get_results())
+		console.log($resultsStore)
+	}
 </script>
 
 <div id="side-menu">
@@ -21,7 +28,7 @@
 				class="button button--half-round button--green {startAnalysisDisabled ? 'disabled' : ''}"
 				title="You need to connect compute eninge in order to start analysis"
 				disabled={startAnalysisDisabled}
-				on:click={() => ComputeEngine.startComputation(LiveModel.exportAeon())}
+				on:click={startAnalysis}
 			>
 				<img src="img/play_circle_filled-48px.svg" alt="" /> Start Analysis
 			</button>
