@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { sortOptions } from '$lib/const';
 	import { mixedDataStore, selectedTreeNodeId } from '$lib/stores/treeNodeStores';
-	import BehaviorTable from './BehaviorTable.svelte';
+	import BehaviorTable from '$lib/components/BehaviorTable.svelte';
 	import StabilityAnalysis from './StabilityAnalysis.svelte';
 	import { computeEngineStore } from '$lib/stores/ComputeEngineStore';
 	import type { DecisionAttribute } from '$lib/types/treeExplorerTypes';

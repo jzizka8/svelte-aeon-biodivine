@@ -1,5 +1,5 @@
 <script lang="ts">
-	import BehaviorTable from './BehaviorTable.svelte';
+	import BehaviorTable from '$lib/components/BehaviorTable.svelte';
 
 	import { calcDimPercent, calcPercent } from '$lib/utils/mathUtils';
 	import { onDestroy } from 'svelte';
