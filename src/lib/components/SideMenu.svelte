@@ -55,16 +55,6 @@
 		<ul>
 			<li>
 				<button
-					class="button button--half-round engine-dot-container"
-					class:active={$activeTabStore == 'compute-engine'}
-					on:click={() => displayTab('compute-engine')}
-				>
-					<img src="img/engine-48px.svg" alt="" /> Compute Engine
-					<span id="engine-dot">●</span>
-				</button>
-			</li>
-			<li>
-				<button
 					class="button button--half-round"
 					class:active={$activeTabStore == 'import-export'}
 					on:click={() => displayTab('import-export')}

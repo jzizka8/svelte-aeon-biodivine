@@ -1,10 +1,8 @@
 <script lang="ts">
-	import type { tabType } from '$lib/types/types';
 	import HelpTab from './HelpTab.svelte';
 	import ImportExportTab from './ImportExportTab.svelte';
 	import ModelEditorTab from './ModelEditorTab.svelte';
 	import ResultsTab from './ResultsTab.svelte';
-	import EngingeTab from './EngingeTab.svelte';
 	import { activeTabStore } from '$lib/stores/activeTabStore';
 	import hotkeys from 'hotkeys-js';
 	import { onMount } from 'svelte';
@@ -15,7 +13,6 @@
 		'import-export': ImportExportTab,
 		'model-editor': ModelEditorTab,
 		results: ResultsTab,
-		'compute-engine': EngingeTab,
 		'leaf': LeafTab,
 		'decision': DecisionTab,
 		'mixed': MixedTab
