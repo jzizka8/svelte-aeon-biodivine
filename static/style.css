@@ -594,7 +594,7 @@ div.invisible-input[contenteditable]:empty:not(:focus):before {
 #tab-results table {
 	margin: 0 auto;
 	text-align: center;
-	font-size: 18px;
+	font-size: 16px;
 }
 
 #tab-results td {
@@ -710,15 +710,6 @@ div.center {
 	padding-right: 8px;
 	padding-top: 4px;
 	padding-bottom: 4px;
-}
-
-.behavior-table .cell-behavior {
-	width: 200px;
-}
-
-.behavior-table .cell-witness-count,
-.behavior-table .cell-distribution {
-	width: 125px;
 }
 
 #transparency-switch {

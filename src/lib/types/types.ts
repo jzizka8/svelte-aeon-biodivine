@@ -1,6 +1,5 @@
 export type tabType =
 	| 'about'
-	| 'compute-engine'
 	| 'import-export'
 	| 'results'
 	| 'model-editor'

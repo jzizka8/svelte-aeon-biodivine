@@ -5,14 +5,16 @@
 	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
 	import { hoveredNodeStore } from '$lib/stores/hoveredNodeStore';
 	import { focusedInputStore } from '$lib/stores/focusedVariableInput';
-	import { selectedNodesStore } from '$lib/stores/selectedItemsStore';
+	import {check_update_function} from 'aeon-wasm';
+
+	import { exportAeonFragment } from '$lib/importExport/';
 
 	export let variable: Variable;
 	export let regulations: Regulation[];
 	export let isSelected = false;
 
 	$: isHover = $hoveredNodeStore === variable.id;
-	let updateFunctionInput: HTMLDivElement;
+	let updateFunctionInput: HTMLElement;
 	let variableNameInput: HTMLInputElement;
 
 	const dispatch = createEventDispatcher();
@@ -38,7 +40,26 @@
 		$cytoscapeStore?.$id(variable.id)?.removeClass('hover');
 	}
 
-	onMount(() =>
+	let fnValidityText = '';
+	let functionValid: boolean;
+	// validite the function when the regulations change
+	$: regulations, validateUpdateFunction();
+
+	function validateUpdateFunction() {
+		console.log(`checking function validity for ${variable.name}`)
+		try {
+			const modelFragment = exportAeonFragment(regulations, variable)
+			console.log(modelFragment)
+			const valid = check_update_function(modelFragment);
+			fnValidityText = `Possible instantiations: ${valid.cardinality}`;
+			functionValid = true;
+		} catch (e) {
+			functionValid = false;
+			fnValidityText = `Invalid function: ${e}`;
+		}
+	}
+
+	onMount(() => {
 		focusedInputStore.subscribe((focusedInput) => {
 			if (!isSelected || !focusedInput) {
 				return;
@@ -49,8 +70,9 @@
 				variableNameInput.focus();
 			}
 			setTimeout(() => focusedInputStore.set(null), 0);
-		})
-	);
+		});
+		validateUpdateFunction();
+	});
 </script>
 
 <div
@@ -105,15 +127,14 @@
 	<div
 		class="invisible-input full-line variable-function"
 		contenteditable
-		data-placeholder={`$f_${variable.name}(...)`}
 		spellcheck="false"
-		autocorrect="off"
+		data-placeholder={`$f_${variable.name}(...)`}
 		style="font-size: 16px; text-align: center;"
 		bind:this={updateFunctionInput}
-	>
-		{variable.updateFunction}
-	</div>
-	<div class="variable-function-status">
-		<!-- TODO: validate the function and display status  -->
+		bind:innerText={variable.updateFunction}
+		on:blur={validateUpdateFunction}
+	/>
+	<div class="variable-function-status" class:red={!functionValid}>
+		{fnValidityText}
 	</div>
 </div>

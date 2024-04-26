@@ -1,5 +1,4 @@
 import { EXPECTED_ENGINE_VERSION } from '$lib/const';
-import UI from './UI';
 /*
 	Compute engine object maintains connection to the rust backend that will actually
 	do the work for us.
@@ -74,7 +73,6 @@ export let ComputeEngine = {
 		clearTimeout(this._pingRepeatToken);
 		this._pingRepeatToken = undefined;
 		this._connected = false;
-		UI.updateComputeEngineStatus('disconnected');
 
 		return true;
 	},
@@ -336,7 +334,6 @@ export let ComputeEngine = {
 				status = 'connected';
 			}
 			//console.log("...ping..."+status+"...");
-			UI.updateComputeEngineStatus(status, response);
 			// Schedule a ping for later if requested.
 			if (keepAlive && error === undefined) {
 				this._pingRepeatToken = setTimeout(() => {

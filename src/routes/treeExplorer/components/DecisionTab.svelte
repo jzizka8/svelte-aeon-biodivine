@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { decisionStore } from '$lib/stores/treeNodeStores';
 	import { onDestroy, onMount } from 'svelte';
-	import BehaviorTable from './BehaviorTable.svelte';
+	import BehaviorTable from '$lib/components/BehaviorTable.svelte';
 	import StabilityAnalysis from './StabilityAnalysis.svelte';
 	import hotkeys from 'hotkeys-js';
 	import { undecideSubtree } from '$lib/treeCytoscape/';
