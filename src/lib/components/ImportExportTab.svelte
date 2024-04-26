@@ -8,7 +8,6 @@
 		exportSbmlInstantiated
 	} from '$lib/importExport';
 	import Examples from '../../script/Examples';
-	import UI from '../../script/UI';
 	import { activeTabStore } from '$lib/stores/activeTabStore';
 	import { modelStore } from '$lib/stores/modelStore';
 	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';

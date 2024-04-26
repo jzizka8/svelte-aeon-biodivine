@@ -1,6 +1,4 @@
-<script>
-	import UI from '../../script/UI';
-</script>
+
 
 <div id="tab-results" class="main-panel">
 	<slot />
@@ -19,7 +17,7 @@
 		</div>
 	</div>
 	<div id="open-tree-explorer" class="gone" style="text-align: center; margin: 8px;">
-		<a class="inline-button" on:click={() => UI.openTreeExplorer()}>
+		<a class="inline-button" >
 			&gt;&gt; Explore Bifurcation Function &lt;&lt;
 		</a>
 	</div>

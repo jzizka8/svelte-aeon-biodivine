@@ -2,16 +2,12 @@
 	import { activeTabStore } from '$lib/stores/activeTabStore';
 	import type { tabType } from '$lib/types/types';
 	import Version from './Version.svelte';
-	import { computeEngineStore } from '$lib/stores/ComputeEngineStore';
-	import { liveModelStore } from '$lib/stores/liveModelStore';
 	import { modelStore, modelStoreActions } from '$lib/stores/modelStore';
 	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
 
 	let startAnalysisDisabled = false;
 	$: modelEmpty = $modelStore.variables.length === 0;
 
-	$: ComputeEngine = $computeEngineStore;
-	$: LiveModel = $liveModelStore;
 
 	const displayTab = (tab: tabType) => {
 		activeTabStore.set(tab);
