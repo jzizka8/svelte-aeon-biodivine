@@ -2,7 +2,6 @@
 	import ModelStats from './ModelStats.svelte';
 
 	import ModelVariable from './ModelVariable.svelte';
-	import type { ModelStatistics } from '$lib/types/types';
 
 	import { modelStore, modelStoreActions } from '$lib/stores/modelStore';
 	import { calculateMaxDegrees } from '$lib/utils/modelStats';
@@ -28,8 +27,14 @@
 	}
 
 	function handleVariableRename(id: string, name: string) {
-		modelStoreActions.renameVariable(id, name);
-		cytoscapeStore.updateNodeLabel(id, name);
+		try {
+			modelStoreActions.renameVariable(id, name);
+			cytoscapeStore.updateNodeLabel(id, name);
+		} catch (e: any) {
+			// TODO: create toasterror
+			alert(e.message);
+		}
+		
 	}
 
 	$: [maxIn, maxOut] = calculateMaxDegrees($modelStore.regulations);

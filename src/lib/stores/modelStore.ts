@@ -26,7 +26,7 @@ const modelStoreActions = {
 	clearModel: function () {
 		modelStore.set(initialState);
 	},
-	createVariable: function (name: string | null, position: Position | null = null) {
+	createVariable: function (name: string | null, position: Position | undefined = undefined) {
 		modelStore.update((currentModel) => {
 			const id = idStore.increment().toString();
 			const usedName = name || `v_${id}`;
@@ -118,12 +118,27 @@ const modelStoreActions = {
 		}));
 	},
 	renameVariable: function (nodeId: string, name: string) {
-		modelStore.update((currentModel) => ({
-			...currentModel,
-			variables: currentModel.variables.map((node) =>
-				node.id === nodeId ? { ...node, name } : node
-			)
-		}));
+		let errorMessage = '';
+		modelStore.update((currentModel) => {
+			const nameLike = currentModel.variables.find(
+				(node) => node.name === name && node.id !== nodeId
+			);
+
+			if (nameLike) {
+				errorMessage = `Variable with name ${name} already exists`;
+				return currentModel;
+			}
+
+			return {
+				...currentModel,
+				variables: currentModel.variables.map((node) =>
+					node.id === nodeId ? { ...node, name } : node
+				)
+			};
+		});
+		if (errorMessage) {
+			throw new Error(errorMessage);
+		}
 	},
 	setVariableUpdateFunction: function (nodeId: string, updateFunction: string) {
 		modelStore.update((currentModel) => {
