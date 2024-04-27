@@ -472,12 +472,6 @@ div.invisible-input[contenteditable]:empty:not(:focus):before {
 	opacity: 1;
 }
 
-.model-variable-remove {
-	position: absolute;
-	right: 4px;
-	top: 4px;
-}
-
 .model-variable-show {
 	position: absolute;
 	right: 36px;
@@ -485,6 +479,10 @@ div.invisible-input[contenteditable]:empty:not(:focus):before {
 }
 .remove-variable-button {
 	border: none;
+	background: none;
+	position: absolute;
+	right: 4px;
+	top: 4px;
 }
 #model-stats {
 	font-family: 'FiraMono', monospace;
