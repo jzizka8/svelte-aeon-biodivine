@@ -6,7 +6,7 @@ import {
 	compareNegative,
 	compareNegativeMajority,
 	compareAttrName
-} from './utils/comparators';
+} from '../utils/comparators';
 
 export const EXPECTED_ENGINE_VERSION = 'v0.4.1';
 export const DEFAULT_ENGINE_ADDRESS = 'http://localhost:8000';

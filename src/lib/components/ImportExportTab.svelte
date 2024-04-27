@@ -7,33 +7,32 @@
 		exportSbml,
 		exportSbmlInstantiated
 	} from '$lib/importExport';
-	import Examples from '../../script/Examples';
 	import { activeTabStore } from '$lib/stores/activeTabStore';
 	import { modelStore } from '$lib/stores/modelStore';
 	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
-	
+	import { EXAMPLE_MODEL } from '$lib/const/exampleModels';
 	function downloadAeon() {
 		const positions = getPositions();
 		const aeonData = exportAeon($modelStore, positions);
 		downloadFile(`${$modelStore.name}.aeon`, aeonData);
 	}
-	
+
 	function downloadSbml() {
 		const positions = getPositions();
 		const sbml = exportSbml($modelStore, positions);
 		downloadFile(`${$modelStore.name}.sbml`, sbml);
 	}
-	
+
 	function downloadSbmlInstantiated() {
 		const positions = getPositions();
 		const sbml = exportSbmlInstantiated($modelStore, positions);
 		downloadFile(`${$modelStore.name}_instantiated.sbml`, sbml);
 	}
-	
+
 	function handleAeonFileImport(event: Event) {
 		handleFileInputImport(importAeon, event.target as HTMLInputElement);
 	}
-	
+
 	function handleSbmlFileImport(event: Event) {
 		handleFileInputImport(importSbml, event.target as HTMLInputElement);
 	}
@@ -56,7 +55,7 @@
 			position: node.position()
 		}));
 	}
-	
+
 	function importModel(model: string) {
 		importAeon(model);
 		activeTabStore.close();
@@ -75,12 +74,12 @@
 		>
 			Import
 		</h3>
-
+		<!-- TODO: implement -->
 		<button
 			id="import-local"
 			class="compound-button"
 			style="margin-top: 8px; margin-bottom: 8px;"
-			onclick="LiveModel.loadFromLocalStorage();"
+			disabled
 			><span class="main">Local<br />Storage</span><span class="desc">Last loaded model</span
 			></button
 		>
@@ -162,28 +161,28 @@
 		id="example-1"
 		class="compound-button"
 		style="margin-top: 8px; margin-bottom: 8px;"
-		on:click={() => importModel(Examples.g2a)}
+		on:click={() => importModel(EXAMPLE_MODEL.g2a)}
 		><span class="main">G2A</span><span class="desc">Cell<br />Division</span></button
 	>
 	<button
 		id="example-2"
 		class="compound-button"
 		style="margin-top: 8px; margin-bottom: 8px; float: right;"
-		on:click={() => importModel(Examples.g2b)}
+		on:click={() => importModel(EXAMPLE_MODEL.g2b)}
 		><span class="main">G2B</span><span class="desc">Cell<br />Division</span></button
 	>
 	<button
 		id="example-3"
 		class="compound-button"
 		style="margin-top: 8px; margin-bottom: 8px;"
-		on:click={() => importModel(Examples.buddingYeastOrlando)}
+		on:click={() => importModel(EXAMPLE_MODEL.buddingYeastOrlando)}
 		><span class="main">Orlando</span><span class="desc">Budding<br />Yeast</span></button
 	>
 	<button
 		id="example-4"
 		class="compound-button"
 		style="margin-top: 8px; margin-bottom: 8px; float: right;"
-		on:click={() => importModel(Examples.buddingYeastIrons)}
+		on:click={() => importModel(EXAMPLE_MODEL.buddingYeastIrons)}
 		><span class="main">Irons</span><span class="desc">Budding<br />Yeast</span></button
 	>
 	<div style="clear: both;" />

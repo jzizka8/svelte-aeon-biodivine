@@ -16,7 +16,7 @@
 	$: isHover = $hoveredNodeStore === variable.id;
 	let updateFunctionInput: HTMLElement;
 	let variableNameInput: HTMLInputElement;
-
+	
 	const dispatch = createEventDispatcher();
 	function dispatchDelete() {
 		dispatch('delete', { variable });
@@ -97,10 +97,9 @@
 			on:change={dispatchRenameVariable}
 		/>
 	</div>
-	<button class="remove-variable-button" on:click={dispatchDelete}>
-		<img alt="Remove variable" src="img/delete-24px.svg" class="model-variable-remove button" />
+	<button class="remove-variable-button model-variable-remove" on:click={dispatchDelete}>
+		<img alt="Remove variable" src="img/delete-24px.svg" class=" button" />
 	</button>
-	<img alt="Show variable" src="img/search-24px.svg" class="model-variable-show button" />
 	<br />
 	<h4>● Regulators</h4>
 	<div class="model-variable-regulators full-line">

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { sortOptions } from '$lib/const';
+	import { sortOptions } from '$lib/const/const';
 	import { mixedDataStore, selectedTreeNodeId } from '$lib/stores/treeNodeStores';
 	import BehaviorTable from '$lib/components/BehaviorTable.svelte';
 	import StabilityAnalysis from './StabilityAnalysis.svelte';
