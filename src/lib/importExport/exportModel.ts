@@ -40,7 +40,7 @@ export function exportAeonFragment(regulations: Regulation[], variable: Variable
 
 	// this is a hack to make sure other variables do not create extra parameters.
 	const dummyFunctions = affectingRegulations
-		.filter((regulation) => regulation.source.id !== variable.id)
+		.filter((regulation) => regulation.source.name !== variable.name)
 		.map((regulation) => {
 			const variable = { name: regulation.source.name, updateFunction: 'false' };
 			return formatUpdateFunction(variable);
