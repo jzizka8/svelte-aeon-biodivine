@@ -1,0 +1,3 @@
+[submodule "aeon-wasm"]
+	path = aeon-wasm
+	url = https://github.com/daemontus/biodivine-aeon-wasm.git
