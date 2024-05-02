@@ -23,7 +23,7 @@
 
 	{#if classes && cardinality}
 		<p class="center">Total number of classes: {classes.length}</p>
-		<p class="center">Time elapsed : {($resultsStore.elapsed / 1000).toFixed(3)}&nbsp;s</p>
+		<p class="center">Time elapsed: {($resultsStore.elapsed / 1000).toFixed(3)}&nbsp;s</p>
 		<BehaviorTable {classes} {cardinality} />
 		<div id="open-tree-explorer" style="text-align: center; margin: 8px;">
 			<a href="./treeExplorer" target="_blank" class="inline-button">
