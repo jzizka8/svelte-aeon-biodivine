@@ -1,14 +1,13 @@
-import { writable } from 'svelte/store';
+import { readable } from 'svelte/store';
 
 function createIdStore() {
 	let value = 0;
 
-	const { subscribe, set } = writable(value);
+	const { subscribe } = readable(value);
 
 	return {
 		subscribe,
-		increment: () => value++,
-		reset: () => set((value = 0))
+		increment: () => value++
 	};
 }
 
