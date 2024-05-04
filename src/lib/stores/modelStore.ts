@@ -7,7 +7,7 @@ import {
 	type Position
 } from '$lib/types/types'; // Adjust the import path to where your types are defined
 import { generateRegulationId } from '$lib/utils/utils';
-import { idStore } from './idStore';
+import idCounter from '$lib/utils/IdCounter';
 
 const initialState: Model = {
 	name: 'Untitled Model',
@@ -39,7 +39,7 @@ const modelStoreActions = {
 	},
 	createVariable: function (name: string | null, position: Position | undefined = undefined) {
 		modelStore.update((currentModel) => {
-			const id = idStore.increment().toString();
+			const id = idCounter.getNextId().toString();
 			const usedName = name || `v_${id}`;
 			const newVariable: Variable = {
 				id,
