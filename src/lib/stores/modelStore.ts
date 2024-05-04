@@ -10,7 +10,6 @@ import { generateRegulationId } from '$lib/utils/utils';
 import { idStore } from './idStore';
 
 const initialState: Model = {
-	id: '',
 	name: 'Untitled Model',
 	description: '',
 	regulations: [],
@@ -25,6 +24,18 @@ const modelStoreActions = {
 	},
 	clearModel: function () {
 		modelStore.set(initialState);
+	},
+	setDescription: function (description: string) {
+		modelStore.update((currentModel) => ({
+			...currentModel,
+			description
+		}));
+	},
+	setName: function (name: string) {
+		modelStore.update((currentModel) => ({
+			...currentModel,
+			name
+		}));
 	},
 	createVariable: function (name: string | null, position: Position | undefined = undefined) {
 		modelStore.update((currentModel) => {
@@ -41,24 +52,6 @@ const modelStoreActions = {
 				variables: [...currentModel.variables, newVariable]
 			};
 		});
-	},
-	addVariable: function (variable: Variable) {
-		modelStore.update((currentModel) => ({
-			...currentModel,
-			variables: [...currentModel.variables, variable]
-		}));
-	},
-	setDescription: function (description: string) {
-		modelStore.update((currentModel) => ({
-			...currentModel,
-			description
-		}));
-	},
-	setName: function (name: string) {
-		modelStore.update((currentModel) => ({
-			...currentModel,
-			name
-		}));
 	},
 	createRegulation: function (
 		sourceId: string,

@@ -15,7 +15,6 @@ export enum EdgeMonotonicity {
 }
 
 export type Model = {
-	id: string;
 	name: string;
 	description: string;
 	regulations: Regulation[];
