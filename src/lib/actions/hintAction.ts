@@ -13,6 +13,9 @@ export function hintAction(
 	node.addEventListener('mouseout', unsetHint);
 
 	return {
+		update({ hintText: newHintText }: { hintText: string }) {
+			hint.set(newHintText);
+		},
 		destroy() {
 			node.removeEventListener('mouseover', setHint);
 			node.removeEventListener('focus', setHint);
