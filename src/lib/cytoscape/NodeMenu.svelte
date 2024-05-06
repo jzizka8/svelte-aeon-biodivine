@@ -19,7 +19,17 @@
 		!$modelStore.regulations.find(
 			(reg) => reg.source.id === nodes[0].id && reg.target.id === nodes[0].id
 		);
+	$: connectFromAllowed =
+		nodes?.length === 2 &&
+		!$modelStore.regulations.find(
+			(reg) => reg.source.id === nodes[1].id && reg.target.id === nodes[0].id
+		);
 
+	$: connectHereAllowed =
+		nodes?.length === 2 &&
+		!$modelStore.regulations.find(
+			(reg) => reg.source.id === nodes[0].id && reg.target.id === nodes[1].id
+		);
 	const hint = writable('');
 
 	function handleRemove() {
@@ -112,11 +122,13 @@
 					<!-- add Loop  -->
 				</button>
 			{/if}
-			{#if nodes.length === 2}
+			{#if connectFromAllowed}
 				<button use:hintAction={{ hint, hintText: 'Connect from' }} on:click={handleConnectionFrom}>
 					<img src="img/dot-arrow-up.svg" alt="" />
 					<!-- Connect from -->
 				</button>
+			{/if}
+			{#if connectHereAllowed}
 				<button use:hintAction={{ hint, hintText: 'Connect here' }} on:click={handleConnectionTo}
 					><img src="img/dot-arrow-down.svg" alt="" />
 					<!-- Connect here -->
