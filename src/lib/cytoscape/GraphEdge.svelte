@@ -2,7 +2,7 @@
 	import { getContext, onDestroy, onMount } from 'svelte';
 	import type { Edge } from '$lib/types/types';
 	import { selectedEdgesStore } from '$lib/stores/selectedItemsStore';
-	import { repositionEdgeMenu } from './utils';
+	import { getEdgeMenuPosition, repositionEdgeMenu, updateElementData } from './utils';
 
 	export let edge: Edge;
 
@@ -19,11 +19,7 @@
 
 		cyEdge.on('select', () => {
 			console.log('edge selected');
-			let boundingBox = cyEdge.renderedBoundingBox();
-			const position = {
-				x: (boundingBox.x1 + boundingBox.x2) / 2,
-				y: (boundingBox.y1 + boundingBox.y2) / 2
-			};
+			const position  = getEdgeMenuPosition(cyEdge);
 			selectedEdgesStore.addItem(edge, position);
 		});
 		cyEdge.on('unselect', () => {
