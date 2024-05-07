@@ -10,7 +10,13 @@
 		getCyInstance: () => cytoscape.Core;
 	};
 	const cyInstance = getCyInstance();
+	$: edgeId = edge.id;
+	$: edgeMonotonicity = edge.monotonicity;
+	$: edgeObservable = edge.observable;
 
+	$: edgeMonotonicity, updateElementData(cyInstance, edgeId, 'monotonicity', edgeMonotonicity);
+	$: edgeObservable, updateElementData(cyInstance, edgeId, 'observable', edgeObservable);
+	
 	onMount(() => {
 		const cyEdge = cyInstance.add({
 			group: 'edges',

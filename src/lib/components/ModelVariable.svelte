@@ -46,10 +46,8 @@
 	$: regulations, validateUpdateFunction();
 
 	function validateUpdateFunction() {
-		console.log(`checking function validity for ${variable.name}`)
 		try {
 			const modelFragment = exportAeonFragment(regulations, variable)
-			console.log(modelFragment)
 			const valid = check_update_function(modelFragment);
 			fnValidityText = `Possible instantiations: ${valid.cardinality}`;
 			functionValid = true;

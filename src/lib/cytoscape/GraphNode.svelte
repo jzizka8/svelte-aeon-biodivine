@@ -2,7 +2,7 @@
 	import { onMount, getContext, onDestroy } from 'svelte';
 	import type { Node } from '$lib/types/types';
 	import { selectedNodesStore } from '$lib/stores/selectedItemsStore';
-	import { repositionNodeMenu } from './utils';
+	import { repositionNodeMenu, updateElementData } from './utils';
 	import { hoveredNodeStore } from '$lib/stores/hoveredNodeStore';
 	export let node: Node;
 
@@ -11,6 +11,11 @@
 	};
 
 	const cyInstance = getCyInstance();
+	
+	$: nodeLabel = node.label; 
+	$: nodeId = node.id;
+	$: nodeLabel, updateElementData(cyInstance, nodeId, 'label', nodeLabel);
+
 
 	onMount(() => {
 		const cyNode = cyInstance.add({
