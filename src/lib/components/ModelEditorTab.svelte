@@ -13,13 +13,11 @@
 		const regulation = event.detail.regulation;
 		const newMonotonicity = nextMonotonicity(regulation.monotonicity);
 		modelStoreActions.changeMonotonicity(regulation.id, newMonotonicity);
-		cytoscapeStore.updateEdgeMonotonicity(regulation.id, newMonotonicity);
 	}
 
 	function handleObservableToggle(event: CustomEvent) {
 		const regulation = event.detail.regulation;
 		modelStoreActions.toggleObservable(regulation.id);
-		cytoscapeStore.updateEdgeObservable(regulation.id, !regulation.observable);
 	}
 
 	function handleNameChange(event: Event) {
@@ -29,7 +27,6 @@
 	function handleVariableRename(id: string, name: string) {
 		try {
 			modelStoreActions.renameVariable(id, name);
-			cytoscapeStore.updateNodeLabel(id, name);
 		} catch (e: any) {
 			// TODO: create toasterror
 			alert(e.message);

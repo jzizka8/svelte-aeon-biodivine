@@ -34,7 +34,6 @@
 		const newMonotonicity = nextMonotonicity(regulation.monotonicity);
 
 		modelStoreActions.changeMonotonicity(regulation.id, newMonotonicity);
-		cytoscapeStore.updateEdgeMonotonicity(regulation.id, newMonotonicity);
 
 		// this is only needed for this menu
 		regulation.monotonicity = newMonotonicity;
@@ -42,7 +41,7 @@
 
 	function handleObservableToggle() {
 		modelStoreActions.toggleObservable(regulation.id);
-		cytoscapeStore.updateEdgeObservable(regulation.id, !regulation.observable);
+
 		// this is only needed for this menu
 		regulation.observable = !regulation.observable;
 	}

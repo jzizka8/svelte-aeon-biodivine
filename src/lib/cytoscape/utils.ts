@@ -1,5 +1,5 @@
 import { get } from 'svelte/store';
-import { selectedNodesStore } from '$lib/stores/selectedItemsStore';
+import { selectedEdgesStore, selectedNodesStore } from '$lib/stores/selectedItemsStore';
 import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
 
 export function repositionContextMenus() {
@@ -15,8 +15,31 @@ export function repositionNodeMenu() {
 }
 
 export function repositionEdgeMenu() {
-	const lastEdge = get(selectedNodesStore).items.slice(-1)[0]?.id;
+	const lastEdge = get(selectedEdgesStore).items.slice(-1)[0]?.id;
 	if (lastEdge) {
-		selectedNodesStore.updatePosition(get(cytoscapeStore)!.$id(lastEdge).renderedPosition());
+		const position = getEdgeMenuPosition(get(cytoscapeStore)!.$id(lastEdge));
+		selectedEdgesStore.updatePosition(position);
 	}
+}
+
+export function getEdgeMenuPosition(cyEdge: cytoscape.EdgeSingular) {
+	const boundingBox = cyEdge.renderedBoundingBox();
+	return {
+		x: (boundingBox.x1 + boundingBox.x2) / 2,
+		y: (boundingBox.y1 + boundingBox.y2) / 2
+	};
+}
+export function updateElementData(
+	cytoscape: cytoscape.Core,
+	id: string,
+	attributeName: string,
+	newValue: any
+) {
+	const element = cytoscape?.$id(id);
+	if (!element || !element.data()) {
+		return;
+	}
+
+	element.data()[attributeName] = newValue;
+	cytoscape.style().update(); // Redraw graph to reflect the change
 }
