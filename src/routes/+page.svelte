@@ -10,7 +10,7 @@
 	import TabWrapper from '$lib/components/TabWrapper.svelte';
 	import { init as scriptInit } from '../script/main';
 	import { modelStore } from '$lib/stores/modelStore';
-	import init from 'aeon-wasm';
+	import init, { DecisionTree } from 'aeon-wasm';
 
 	const AEON_MODEL = `
 		v_Sp8 -| v_Emx2
@@ -40,7 +40,7 @@
 
 		console.log('aeon init done.');
 
-		const worker = new Worker(new URL('../compute_worker.js', import.meta.url), { type: 'module' });
+		const worker = new Worker(new URL('../compute_worker.ts', import.meta.url), { type: 'module' });
 		worker.onmessage = (e) => {
 			if (e.data['type'] == 'progress') {
 				console.log('Partial:', e.data['data']);
