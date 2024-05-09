@@ -1,4 +1,4 @@
-import init, { Conversions, ComputationResult } from 'aeon-wasm';
+import init, { ComputationResult } from 'aeon-wasm';
 
 console.log('Worker is starting...');
 

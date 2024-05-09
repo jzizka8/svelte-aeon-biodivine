@@ -10,7 +10,7 @@
 	import TabWrapper from '$lib/components/TabWrapper.svelte';
 	import { init as scriptInit } from '../script/main';
 	import { modelStore } from '$lib/stores/modelStore';
-	import init, { DecisionTree } from 'aeon-wasm';
+	import init from 'aeon-wasm';
 
 	const AEON_MODEL = `
 		v_Sp8 -| v_Emx2
