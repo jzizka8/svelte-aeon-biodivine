@@ -8,7 +8,6 @@
 
 	import LoadingIndicator from '$lib/components/LoadingIndicator.svelte';
 	import TabWrapper from '$lib/components/TabWrapper.svelte';
-	import { init as scriptInit } from '../script/main';
 	import { modelStore } from '$lib/stores/modelStore';
 	import init, { DecisionTree } from 'aeon-wasm';
 
@@ -36,7 +35,6 @@
 
 	onMount(async () => {
 		await init();
-		scriptInit();
 
 		console.log('aeon init done.');
 
