@@ -10,8 +10,15 @@ export function startAnalysis(model_string: string) {
 		} else if (e.data['type'] == 'result') {
 			console.log('Done:', e.data['data']);
 			const tree_data = e.data['tree_data'];
-			console.log('tree_data', tree_data);
-			const tree = DecisionTree.from_tree_data(tree_data);
+
+			const dataToStore = {
+				data: Array.from(tree_data.data), // Convert 'data' Map to an array of key-value pairs
+				network: tree_data.network // Keep the 'network' property as it is
+			};
+
+			localStorage.setItem('tree_data', JSON.stringify(dataToStore));
+			const td = JSON.parse(localStorage.getItem('tree_data') ?? '');
+			const tree = DecisionTree.from_tree_data(td);
 			console.log(tree);
 			console.log(tree.get_full_tree());
 			console.log(tree.get_attributes(0));

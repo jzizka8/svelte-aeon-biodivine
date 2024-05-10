@@ -32,8 +32,8 @@ export function nextMonotonicity(monotonicity: EdgeMonotonicity) {
 }
 
 // Takes array of str in string '["Stability", "Disorder"]' and returns first letter of each str
-export function normalizeClass(cls: string) {
-	return JSON.parse(cls)
+export function normalizeClass(cls: string[]) {
+	return cls
 		.map((x) => x[0])
 		.sort()
 		.join('');

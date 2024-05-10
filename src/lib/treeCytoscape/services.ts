@@ -1,4 +1,5 @@
 import type { TreeData } from '$lib/types/treeExplorerTypes';
+import { DecisionTree } from 'aeon-wasm';
 import ComputeEngine from '../../script/ComputeEngine';
 import { selectNode } from './cyHelpers';
 import { removeAll, ensureNode, removeSingleNode, populateCytoscape } from './graphManipulation';
@@ -6,15 +7,16 @@ import { removeAll, ensureNode, removeSingleNode, populateCytoscape } from './gr
 export function loadBifurcationTree(cyInstance: cytoscape.Core) {
 	const loading = document.getElementById('loading-indicator');
 	loading.classList.remove('invisible');
-	ComputeEngine.getBifurcationTree((e: string, r: TreeData[]) => {
-		if (e) {
-			console.error('No tree data returned', e);
-			return;
-		}
-		removeAll(cyInstance); // remove old tree if present
-		populateCytoscape(cyInstance, r);
-		loading.classList.add('invisible');
-	}, true);
+	removeAll(cyInstance);
+
+	const tree_data = JSON.parse(localStorage.getItem('tree_data') ?? '');
+	console.log('tree_data', tree_data);
+	const tree = DecisionTree.from_tree_data(tree_data);
+	const fullTree = JSON.parse(tree.get_full_tree());
+	console.log(fullTree);
+	populateCytoscape(cyInstance, fullTree);
+
+	loading.classList.add('invisible');
 }
 
 export function undecideSubtree(cyInstance: cytoscape.Core, nodeId: number) {
