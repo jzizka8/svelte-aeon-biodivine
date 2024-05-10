@@ -7,6 +7,7 @@
 	import { exportAeon } from '$lib/importExport';
 	import { ComputationResult } from 'aeon-wasm';
 	import { resultsStore } from '$lib/stores/resultsStore';
+	import { startAnalysis } from '$lib/services/analysisService';
 
 	let startAnalysisDisabled = false;
 	$: modelEmpty = $modelStore.variables.length === 0;
@@ -14,10 +15,8 @@
 		activeTabStore.set(tab);
 	};
 
-	async function startAnalysis(){
-		const result = ComputationResult.start(exportAeon($modelStore));
-		resultsStore.set(await result.get_results())
-		console.log($resultsStore)
+	function handleStartAnalysis() {
+		startAnalysis(exportAeon($modelStore));
 	}
 </script>
 
@@ -28,7 +27,7 @@
 				class="button button--half-round button--green {startAnalysisDisabled ? 'disabled' : ''}"
 				title="You need to connect compute eninge in order to start analysis"
 				disabled={startAnalysisDisabled}
-				on:click={startAnalysis}
+				on:click={handleStartAnalysis}
 			>
 				<img src="img/play_circle_filled-48px.svg" alt="" /> Start Analysis
 			</button>
