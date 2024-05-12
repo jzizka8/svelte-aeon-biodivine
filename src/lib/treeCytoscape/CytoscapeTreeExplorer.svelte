@@ -51,5 +51,6 @@
 	.graph {
 		inset: 0;
 		position: absolute;
+		overflow: hidden;
 	}
 </style>
