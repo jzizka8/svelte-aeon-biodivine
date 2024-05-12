@@ -2,14 +2,18 @@ import {
 	loadBifurcationTree,
 	autoExpandBifurcationTree,
 	setPrecision,
+	getPrecision,
 	selectAttribute,
-	undecideSubtree
+	undecideSubtree,
+	getAttributes
 } from './services';
 
 export {
 	loadBifurcationTree,
 	autoExpandBifurcationTree,
 	setPrecision,
+	getPrecision,
 	selectAttribute,
-	undecideSubtree
+	undecideSubtree,
+	getAttributes
 };
