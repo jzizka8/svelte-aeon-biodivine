@@ -9,14 +9,20 @@
 	import { resultsStore } from '$lib/stores/resultsStore';
 	import { startAnalysis } from '$lib/services/analysisService';
 
-	let startAnalysisDisabled = false;
 	$: modelEmpty = $modelStore.variables.length === 0;
+	$: startAnalysisDisabled = modelEmpty || ($resultsStore && !$resultsStore?.is_finished);
+	
 	const displayTab = (tab: tabType) => {
 		activeTabStore.set(tab);
 	};
 
 	function handleStartAnalysis() {
 		startAnalysis(exportAeon($modelStore));
+	}
+
+	function handleClearModel() {
+		modelStoreActions.clearModel();
+		resultsStore.set(undefined);
 	}
 </script>
 
@@ -47,7 +53,7 @@
 				class="button button--half-round button--primary"
 				class:disabled={modelEmpty}
 				disabled={modelEmpty}
-				on:click={() => modelStoreActions.clearModel()}
+				on:click={handleClearModel}
 			>
 				<img src="img/delete-24px.svg" alt="" /> Clear Model
 			</button>
