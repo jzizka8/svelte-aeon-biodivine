@@ -1,8 +1,8 @@
+import type { CardinalityClass } from './treeExplorerTypes';
+
 export type computationResult = {
-	is_partial: boolean;
-	data: {
-		sat_count: number;
-		phenotype: string[];
-	}[];
+	is_finished: boolean;
+	data: CardinalityClass[];
 	elapsed: number;
+	progress: string;
 };
