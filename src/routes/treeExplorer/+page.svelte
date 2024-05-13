@@ -10,8 +10,6 @@
 	import CytoscapeTreeExplorer from '$lib/treeCytoscape/CytoscapeTreeExplorer.svelte';
 	import init,{ DecisionTree } from 'aeon-wasm';
 	onMount(async () => {
-		await init()
-		console.log('AEON WASM initialized');
 		await document.fonts.load('1rem "symbols"');
 		await document.fonts.load('1rem "FiraMono"');
 	});
