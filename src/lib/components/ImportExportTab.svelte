@@ -9,22 +9,23 @@
 	} from '$lib/importExport';
 	import { activeTabStore } from '$lib/stores/activeTabStore';
 	import { modelStore } from '$lib/stores/modelStore';
-	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
 	import { EXAMPLE_MODEL } from '$lib/const/exampleModels';
+	import { cytoscapeManager } from '$lib/cytoscape/CytoscapeManager';
+
 	function downloadAeon() {
-		const positions = getPositions();
+		const positions = cytoscapeManager.collectElementPosition();
 		const aeonData = exportAeon($modelStore, positions);
 		downloadFile(`${$modelStore.name}.aeon`, aeonData);
 	}
 
 	function downloadSbml() {
-		const positions = getPositions();
+		const positions = cytoscapeManager.collectElementPosition();
 		const sbml = exportSbml($modelStore, positions);
 		downloadFile(`${$modelStore.name}.sbml`, sbml);
 	}
 
 	function downloadSbmlInstantiated() {
-		const positions = getPositions();
+		const positions = cytoscapeManager.collectElementPosition();
 		const sbml = exportSbmlInstantiated($modelStore, positions);
 		downloadFile(`${$modelStore.name}_instantiated.sbml`, sbml);
 	}
@@ -47,13 +48,6 @@
 		const text = await input.files[0].text();
 		fileImportFunction(text);
 		activeTabStore.close();
-	}
-
-	function getPositions() {
-		return $cytoscapeStore?.nodes().map((node) => ({
-			variable: node.data('label'),
-			position: node.position()
-		}));
 	}
 
 	function importModel(model: string) {

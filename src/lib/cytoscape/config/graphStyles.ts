@@ -8,7 +8,7 @@ const graphStyles: Stylesheet[] = [
 			// put label in the middle of the node (vertically)
 			'text-valign': 'center',
 			width: (node: cytoscape.NodeSingular) => {
-				return node.data('label').length * 7;
+				return node.data('label')?.length * 7;
 			},
 			height: 20,
 			// a rectangle with slightly sloped edges

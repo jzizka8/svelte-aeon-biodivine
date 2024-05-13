@@ -1,4 +1,3 @@
-import type { TreeNode } from '$lib/types/treeExplorerTypes';
 import type { Stylesheet } from 'cytoscape';
 
 const graphStyles: Stylesheet[] = [
@@ -14,7 +13,6 @@ const graphStyles: Stylesheet[] = [
 				return node.data('label').length * 5;
 			},
 			shape: 'round-rectangle',
-			// when selecting, do not display any overlay
 			'overlay-opacity': 0,
 			// other visual styles
 			padding: '12',

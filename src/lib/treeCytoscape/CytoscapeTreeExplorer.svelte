@@ -16,7 +16,7 @@
 
 	onMount(async () => {
 		await init()
-		console.log('AEON WASM initialized');
+		
 		cytoscape.use(dagre);
 
 		cyInstance = cytoscape({

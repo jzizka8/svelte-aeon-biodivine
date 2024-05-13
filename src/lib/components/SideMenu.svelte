@@ -3,11 +3,10 @@
 	import type { tabType } from '$lib/types/types';
 	import Version from './Version.svelte';
 	import { modelStore, modelStoreActions } from '$lib/stores/modelStore';
-	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
 	import { exportAeon } from '$lib/importExport';
-	import { ComputationResult } from 'aeon-wasm';
 	import { resultsStore } from '$lib/stores/resultsStore';
 	import { startAnalysis } from '$lib/services/analysisService';
+	import { cytoscapeManager } from '$lib/cytoscape/CytoscapeManager';
 
 	$: modelEmpty = $modelStore.variables.length === 0;
 	$: startAnalysisDisabled = modelEmpty || ($resultsStore && !$resultsStore?.is_finished);
@@ -46,7 +45,7 @@
 				class="button button--half-round button--primary"
 				class:disabled={modelEmpty}
 				disabled={modelEmpty}
-				on:click={() => cytoscapeStore.applyLayout()}
+				on:click={() => cytoscapeManager.applyLayout()}
 			>
 				<img src="img/view_quilt-48px.svg" alt="" /> Apply Layout
 			</button>
