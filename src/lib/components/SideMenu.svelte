@@ -19,6 +19,7 @@
 
 	function handleStartAnalysis() {
 		worker = startAnalysis(exportAeon($modelStore));
+		activeTabStore.set('results');
 	}
 
 	function handleClearModel() {
