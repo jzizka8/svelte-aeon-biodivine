@@ -13,15 +13,3 @@ export function getDecisionTree(): DecisionTree | null {
 	return cachedTree;
 }
 
-export function freeDecisionTree() {
-	console.log(cachedTree);
-	cachedTree?.free();
-	cachedTree = null;
-	console.log(
-		'freeDecisionTree called from:',
-		typeof window !== 'undefined' ? 'browser' : 'server'
-	);
-
-	console.log('Decision tree freed');
-}
-
