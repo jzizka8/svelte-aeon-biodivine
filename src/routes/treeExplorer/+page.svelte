@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { modelStore } from '$lib/stores/modelStore';
 
 	import LogoType from '$lib/components/LogoType.svelte';
 	import LoadingIndicator from '$lib/components/LoadingIndicator.svelte';
-	import { modelStore } from '$lib/stores/modelStore';
-
-	import { PrecisionSlider, QuickHelp } from './components';
 	import TabWrapper from '$lib/components/TabWrapper.svelte';
+
+	import PrecisionSlider from '$lib/components/treeExplorer/PrecisionSlider.svelte';
+	import QuickHelp from '$lib/components/treeExplorer/QuickHelp.svelte';
 	import CytoscapeTreeExplorer from '$lib/treeCytoscape/CytoscapeTreeExplorer.svelte';
-	import init,{ DecisionTree } from 'aeon-wasm';
+
 	onMount(async () => {
 		await document.fonts.load('1rem "symbols"');
 		await document.fonts.load('1rem "FiraMono"');

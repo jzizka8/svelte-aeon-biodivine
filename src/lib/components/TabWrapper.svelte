@@ -1,21 +1,25 @@
 <script lang="ts">
-	import HelpTab from './HelpTab.svelte';
-	import ImportExportTab from './ImportExportTab.svelte';
-	import ModelEditorTab from './ModelEditorTab.svelte';
-	import ResultsTab from './ResultsTab.svelte';
+	import {
+		DecisionTab,
+		HelpTab,
+		ImportExportTab,
+		LeafTab,
+		MixedTab,
+		ModelEditorTab,
+		ResultsTab
+	} from './tabs';
 	import { activeTabStore } from '$lib/stores/activeTabStore';
 	import hotkeys from 'hotkeys-js';
 	import { onMount } from 'svelte';
-	import {LeafTab, DecisionTab, MixedTab }from '../../routes/treeExplorer/components/';
 
 	const tabComponents = {
 		about: HelpTab,
 		'import-export': ImportExportTab,
 		'model-editor': ModelEditorTab,
 		results: ResultsTab,
-		'leaf': LeafTab,
-		'decision': DecisionTab,
-		'mixed': MixedTab
+		leaf: LeafTab,
+		decision: DecisionTab,
+		mixed: MixedTab
 	};
 	onMount(() => {
 		hotkeys('esc', { keyup: true, keydown: true }, function (event, handler) {
@@ -26,7 +30,7 @@
 	$: component = $activeTabStore ? tabComponents[$activeTabStore] : null;
 </script>
 
-	{#if component}
+{#if component}
 	<div class=" temp-main">
 		<svelte:component this={component}>
 			<button class="button button--close" on:click={activeTabStore.close}>
@@ -35,6 +39,7 @@
 		</svelte:component>
 	</div>
 {/if}
+
 <style>
 	.button--close {
 		display: flex;

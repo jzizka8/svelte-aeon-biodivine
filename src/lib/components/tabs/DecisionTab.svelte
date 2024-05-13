@@ -2,7 +2,7 @@
 	import { decisionStore } from '$lib/stores/treeNodeStores';
 	import { onDestroy, onMount } from 'svelte';
 	import BehaviorTable from '$lib/components/BehaviorTable.svelte';
-	import StabilityAnalysis from './StabilityAnalysis.svelte';
+	import StabilityAnalysis from '../treeExplorer/StabilityAnalysis.svelte';
 	import hotkeys from 'hotkeys-js';
 	import { undecideSubtree } from '$lib/treeCytoscape/';
 	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';

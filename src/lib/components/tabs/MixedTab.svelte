@@ -2,8 +2,8 @@
 	import { sortOptions } from '$lib/const/const';
 	import { mixedDataStore, selectedTreeNodeId } from '$lib/stores/treeNodeStores';
 	import BehaviorTable from '$lib/components/BehaviorTable.svelte';
-	import StabilityAnalysis from './StabilityAnalysis.svelte';
-	import DecisionAttributePanel from './DecisionAttributePanel.svelte';
+	import StabilityAnalysis from '../treeExplorer/StabilityAnalysis.svelte';
+	import DecisionAttributePanel from '../treeExplorer/DecisionAttributePanel.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import hotkeys from 'hotkeys-js';
 	import { autoExpandBifurcationTree, getAttributes } from '$lib/treeCytoscape/';

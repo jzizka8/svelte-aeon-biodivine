@@ -3,7 +3,7 @@
 
 	import { calcDimPercent, calcPercent } from '$lib/utils/mathUtils';
 	import { onDestroy } from 'svelte';
-	import StabilityAnalysis from './StabilityAnalysis.svelte';
+	import StabilityAnalysis from '../treeExplorer/StabilityAnalysis.svelte';
 	import { leafDataStore, selectedTreeNodeId } from '$lib/stores/treeNodeStores';
 
 	let percent: number, dimPercent: number;

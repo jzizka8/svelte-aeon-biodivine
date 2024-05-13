@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { resultsStore } from '$lib/stores/resultsStore';
 	import { compareCardinality } from '$lib/utils/comparators';
-	import BehaviorTable from './BehaviorTable.svelte';
+	import BehaviorTable from '../BehaviorTable.svelte';
 
 	$: classes = $resultsStore ? $resultsStore.data?.sort(compareCardinality) : null;
 
@@ -17,7 +17,7 @@
 		These results are only partial <br />
 		progress: {$resultsStore.progress}
 	{/if}
-	{#if classes && cardinality}
+	{#if $resultsStore && classes && cardinality}
 		<p class="center">Total number of classes: {classes.length}</p>
 		<p class="center">Time elapsed: {($resultsStore.elapsed / 1000).toFixed(3)}&nbsp;s</p>
 		<BehaviorTable {classes} {cardinality} />
