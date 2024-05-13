@@ -1,5 +1,5 @@
 <script lang="ts">
-	import WitnessPanel from './components/WitnessPanel.svelte';
+	import WitnessPanel from '$lib/components/explorer/WitnessPanel.svelte';
 
 	import { modelStore } from '$lib/stores/modelStore';
 	import { onMount } from 'svelte';
