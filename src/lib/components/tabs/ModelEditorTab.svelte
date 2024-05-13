@@ -1,7 +1,7 @@
 <script lang="ts">
-	import ModelStats from './ModelStats.svelte';
+	import ModelStats from '../ModelStats.svelte';
 
-	import ModelVariable from './ModelVariable.svelte';
+	import ModelVariable from '../ModelVariable.svelte';
 
 	import { modelStore, modelStoreActions } from '$lib/stores/modelStore';
 	import { calculateMaxDegrees } from '$lib/utils/modelStats';
