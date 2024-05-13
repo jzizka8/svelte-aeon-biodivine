@@ -11,18 +11,21 @@
 
 	$: modelEmpty = $modelStore.variables.length === 0;
 	$: startAnalysisDisabled = modelEmpty || ($resultsStore && !$resultsStore?.is_finished);
-	
+	let worker: Worker | undefined;
+
 	const displayTab = (tab: tabType) => {
 		activeTabStore.set(tab);
 	};
 
 	function handleStartAnalysis() {
-		startAnalysis(exportAeon($modelStore));
+		worker = startAnalysis(exportAeon($modelStore));
 	}
 
 	function handleClearModel() {
 		modelStoreActions.clearModel();
 		resultsStore.set(undefined);
+		worker?.terminate();
+		worker = undefined;
 	}
 </script>
 
@@ -31,7 +34,6 @@
 		<li>
 			<button
 				class="button button--half-round button--green {startAnalysisDisabled ? 'disabled' : ''}"
-				title="You need to connect compute eninge in order to start analysis"
 				disabled={startAnalysisDisabled}
 				on:click={handleStartAnalysis}
 			>

@@ -36,4 +36,5 @@ export function startAnalysis(model_string: string) {
 	};
 	worker.postMessage({ type: 'start', model: model_string });
 	console.log('Message sent.');
+	return worker;
 }
