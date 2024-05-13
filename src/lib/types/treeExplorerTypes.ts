@@ -23,8 +23,7 @@ export enum NodeType {
 
 export type CardinalityClass = {
 	cardinality: number;
-	// currently: '["Stability", "Disorder"]', TODO: make this a list of enums
-	class: string;
+	class: ('Stability' | 'Disorder' | 'Oscillation')[];
 };
 
 export type TreeNode = {
