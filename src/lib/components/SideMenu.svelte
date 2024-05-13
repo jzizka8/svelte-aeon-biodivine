@@ -3,21 +3,29 @@
 	import type { tabType } from '$lib/types/types';
 	import Version from './Version.svelte';
 	import { modelStore, modelStoreActions } from '$lib/stores/modelStore';
-	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
 	import { exportAeon } from '$lib/importExport';
-	import { ComputationResult } from 'aeon-wasm';
 	import { resultsStore } from '$lib/stores/resultsStore';
+	import { startAnalysis } from '$lib/services/analysisService';
+	import { cytoscapeManager } from '$lib/cytoscape/CytoscapeManager';
 
-	let startAnalysisDisabled = false;
 	$: modelEmpty = $modelStore.variables.length === 0;
+	$: startAnalysisDisabled = modelEmpty || ($resultsStore && !$resultsStore?.is_finished);
+	let worker: Worker | undefined;
+
 	const displayTab = (tab: tabType) => {
 		activeTabStore.set(tab);
 	};
 
-	async function startAnalysis(){
-		const result = ComputationResult.start(exportAeon($modelStore));
-		resultsStore.set(await result.get_results())
-		console.log($resultsStore)
+	function handleStartAnalysis() {
+		worker = startAnalysis(exportAeon($modelStore));
+		activeTabStore.set('results');
+	}
+
+	function handleClearModel() {
+		modelStoreActions.clearModel();
+		resultsStore.set(undefined);
+		worker?.terminate();
+		worker = undefined;
 	}
 </script>
 
@@ -26,9 +34,8 @@
 		<li>
 			<button
 				class="button button--half-round button--green {startAnalysisDisabled ? 'disabled' : ''}"
-				title="You need to connect compute eninge in order to start analysis"
 				disabled={startAnalysisDisabled}
-				on:click={startAnalysis}
+				on:click={handleStartAnalysis}
 			>
 				<img src="img/play_circle_filled-48px.svg" alt="" /> Start Analysis
 			</button>
@@ -38,7 +45,7 @@
 				class="button button--half-round button--primary"
 				class:disabled={modelEmpty}
 				disabled={modelEmpty}
-				on:click={() => cytoscapeStore.applyLayout()}
+				on:click={() => cytoscapeManager.applyLayout()}
 			>
 				<img src="img/view_quilt-48px.svg" alt="" /> Apply Layout
 			</button>
@@ -48,7 +55,7 @@
 				class="button button--half-round button--primary"
 				class:disabled={modelEmpty}
 				disabled={modelEmpty}
-				on:click={() => modelStoreActions.clearModel()}
+				on:click={handleClearModel}
 			>
 				<img src="img/delete-24px.svg" alt="" /> Clear Model
 			</button>

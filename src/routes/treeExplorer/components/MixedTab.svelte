@@ -3,17 +3,16 @@
 	import { mixedDataStore, selectedTreeNodeId } from '$lib/stores/treeNodeStores';
 	import BehaviorTable from '$lib/components/BehaviorTable.svelte';
 	import StabilityAnalysis from './StabilityAnalysis.svelte';
-	import { computeEngineStore } from '$lib/stores/ComputeEngineStore';
-	import type { DecisionAttribute } from '$lib/types/treeExplorerTypes';
 	import DecisionAttributePanel from './DecisionAttributePanel.svelte';
-	import { compareCardinality } from '$lib/utils/comparators';
 	import { onDestroy, onMount } from 'svelte';
 	import hotkeys from 'hotkeys-js';
-	import { autoExpandBifurcationTree } from '$lib/treeCytoscape/';
+	import { autoExpandBifurcationTree, getAttributes } from '$lib/treeCytoscape/';
 	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
 
 	function handleAutoExpand() {
-		if($cytoscapeTreeStore && $mixedDataStore?.id){
+		console.log('Auto expand:', depthValue);
+		console.log($mixedDataStore);
+		if ($cytoscapeTreeStore && $mixedDataStore) {
 			autoExpandBifurcationTree($cytoscapeTreeStore, $mixedDataStore?.id, depthValue);
 		}
 	}
@@ -38,32 +37,12 @@
 		decisionsMade = true;
 		console.log('Making decision...');
 		if ($mixedDataStore?.attributes) {
-			console.log('already have decision attributes');
 			return;
 		}
-		console.log('Getting decision attributes...');
-		$computeEngineStore.getDecisionAttributes(
-			$mixedDataStore?.id,
-			(e: string, r: DecisionAttribute[]) => {
-				if (e) {
-					console.error('Error fetching decision attributes:', e);
-					return;
-				}
-				for (let attr of r) {
-					// Prepare data:
-					attr.left.sort(compareCardinality);
-					attr.right.sort(compareCardinality);
-					attr.leftTotal = attr.left.reduce((a, b) => a + b.cardinality, 0.0);
-					attr.rightTotal = attr.right.reduce((a, b) => a + b.cardinality, 0.0);
-				}
-				console.log('finished fetching, N:', r.length);
-				mixedDataStore.update((d) => {
-					if (d) d.attributes = r;
-					return d;
-				});
-				console.log('updated mixedDataStore');
-			}
-		);
+		mixedDataStore.update((d) => {
+			if (d) d.attributes = getAttributes($mixedDataStore?.id ?? 0);
+			return d;
+		});
 	}
 	onMount(() => {
 		hotkeys('d', handleMakeDecision);

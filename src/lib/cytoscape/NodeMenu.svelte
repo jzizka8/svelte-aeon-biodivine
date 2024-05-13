@@ -2,13 +2,12 @@
 	import hotkeys from 'hotkeys-js';
 	import { onMount, tick } from 'svelte';
 	import { activeTabStore } from '$lib/stores/activeTabStore';
-	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
-	import { edgehandlesStore } from '$lib/stores/edgehandlesStore';
 	import { focusedInputStore } from '$lib/stores/focusedVariableInput';
 	import { modelStore, modelStoreActions } from '$lib/stores/modelStore';
 	import { selectedNodesStore } from '$lib/stores/selectedItemsStore';
 	import { writable } from 'svelte/store';
 	import { hintAction } from '$lib/actions/hintAction';
+	import { cytoscapeManager } from './CytoscapeManager';
 
 	$: nodes = $selectedNodesStore?.items;
 	$: position = $selectedNodesStore?.position;
@@ -53,9 +52,9 @@
 	}
 
 	function handleNewEdgeHandle() {
-		const cyNode = $cytoscapeStore?.$id(nodes[0].id);
-		if (cyNode && $edgehandlesStore) {
-			$edgehandlesStore.start(cyNode as any);
+		const cyNode = cytoscapeManager.getElementById(nodes[0].id);
+		if (cyNode) {
+			cytoscapeManager.getEdgeHandles().start(cyNode as any);
 		}
 	}
 	async function handleNodeNameEdit() {

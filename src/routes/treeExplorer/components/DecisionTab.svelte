@@ -15,7 +15,7 @@
 		decisionStore.set(undefined);
 	});
 	function handleUndecide() {
-		if ($cytoscapeTreeStore && $decisionStore?.id) {
+		if ($cytoscapeTreeStore && $decisionStore) {
 			undecideSubtree($cytoscapeTreeStore, $decisionStore?.id);
 		}
 	}

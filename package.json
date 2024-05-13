@@ -10,7 +10,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"wasm": "(cd aeon-wasm; git pull origin main); wasm-pack build ./aeon-wasm --target web && npm run wasm-patch",
+		"wasm": "(cd aeon-wasm; git pull origin main); wasm-pack build ./aeon-wasm --target web --release && npm run wasm-patch",
 		"wasm-patch": "jq '.type = \"module\"' ./aeon-wasm/pkg/package.json > ./aeon-wasm/pkg/package.json.tmp && mv ./aeon-wasm/pkg/package.json.tmp ./aeon-wasm/pkg/package.json"
 	},
 	"devDependencies": {
@@ -41,6 +41,7 @@
 		"cytoscape-edgehandles": "^4.0.1",
 		"hotkeys-js": "^3.12.0",
 		"vis": "^4.21.0-EOL",
-		"vis-network": "^9.1.9"
+		"vis-network": "^9.1.9",
+		"vite-plugin-static-copy": "^1.0.4"
 	}
 }

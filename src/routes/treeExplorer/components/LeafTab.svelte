@@ -41,18 +41,14 @@
 			Witness count:
 			<span id="leaf-witness-count">{witnessCount}</span>
 		</span>
-		<span class="inline-button" onclick="openTreeWitness();" style="float: right;">Witness</span>
-		<div style="clear: both;" />
-		<span class="inline-button" onclick="openTreeAttractor();" style="float: right;">Attractor</span
-		>
 	</div>
 	<BehaviorTable
 		classes={$leafDataStore?.all_classes}
 		cardinality={$leafDataStore?.cardinality ?? 0}
 	/>
-	<span style="font-weight: bold; margin-top: 16px; display: inline-block; margin-bottom: 8px;">
+	<h2 style="font-weight: bold; margin-top: 16px; display: inline-block; margin-bottom: 8px;">
 		Necessary conditions:
-	</span>
+	</h2>
 
 	<div id="leaf-necessary-conditions">
 		{#if $leafDataStore}

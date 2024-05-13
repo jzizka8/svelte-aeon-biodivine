@@ -3,9 +3,7 @@
 
 	import { modelStore } from '$lib/stores/modelStore';
 	import { onMount } from 'svelte';
-	import { witnessPanelVisible, init } from '../../script/explorerMain';
 	onMount(() => {
-		init();
 	});
 </script>
 
@@ -30,7 +28,7 @@
 
 <div style="position: absolute;">
 	<div id="side-menu">
-		<div class="button-group" on:click={() => witnessPanelVisible()}>
+		<div class="button-group" >
 			<img
 				alt="Update functions"
 				id="side-menu-functions"

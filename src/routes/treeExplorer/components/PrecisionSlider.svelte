@@ -1,16 +1,9 @@
 <script lang="ts">
-	import { computeEngineStore } from '$lib/stores/ComputeEngineStore';
 	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
 	import { setPrecision } from '$lib/treeCytoscape';
-	import { onMount } from 'svelte';
 
-	onMount(() => {
-		$computeEngineStore.getTreePrecision((e: string, r: number) => {
-			precision = r;
-		});
-	});
 
-	let precision: number;
+	$: precision = 10000;
 
 	function handlePrecisionChange(event: Event) {
 		if ($cytoscapeTreeStore) {

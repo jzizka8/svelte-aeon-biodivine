@@ -9,12 +9,11 @@ const graphStyles: Stylesheet[] = [
 			label: 'data(label)',
 			// put label in the middle of the node (vertically)
 			'text-valign': 'center',
-			width: 'label',
-			height: 'label',
+			width: (node: cytoscape.NodeSingular) => {
+				return node.data('label').length * 5;
+			},
 			shape: 'round-rectangle',
-			// when selecting, do not display any overlay
 			'overlay-opacity': 0,
-			opacity: 'data(opacity)',
 			// other visual styles
 			padding: '12',
 			'background-color': '#dddddd',
@@ -26,29 +25,6 @@ const graphStyles: Stylesheet[] = [
 			'border-style': 'solid',
 			'text-max-width': 150,
 			'text-wrap': 'wrap'
-		}
-	},
-	{
-		selector: '.remove-button',
-		style: {
-			'text-valign': 'top',
-			'text-halign': 'right',
-			shape: 'round-rectangle',
-			'background-opacity': 0,
-			'background-image': function (e) {
-				return 'data:image/svg+xml;utf8,' + encodeURIComponent(_remove_svg);
-			},
-			'background-width': '24px',
-			'background-height': '24px',
-			width: '32px',
-			height: '32px'
-		}
-	},
-	{
-		selector: '.remove-button.hover',
-		style: {
-			'background-width': '32px',
-			'background-height': '32px'
 		}
 	},
 	{

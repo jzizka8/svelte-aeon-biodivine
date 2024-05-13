@@ -1,21 +1,20 @@
 <script lang="ts">
-	import { getContext, onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import type { Edge } from '$lib/types/types';
 	import { selectedEdgesStore } from '$lib/stores/selectedItemsStore';
-	import { getEdgeMenuPosition, repositionEdgeMenu, updateElementData } from './utils';
+	import { getEdgeMenuPosition, repositionEdgeMenu} from './utils';
+	import { cytoscapeManager } from './CytoscapeManager';
 
 	export let edge: Edge;
 
-	const { getCyInstance } = getContext('graphSharedState') as {
-		getCyInstance: () => cytoscape.Core;
-	};
-	const cyInstance = getCyInstance();
+	
+	const cyInstance = cytoscapeManager.getInstance();
 	$: edgeId = edge.id;
 	$: edgeMonotonicity = edge.monotonicity;
 	$: edgeObservable = edge.observable;
 
-	$: edgeMonotonicity, updateElementData(cyInstance, edgeId, 'monotonicity', edgeMonotonicity);
-	$: edgeObservable, updateElementData(cyInstance, edgeId, 'observable', edgeObservable);
+	$: edgeMonotonicity, cytoscapeManager.updateElementData( edgeId, 'monotonicity', edgeMonotonicity);
+	$: edgeObservable, cytoscapeManager.updateElementData( edgeId, 'observable', edgeObservable);
 	
 	onMount(() => {
 		const cyEdge = cyInstance.add({

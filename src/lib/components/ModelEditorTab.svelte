@@ -6,7 +6,6 @@
 	import { modelStore, modelStoreActions } from '$lib/stores/modelStore';
 	import { calculateMaxDegrees } from '$lib/utils/modelStats';
 	import { nextMonotonicity } from '$lib/utils/utils';
-	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
 	import { selectedNodesStore } from '$lib/stores/selectedItemsStore';
 
 	function handleMonotonicityChange(event: CustomEvent) {

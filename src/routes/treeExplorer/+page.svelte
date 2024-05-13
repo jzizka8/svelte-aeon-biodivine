@@ -8,11 +8,10 @@
 	import { PrecisionSlider, QuickHelp } from './components';
 	import TabWrapper from '$lib/components/TabWrapper.svelte';
 	import CytoscapeTreeExplorer from '$lib/treeCytoscape/CytoscapeTreeExplorer.svelte';
-	onMount(() => {
-		(async () => {
-			await document.fonts.load('1rem "symbols"');
-			await document.fonts.load('1rem "FiraMono"');
-		})();
+	import init,{ DecisionTree } from 'aeon-wasm';
+	onMount(async () => {
+		await document.fonts.load('1rem "symbols"');
+		await document.fonts.load('1rem "FiraMono"');
 	});
 </script>
 

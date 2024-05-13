@@ -2,12 +2,12 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	import type { Regulation, Variable } from '$lib/types/types';
 	import { regulationShortcut } from '$lib/utils/utils';
-	import { cytoscapeStore } from '$lib/stores/cytoscapeStore';
 	import { hoveredNodeStore } from '$lib/stores/hoveredNodeStore';
 	import { focusedInputStore } from '$lib/stores/focusedVariableInput';
 	import {check_update_function} from 'aeon-wasm';
 
 	import { exportAeonFragment } from '$lib/importExport/';
+	import { cytoscapeManager } from '$lib/cytoscape/CytoscapeManager';
 
 	export let variable: Variable;
 	export let regulations: Regulation[];
@@ -33,11 +33,11 @@
 
 	function handleMouseEnter() {
 		hoveredNodeStore.set(variable.id);
-		$cytoscapeStore?.$id(variable.id)?.addClass('hover');
+		cytoscapeManager.getElementById(variable.id).addClass('hover');
 	}
 	function handleMouseLeave() {
 		hoveredNodeStore.set(null);
-		$cytoscapeStore?.$id(variable.id)?.removeClass('hover');
+		cytoscapeManager.getElementById(variable.id).removeClass('hover');
 	}
 
 	let fnValidityText = '';

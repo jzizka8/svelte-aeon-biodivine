@@ -1,20 +1,19 @@
 <script lang="ts">
-	import { onMount, getContext, onDestroy } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import type { Node } from '$lib/types/types';
 	import { selectedNodesStore } from '$lib/stores/selectedItemsStore';
-	import { repositionNodeMenu, updateElementData } from './utils';
+	import { repositionNodeMenu} from './utils';
 	import { hoveredNodeStore } from '$lib/stores/hoveredNodeStore';
+	import { cytoscapeManager } from './CytoscapeManager';
 	export let node: Node;
 
-	const { getCyInstance } = getContext('graphSharedState') as {
-		getCyInstance: () => cytoscape.Core;
-	};
+	
+	const cyInstance = cytoscapeManager.getInstance();
 
-	const cyInstance = getCyInstance();
 	
 	$: nodeLabel = node.label; 
 	$: nodeId = node.id;
-	$: nodeLabel, updateElementData(cyInstance, nodeId, 'label', nodeLabel);
+	$: nodeLabel, cytoscapeManager.updateElementData( nodeId, 'label', nodeLabel);
 
 
 	onMount(() => {

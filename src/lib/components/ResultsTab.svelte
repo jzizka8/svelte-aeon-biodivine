@@ -3,14 +3,7 @@
 	import { compareCardinality } from '$lib/utils/comparators';
 	import BehaviorTable from './BehaviorTable.svelte';
 
-	$: classes = $resultsStore
-		? $resultsStore.data
-				.map((r) => ({
-					cardinality: r.sat_count,
-					class: JSON.stringify(r.phenotype)
-				}))
-				.sort(compareCardinality)
-		: null;
+	$: classes = $resultsStore ? $resultsStore.data?.sort(compareCardinality) : null;
 
 	$: cardinality = classes?.reduce((acc, cls) => acc + cls.cardinality, 0);
 </script>
@@ -20,7 +13,10 @@
 	<h2 style="margin: 0 auto; font-size: 20px; text-align: center; margin-bottom: 8px;">
 		Bifurcation Function
 	</h2>
-
+	{#if $resultsStore && !$resultsStore?.is_finished}
+		These results are only partial <br />
+		progress: {$resultsStore.progress}
+	{/if}
 	{#if classes && cardinality}
 		<p class="center">Total number of classes: {classes.length}</p>
 		<p class="center">Time elapsed: {($resultsStore.elapsed / 1000).toFixed(3)}&nbsp;s</p>

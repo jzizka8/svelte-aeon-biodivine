@@ -9,11 +9,14 @@
 	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
 	import { initHotkeys, unbindHotkeys } from './hotkeys';
 	import { loadBifurcationTree } from './services';
+	import init from 'aeon-wasm';
 
 	let refElement: HTMLDivElement;
 	let cyInstance: cytoscape.Core;
 
-	onMount(() => {
+	onMount(async () => {
+		await init()
+		
 		cytoscape.use(dagre);
 
 		cyInstance = cytoscape({
@@ -37,6 +40,9 @@
 	onDestroy(() => {
 		unbindHotkeys();
 	});
+
+
+	
 </script>
 
 <div class="graph" bind:this={refElement} id="cytoscape-editor" />
@@ -45,5 +51,6 @@
 	.graph {
 		inset: 0;
 		position: absolute;
+		overflow: hidden;
 	}
 </style>
