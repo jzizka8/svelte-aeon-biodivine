@@ -39,7 +39,6 @@
 		await init();
 		console.log('aeon init done.');
 		importAeon(AEON_MODEL);
-		
 	});
 </script>
 
@@ -57,7 +56,7 @@
 	<!-- absolutely positioned stuff -->
 	<LogoType />
 	<LoadingIndicator />
-	<QuickHelp />
+	<QuickHelp show={$modelStore.variables.length === 0} />
 </main>
 
 <style>

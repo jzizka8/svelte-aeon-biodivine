@@ -14,14 +14,16 @@
 		await document.fonts.load('1rem "symbols"');
 		await document.fonts.load('1rem "FiraMono"');
 	});
+
+	let	showHelp = true;
 </script>
 
 <svelte:head>
 	<title>{$modelStore.name} | Tree explorer AEON</title>
 </svelte:head>
 <main>
-	<CytoscapeTreeExplorer />
-	<QuickHelp />
+	<CytoscapeTreeExplorer bind:showHelp={showHelp}/>
+	<QuickHelp show={showHelp}/>
 
 	<LogoType />
 	<TabWrapper />

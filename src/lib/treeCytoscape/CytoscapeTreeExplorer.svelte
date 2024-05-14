@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { onDestroy, onMount} from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import dagre from 'cytoscape-dagre';
 
 	import cytoscape from 'cytoscape';
 	import graphStyles from './graphStyles';
 	import { activeTabStore } from '$lib/stores/activeTabStore';
-	import { handleSelect} from './cyHelpers';
+	import { handleSelect } from './cyHelpers';
 	import { initHotkeys, unbindHotkeys } from './hotkeys';
 	import { loadBifurcationTree } from './services';
 	import init from 'aeon-wasm';
@@ -13,10 +13,13 @@
 
 	let refElement: HTMLDivElement;
 	let cyInstance: cytoscape.Core;
+	
+
+	export let showHelp: boolean;
 
 	onMount(async () => {
-		await init()
-		
+		await init();
+
 		cytoscape.use(dagre);
 
 		cyInstance = treeCytoscapeManager.initCytoscape({
@@ -24,9 +27,9 @@
 			style: graphStyles
 		});
 
-
 		cyInstance.on('select', (e) => {
-			if(e.target.isEdge()) return;
+			showHelp = false;
+			if (e.target.isEdge()) return;
 			handleSelect(cyInstance, e.target.data());
 		});
 		cyInstance.on('unselect', (e) => {
@@ -34,15 +37,12 @@
 		});
 
 		loadBifurcationTree();
-		
+
 		initHotkeys(cyInstance);
 	});
 	onDestroy(() => {
 		unbindHotkeys();
 	});
-
-
-	
 </script>
 
 <div class="graph" bind:this={refElement} id="cytoscape-tree-editor" />

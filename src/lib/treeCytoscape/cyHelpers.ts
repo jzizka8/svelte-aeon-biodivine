@@ -105,7 +105,6 @@ function getNodeLabel(treeData: TreeData): string {
 }
 
 export function handleSelect(cyInstance: cytoscape.Core, data: TreeNode) {
-	document.getElementById('quick-help')?.classList.add('gone');
 	const treeData = data.treeData;
 	if (treeData.type == 'leaf') {
 		activeTabStore.set('leaf');

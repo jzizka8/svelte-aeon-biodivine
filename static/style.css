@@ -131,7 +131,7 @@ body {
 	text-align: center;
 }
 
-.shortcuts-list li::first-letter {
+.shortcuts-list .shortcut {
 	font-weight: bold;
 	font-size: 1.25em;
 }

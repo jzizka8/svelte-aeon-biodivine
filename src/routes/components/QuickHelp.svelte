@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
 	import QuickHelpWrapper from '$lib/components/QuickHelpWrapper.svelte';
+	export let show: boolean;
 </script>
 
-<QuickHelpWrapper>
+<QuickHelpWrapper {show}>
 	<div class="quick-help__header">
 		<b>Network editor actions:</b>
 		<h3>HELP</h3>
@@ -14,13 +15,13 @@
 	</ul>
 	<b>Keyboard shortcuts:</b>
 	<ul class="shortcuts-list">
-		<li>⌫ Remove selected element.</li>
-		<li>N Add new variable.</li>
-		<li>E Edit name of the selected variable.</li>
-		<li>F Edit update function of the selected variable.</li>
-		<li>O Change observability of the selected regulation.</li>
-		<li>M Change monotonicity of the selected regulation.</li>
-		<li>H Show this help message.</li>
-	</ul>
+		<li><span class="shortcut">⌫</span> Remove selected element.</li>
+		<li><span class="shortcut">N</span> Add new variable.</li>
+		<li><span class="shortcut">E</span> Edit name of the selected variable.</li>
+		<li><span class="shortcut">F</span> Edit update function of the selected variable.</li>
+		<li><span class="shortcut">O</span> Change observability of the selected regulation.</li>
+		<li><span class="shortcut">M</span> Change monotonicity of the selected regulation.</li>
+		<li><span class="shortcut">H</span> Show this help message.</li>
+	</ul>	
 	<div class="quick-help__footer">(this message disappears when you create the first variable)</div>
 </QuickHelpWrapper>
