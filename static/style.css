@@ -218,6 +218,11 @@ body {
 	margin: 0 auto;
 	float: left;
 }
+#cytoscape-tree-editor {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+}
 
 .panel-close-button {
 	width: 24px;
@@ -257,7 +262,7 @@ body {
 }
 
 .invisible-input .error,
-.invisible-input.error, {
+.invisible-input.error {
 	background-color: rgba(200, 40, 40, 0.4);
 }
 .error-message {

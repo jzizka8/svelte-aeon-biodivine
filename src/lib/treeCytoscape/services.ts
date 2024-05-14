@@ -2,10 +2,9 @@ import { getDecisionTree } from './DecisionTree';
 import { selectNode } from './cyHelpers';
 import { removeAll, ensureNode, removeSingleNode, populateCytoscape } from './graphManipulation';
 import { compareCardinality } from '$lib/utils/comparators';
+import type { CardinalityClass, DecisionAttribute } from '$lib/types/treeExplorerTypes';
 
 export function loadBifurcationTree(cyInstance: cytoscape.Core) {
-	const loading = document.getElementById('loading-indicator');
-	loading.classList.remove('invisible');
 	removeAll(cyInstance);
 
 	const tree = getDecisionTree();
@@ -13,8 +12,6 @@ export function loadBifurcationTree(cyInstance: cytoscape.Core) {
 	const fullTree = JSON.parse(tree?.get_full_tree());
 	console.log(fullTree);
 	populateCytoscape(cyInstance, fullTree);
-
-	loading.classList.add('invisible');
 }
 
 export function undecideSubtree(cyInstance: cytoscape.Core, nodeId: number) {
@@ -44,7 +41,6 @@ export function autoExpandBifurcationTree(
 	nodeId: number,
 	depth: number
 ) {
-	const loading = document.getElementById('loading-indicator');
 	console.log('expanding');
 	const tree = getDecisionTree();
 	const expanded = JSON.parse(tree?.auto_expand(nodeId, depth));
@@ -54,10 +50,7 @@ export function autoExpandBifurcationTree(
 	selectNode(cyInstance, nodeId);
 }
 export function setPrecision(cyInstance: cytoscape.Core, precision: number) {
-	const loading = document.getElementById('loading-indicator');
-	loading.classList.remove('invisible');
-
-	console.log(getDecisionTree()?.apply_tree_precision(precision));
+	getDecisionTree()?.apply_tree_precision(precision);
 	loadBifurcationTree(cyInstance);
 }
 export function getPrecision() {
@@ -68,17 +61,17 @@ export function getAttributes(nodeId: number) {
 	const tree = getDecisionTree();
 	const result = JSON.parse(tree?.get_attributes(nodeId)) ?? [];
 
-	console.log('got attributes', result);
+	function calcTotal(cardinalities: CardinalityClass[]) {
+		return cardinalities.reduce((a: number, b: CardinalityClass) => a + b.cardinality, 0);
+	}
 
-	result.forEach((attr) => {
+	result.forEach((attr: DecisionAttribute) => {
 		// Prepare data:
 		attr.left.sort(compareCardinality);
 		attr.right.sort(compareCardinality);
-		attr.leftTotal = attr.left.reduce((a, b) => a + b.cardinality, 0.0);
-		attr.rightTotal = attr.right.reduce((a, b) => a + b.cardinality, 0.0);
+		attr.leftTotal = calcTotal(attr.left);
+		attr.rightTotal = calcTotal(attr.right);
 	});
-
-	console.log('finished fetching, N:', result.length);
 
 	return result;
 }

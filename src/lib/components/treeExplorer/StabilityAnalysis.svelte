@@ -73,7 +73,7 @@
 	style="float: right; margin-bottom: 16px; margin-right: 16px;"
 	on:click={() => loadStabilityData(id, selectedBehavior)}
 >
-	Stability analysis (S) <img src="img/stability_analysis-24px.svg" />
+	Stability analysis (S) <img src="img/stability_analysis-24px.svg" alt="Stability analysis" />
 </button>
 
 <!-- Stability Data Display -->

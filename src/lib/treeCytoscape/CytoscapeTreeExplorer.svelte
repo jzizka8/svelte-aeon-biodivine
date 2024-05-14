@@ -45,7 +45,7 @@
 	
 </script>
 
-<div class="graph" bind:this={refElement} id="cytoscape-editor" />
+<div class="graph" bind:this={refElement} id="cytoscape-tree-editor" />
 
 <style>
 	.graph {

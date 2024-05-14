@@ -74,7 +74,7 @@
 			on:click={handleAutoExpand}
 		>
 			{autoExpandText}
-			<img src="img/graph-24px.svg" />
+			<img src="img/graph-24px.svg" alt="Auto expand" />
 		</button>
 		Depth:
 		<input
@@ -97,10 +97,10 @@
 			style="float: right; margin-bottom: 16px; margin-right: 16px;"
 			on:click={handleMakeDecision}
 		>
-			Make decision (D) <img src="img/add_box-24px.svg" />
+			Make decision (D) <img src="img/add_box-24px.svg" alt="Make decision" />
 		</button>
 	</div>
-	{#if decisionAttributes && decisionsMade}
+	{#if $mixedDataStore && decisionAttributes && decisionsMade}
 		<div id="mixed-attributes">
 			<span
 				id="mixed-attributes-title"

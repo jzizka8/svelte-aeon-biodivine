@@ -84,7 +84,7 @@
 		id="button-add-variable"
 		class="image-button"
 		on:click={() => modelStoreActions.createVariable(null)}
-		style="float: right;">Add variable (N) <img src="img/add_box-24px.svg" /></button
+		style="float: right;">Add variable (N) <img src="img/add_box-24px.svg" alt="Add variable" /></button
 	>
 
 	<h1>Variables</h1>
