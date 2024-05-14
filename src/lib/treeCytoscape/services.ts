@@ -1,30 +1,26 @@
 import { getDecisionTree } from './DecisionTree';
-import { selectNode } from './cyHelpers';
-import { removeAll, ensureNode, removeSingleNode, populateCytoscape } from './graphManipulation';
 import { compareCardinality } from '$lib/utils/comparators';
+import type { CardinalityClass, DecisionAttribute } from '$lib/types/treeExplorerTypes';
+import { treeCytoscapeManager } from './treeCytoscapeManager';
 
-export function loadBifurcationTree(cyInstance: cytoscape.Core) {
-	const loading = document.getElementById('loading-indicator');
-	loading.classList.remove('invisible');
-	removeAll(cyInstance);
+export function loadBifurcationTree() {
+	treeCytoscapeManager.removeAll();
 
 	const tree = getDecisionTree();
 	console.log(tree?.get_tree_precision());
 	const fullTree = JSON.parse(tree?.get_full_tree());
 	console.log(fullTree);
-	populateCytoscape(cyInstance, fullTree);
-
-	loading.classList.add('invisible');
+	treeCytoscapeManager.populateCytoscape(fullTree);
 }
 
-export function undecideSubtree(cyInstance: cytoscape.Core, nodeId: number) {
+export function undecideSubtree(nodeId: number) {
 	const tree = getDecisionTree();
 	const result = JSON.parse(tree?.revert_decision(nodeId) ?? '');
 	console.log(result);
 
 	// removing descendants
 	result.removed.forEach((nodeId: number) => {
-		removeSingleNode(cyInstance, nodeId.toString());
+		treeCytoscapeManager.removeSingleNode(nodeId.toString());
 	});
 
 	if (!result.node) {
@@ -34,31 +30,23 @@ export function undecideSubtree(cyInstance: cytoscape.Core, nodeId: number) {
 	}
 
 	// refreshing the node itself to undecided
-	ensureNode(cyInstance, result.node);
+	treeCytoscapeManager.ensureNode(result.node);
 
-	selectNode(cyInstance, nodeId);
+	treeCytoscapeManager.selectNode(nodeId);
 }
 
-export function autoExpandBifurcationTree(
-	cyInstance: cytoscape.Core,
-	nodeId: number,
-	depth: number
-) {
-	const loading = document.getElementById('loading-indicator');
+export function autoExpandBifurcationTree(nodeId: number, depth: number) {
 	console.log('expanding');
 	const tree = getDecisionTree();
 	const expanded = JSON.parse(tree?.auto_expand(nodeId, depth));
 	console.log(expanded);
-	populateCytoscape(cyInstance, expanded);
+	treeCytoscapeManager.populateCytoscape(expanded);
 
-	selectNode(cyInstance, nodeId);
+	treeCytoscapeManager.selectNode(nodeId);
 }
-export function setPrecision(cyInstance: cytoscape.Core, precision: number) {
-	const loading = document.getElementById('loading-indicator');
-	loading.classList.remove('invisible');
-
-	console.log(getDecisionTree()?.apply_tree_precision(precision));
-	loadBifurcationTree(cyInstance);
+export function setPrecision(precision: number) {
+	getDecisionTree()?.apply_tree_precision(precision);
+	loadBifurcationTree();
 }
 export function getPrecision() {
 	return getDecisionTree()?.get_tree_precision() ?? 10000;
@@ -68,25 +56,25 @@ export function getAttributes(nodeId: number) {
 	const tree = getDecisionTree();
 	const result = JSON.parse(tree?.get_attributes(nodeId)) ?? [];
 
-	console.log('got attributes', result);
+	function calcTotal(cardinalities: CardinalityClass[]) {
+		return cardinalities.reduce((a: number, b: CardinalityClass) => a + b.cardinality, 0);
+	}
 
-	result.forEach((attr) => {
+	result.forEach((attr: DecisionAttribute) => {
 		// Prepare data:
 		attr.left.sort(compareCardinality);
 		attr.right.sort(compareCardinality);
-		attr.leftTotal = attr.left.reduce((a, b) => a + b.cardinality, 0.0);
-		attr.rightTotal = attr.right.reduce((a, b) => a + b.cardinality, 0.0);
+		attr.leftTotal = calcTotal(attr.left);
+		attr.rightTotal = calcTotal(attr.right);
 	});
-
-	console.log('finished fetching, N:', result.length);
 
 	return result;
 }
 
-export function selectAttribute(cyInstance: cytoscape.Core, nodeId: number, attr: number) {
+export function selectAttribute(nodeId: number, attr: number) {
 	const tree = getDecisionTree();
 	const result = JSON.parse(tree?.apply_attribute(nodeId, attr) ?? '');
-	populateCytoscape(cyInstance, result);
+	treeCytoscapeManager.populateCytoscape(result);
 
-	selectNode(cyInstance, nodeId);
+	treeCytoscapeManager.selectNode(nodeId);
 }

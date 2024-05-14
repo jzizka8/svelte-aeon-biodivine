@@ -105,7 +105,6 @@ function getNodeLabel(treeData: TreeData): string {
 }
 
 export function handleSelect(cyInstance: cytoscape.Core, data: TreeNode) {
-	document.getElementById('quick-help')?.classList.add('gone');
 	const treeData = data.treeData;
 	if (treeData.type == 'leaf') {
 		activeTabStore.set('leaf');
@@ -143,8 +142,4 @@ function computeConditions(cyInstance: cytoscape.Core, pathId: string) {
 	return conditionsList;
 }
 
-export function selectNode(cyInstance: cytoscape.Core, nodeId: number): void {
-	const current = cyInstance.nodes(':selected');
-	current.unselect();
-	cyInstance.getElementById(nodeId.toString()).select();
-}
+

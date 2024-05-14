@@ -1,51 +1,51 @@
 <script lang="ts">
-	import { onDestroy, onMount} from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import dagre from 'cytoscape-dagre';
 
 	import cytoscape from 'cytoscape';
 	import graphStyles from './graphStyles';
 	import { activeTabStore } from '$lib/stores/activeTabStore';
-	import { handleSelect} from './cyHelpers';
-	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
+	import { handleSelect } from './cyHelpers';
 	import { initHotkeys, unbindHotkeys } from './hotkeys';
 	import { loadBifurcationTree } from './services';
 	import init from 'aeon-wasm';
+	import { treeCytoscapeManager } from './treeCytoscapeManager';
 
 	let refElement: HTMLDivElement;
 	let cyInstance: cytoscape.Core;
+	
+
+	export let showHelp: boolean;
 
 	onMount(async () => {
-		await init()
-		
+		await init();
+
 		cytoscape.use(dagre);
 
-		cyInstance = cytoscape({
+		cyInstance = treeCytoscapeManager.initCytoscape({
 			container: refElement,
 			style: graphStyles
 		});
-		cytoscapeTreeStore.set(cyInstance);
-
 
 		cyInstance.on('select', (e) => {
+			showHelp = false;
+			if (e.target.isEdge()) return;
 			handleSelect(cyInstance, e.target.data());
 		});
 		cyInstance.on('unselect', (e) => {
 			activeTabStore.close();
 		});
 
-		loadBifurcationTree(cyInstance);
-		
+		loadBifurcationTree();
+
 		initHotkeys(cyInstance);
 	});
 	onDestroy(() => {
 		unbindHotkeys();
 	});
-
-
-	
 </script>
 
-<div class="graph" bind:this={refElement} id="cytoscape-editor" />
+<div class="graph" bind:this={refElement} id="cytoscape-tree-editor" />
 
 <style>
 	.graph {

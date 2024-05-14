@@ -2,18 +2,18 @@
 	import { sortOptions } from '$lib/const/const';
 	import { mixedDataStore, selectedTreeNodeId } from '$lib/stores/treeNodeStores';
 	import BehaviorTable from '$lib/components/BehaviorTable.svelte';
-	import StabilityAnalysis from './StabilityAnalysis.svelte';
-	import DecisionAttributePanel from './DecisionAttributePanel.svelte';
+	import StabilityAnalysis from '../treeExplorer/StabilityAnalysis.svelte';
+	import DecisionAttributePanel from '../treeExplorer/DecisionAttributePanel.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import hotkeys from 'hotkeys-js';
 	import { autoExpandBifurcationTree, getAttributes } from '$lib/treeCytoscape/';
-	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
+	import { treeCytoscapeManager } from '$lib/treeCytoscape/treeCytoscapeManager';
 
 	function handleAutoExpand() {
 		console.log('Auto expand:', depthValue);
 		console.log($mixedDataStore);
-		if ($cytoscapeTreeStore && $mixedDataStore) {
-			autoExpandBifurcationTree($cytoscapeTreeStore, $mixedDataStore?.id, depthValue);
+		if ($mixedDataStore) {
+			autoExpandBifurcationTree($mixedDataStore?.id, depthValue);
 		}
 	}
 
@@ -48,6 +48,7 @@
 		hotkeys('d', handleMakeDecision);
 	});
 	onDestroy(() => {
+		treeCytoscapeManager.unselectNode($mixedDataStore?.id);
 		mixedDataStore.set(undefined);
 		hotkeys.unbind('d');
 	});
@@ -74,7 +75,7 @@
 			on:click={handleAutoExpand}
 		>
 			{autoExpandText}
-			<img src="img/graph-24px.svg" />
+			<img src="img/graph-24px.svg" alt="Auto expand" />
 		</button>
 		Depth:
 		<input
@@ -97,10 +98,10 @@
 			style="float: right; margin-bottom: 16px; margin-right: 16px;"
 			on:click={handleMakeDecision}
 		>
-			Make decision (D) <img src="img/add_box-24px.svg" />
+			Make decision (D) <img src="img/add_box-24px.svg" alt="Make decision" />
 		</button>
 	</div>
-	{#if decisionAttributes && decisionsMade}
+	{#if $mixedDataStore && decisionAttributes && decisionsMade}
 		<div id="mixed-attributes">
 			<span
 				id="mixed-attributes-title"

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import WitnessPanel from './components/WitnessPanel.svelte';
+	import WitnessPanel from '$lib/components/explorer/WitnessPanel.svelte';
 
 	import { modelStore } from '$lib/stores/modelStore';
 	import { onMount } from 'svelte';
@@ -34,13 +34,12 @@
 				id="side-menu-functions"
 				src="img/functions-48px.svg"
 				class="button"
-				tab-id="tab-functions"
 			/>
 			<span class="hint invisible">Update functions</span>
 		</div>
 	</div>
 
 	<div id="loading-indicator" class="invisible">
-		<img src="img/progress.gif" /><br /><br />Waiting for server...
+		<img src="img/progress.gif" alt="loading" /><br /><br />Waiting for server...
 	</div>
 </div>

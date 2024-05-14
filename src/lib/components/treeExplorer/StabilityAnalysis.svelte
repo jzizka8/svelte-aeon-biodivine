@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { computeEngineStore } from '$lib/stores/ComputeEngineStore'; // Adjust the import according to your actual file structure
 	import { Behavior } from '$lib/types/treeExplorerTypes';
 	import type { Stability } from '$lib/types/treeExplorerTypes';
 	import hotkeys from 'hotkeys-js';
@@ -13,17 +12,19 @@
 
 	// Function to load stability data using the callback pattern
 	function loadStabilityData(id: number, behavior: Behavior) {
-		$computeEngineStore.getStabilityData(id, behavior, (error: string, result: Stability[]) => {
-			errorText = error;
-			stabilityData = result ?? [];
-		});
+		errorText = 'Not implemented yet';
+		//TODO: implement
+		// $computeEngineStore.getStabilityData(id, behavior, (error: string, result: Stability[]) => {
+		// 	errorText = error;
+		// 	stabilityData = result ?? [];
+		// });
 	}
 
-    // Reset the stability data and selected behavior when the id changes
+	// Reset the stability data and selected behavior when the id changes
 	$: {
 		if (id) {
-			stabilityData = []; 
-			selectedBehavior = Behavior.Total; 
+			stabilityData = [];
+			selectedBehavior = Behavior.Total;
 		}
 	}
 
@@ -46,17 +47,17 @@
 			']'
 		);
 	}
-    onMount(() => {
-        hotkeys('s', function (event, handler) {
-            if(id){
-                event.preventDefault();
-                loadStabilityData(id, selectedBehavior);
-            }
-        });
-    });
-    onDestroy(() => {
-        hotkeys.unbind('s');
-    });
+	onMount(() => {
+		hotkeys('s', function (event, handler) {
+			if (id) {
+				event.preventDefault();
+				loadStabilityData(id, selectedBehavior);
+			}
+		});
+	});
+	onDestroy(() => {
+		hotkeys.unbind('s');
+	});
 </script>
 
 <select bind:value={selectedBehavior} class="stability-dropdown">
@@ -72,7 +73,7 @@
 	style="float: right; margin-bottom: 16px; margin-right: 16px;"
 	on:click={() => loadStabilityData(id, selectedBehavior)}
 >
-	Stability analysis (S) <img src="img/stability_analysis-24px.svg" />
+	Stability analysis (S) <img src="img/stability_analysis-24px.svg" alt="Stability analysis" />
 </button>
 
 <!-- Stability Data Display -->
@@ -106,13 +107,12 @@
 {/if}
 
 <style>
-    .outer-list {
-        list-style-type: none;
-        padding-left: 0;
-    }
+	.outer-list {
+		list-style-type: none;
+		padding-left: 0;
+	}
 
-    .inner-list {
-        list-style-type: '- ';
-    }
-
+	.inner-list {
+		list-style-type: '- ';
+	}
 </style>
