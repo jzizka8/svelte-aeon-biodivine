@@ -7,13 +7,13 @@
 	import { onDestroy, onMount } from 'svelte';
 	import hotkeys from 'hotkeys-js';
 	import { autoExpandBifurcationTree, getAttributes } from '$lib/treeCytoscape/';
-	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
+	import { treeCytoscapeManager } from '$lib/treeCytoscape/treeCytoscapeManager';
 
 	function handleAutoExpand() {
 		console.log('Auto expand:', depthValue);
 		console.log($mixedDataStore);
-		if ($cytoscapeTreeStore && $mixedDataStore) {
-			autoExpandBifurcationTree($cytoscapeTreeStore, $mixedDataStore?.id, depthValue);
+		if ($mixedDataStore) {
+			autoExpandBifurcationTree($mixedDataStore?.id, depthValue);
 		}
 	}
 
@@ -48,6 +48,7 @@
 		hotkeys('d', handleMakeDecision);
 	});
 	onDestroy(() => {
+		treeCytoscapeManager.unselectNode($mixedDataStore?.id);
 		mixedDataStore.set(undefined);
 		hotkeys.unbind('d');
 	});

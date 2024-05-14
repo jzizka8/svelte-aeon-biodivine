@@ -5,6 +5,7 @@
 	import { onDestroy } from 'svelte';
 	import StabilityAnalysis from '../treeExplorer/StabilityAnalysis.svelte';
 	import { leafDataStore, selectedTreeNodeId } from '$lib/stores/treeNodeStores';
+	import { treeCytoscapeManager } from '$lib/treeCytoscape/treeCytoscapeManager';
 
 	let percent: number, dimPercent: number;
 	
@@ -23,9 +24,9 @@
 
 	onDestroy(() => {
 		console.log('LeafTab destroyed');
+		treeCytoscapeManager.unselectNode($leafDataStore?.id)
 		leafDataStore.set(undefined);
-		// TODO: unselect the node in cytoscape
-	});
+});
 </script>
 
 <div id="leaf-info" class="main-panel fira-mono">

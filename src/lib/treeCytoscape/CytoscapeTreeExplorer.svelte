@@ -6,10 +6,10 @@
 	import graphStyles from './graphStyles';
 	import { activeTabStore } from '$lib/stores/activeTabStore';
 	import { handleSelect} from './cyHelpers';
-	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
 	import { initHotkeys, unbindHotkeys } from './hotkeys';
 	import { loadBifurcationTree } from './services';
 	import init from 'aeon-wasm';
+	import { treeCytoscapeManager } from './treeCytoscapeManager';
 
 	let refElement: HTMLDivElement;
 	let cyInstance: cytoscape.Core;
@@ -19,11 +19,10 @@
 		
 		cytoscape.use(dagre);
 
-		cyInstance = cytoscape({
+		cyInstance = treeCytoscapeManager.initCytoscape({
 			container: refElement,
 			style: graphStyles
 		});
-		cytoscapeTreeStore.set(cyInstance);
 
 
 		cyInstance.on('select', (e) => {
@@ -34,7 +33,7 @@
 			activeTabStore.close();
 		});
 
-		loadBifurcationTree(cyInstance);
+		loadBifurcationTree();
 		
 		initHotkeys(cyInstance);
 	});

@@ -5,18 +5,21 @@
 	import StabilityAnalysis from '../treeExplorer/StabilityAnalysis.svelte';
 	import hotkeys from 'hotkeys-js';
 	import { undecideSubtree } from '$lib/treeCytoscape/';
-	import { cytoscapeTreeStore } from '$lib/stores/cytoscapeTreeStore';
+	import { treeCytoscapeManager } from '$lib/treeCytoscape/treeCytoscapeManager';
 
 	onMount(() => {
 		hotkeys('backspace', handleUndecide);
 	});
+
 	onDestroy(() => {
 		hotkeys.unbind('backspace');
+		treeCytoscapeManager.unselectNode($decisionStore?.id);
 		decisionStore.set(undefined);
 	});
+
 	function handleUndecide() {
-		if ($cytoscapeTreeStore && $decisionStore) {
-			undecideSubtree($cytoscapeTreeStore, $decisionStore?.id);
+		if ($decisionStore) {
+			undecideSubtree($decisionStore?.id);
 		}
 	}
 </script>

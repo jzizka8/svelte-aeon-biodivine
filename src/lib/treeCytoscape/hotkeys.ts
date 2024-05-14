@@ -1,7 +1,8 @@
 import { selectedTreeNodeId } from '$lib/stores/treeNodeStores';
 import hotkeys from 'hotkeys-js';
 import { get } from 'svelte/store';
-import { selectNode, getParentNode, getSiblingNode, getChildNode } from './cyHelpers';
+import { getParentNode, getSiblingNode, getChildNode } from './cyHelpers';
+import { treeCytoscapeManager } from './treeCytoscapeManager';
 
 function getHotkeyActions(cy: cytoscape.Core): {
 	[key: string]: (nodeId: number) => number | undefined;
@@ -20,13 +21,13 @@ export function initHotkeys(cy: cytoscape.Core) {
 	function navigate(direction: string, event: Event) {
 		const selected = get(selectedTreeNodeId);
 		if (selected === undefined) {
-			selectNode(cy, 0);
+			treeCytoscapeManager.selectNode(0);
 		} else {
 			const targetNode = hotkeyActions[direction](selected);
 			if (targetNode === undefined) {
 				return;
 			}
-			selectNode(cy, targetNode);
+			treeCytoscapeManager.selectNode(targetNode);
 			event.preventDefault();
 		}
 	}
