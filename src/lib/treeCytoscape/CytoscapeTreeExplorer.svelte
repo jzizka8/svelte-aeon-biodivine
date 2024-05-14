@@ -27,6 +27,7 @@
 
 
 		cyInstance.on('select', (e) => {
+			if(e.target.isEdge()) return;
 			handleSelect(cyInstance, e.target.data());
 		});
 		cyInstance.on('unselect', (e) => {
