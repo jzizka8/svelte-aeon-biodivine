@@ -12,6 +12,8 @@
 	import { EXAMPLE_MODEL } from '$lib/const/exampleModels';
 	import { cytoscapeManager } from '$lib/cytoscape/CytoscapeManager';
 
+	$: modelEmpty = $modelStore.variables.length === 0;
+
 	function downloadAeon() {
 		const positions = cytoscapeManager.collectElementPosition();
 		const aeonData = exportAeon($modelStore, positions);
@@ -121,6 +123,7 @@
 			class="compound-button"
 			style="margin-top: 8px; margin-bottom: 8px;"
 			on:click={downloadAeon}
+			disabled={modelEmpty}			
 			><span class="main">.AEON</span><span class="desc">Simple text format</span></button
 		>
 
@@ -129,6 +132,7 @@
 			class="compound-button"
 			style="margin-top: 8px; margin-bottom: 8px;"
 			on:click={downloadSbml}
+			disabled={modelEmpty}			
 			><span class="main">.SBML<br /><small>(parametrized)</small></span><span class="desc"
 				>Parametrized model</span
 			></button
@@ -139,6 +143,7 @@
 			class="compound-button"
 			style="margin-top: 8px; margin-bottom: 8px;"
 			on:click={downloadSbmlInstantiated}
+			disabled={modelEmpty}			
 			><span class="main">.SBML<br /><small>(instantiated)</small></span><span class="desc"
 				>Witness<br />model</span
 			></button
