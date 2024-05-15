@@ -18,7 +18,6 @@ type parsedRegulation = {
 
 export function importSbml(sbmlString: string) {
 	const aeonModel = Conversions.sbml_to_aeon(sbmlString);
-	console.log(aeonModel);
 	importAeon(aeonModel);
 }
 export function importAeon(modelString: string) {

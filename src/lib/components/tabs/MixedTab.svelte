@@ -10,8 +10,6 @@
 	import { treeCytoscapeManager } from '$lib/treeCytoscape/treeCytoscapeManager';
 
 	function handleAutoExpand() {
-		console.log('Auto expand:', depthValue);
-		console.log($mixedDataStore);
 		if ($mixedDataStore) {
 			autoExpandBifurcationTree($mixedDataStore?.id, depthValue);
 		}
@@ -35,7 +33,6 @@
 
 	function handleMakeDecision() {
 		decisionsMade = true;
-		console.log('Making decision...');
 		if ($mixedDataStore?.attributes) {
 			return;
 		}

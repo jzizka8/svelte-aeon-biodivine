@@ -23,7 +23,6 @@
 	$: witnessCount = `${$leafDataStore?.cardinality} (${percent}% / ${dimPercent}٪)`;
 
 	onDestroy(() => {
-		console.log('LeafTab destroyed');
 		treeCytoscapeManager.unselectNode($leafDataStore?.id)
 		leafDataStore.set(undefined);
 });

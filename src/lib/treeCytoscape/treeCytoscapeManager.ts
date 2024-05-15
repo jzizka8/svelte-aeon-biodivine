@@ -11,7 +11,6 @@ class TreeCytoscapeManager {
 
 	initCytoscape(options: cytoscape.CytoscapeOptions): cytoscape.Core {
 		if (!this.instance) {
-			console.log('Initializing Cytoscape...');
 			this.instance = cytoscape(options);
 		}
 		return this.instance;

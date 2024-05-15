@@ -62,7 +62,6 @@ export function getNodeType(cyInstance: cytoscape.Core, nodeId: number): string 
 }
 
 function getTotalCardinality(cyInstance: cytoscape.Core): number {
-	console.log('root', cyInstance.$id('0')[0].data().treeData);
 	return cyInstance.$id('0')[0].data().treeData.cardinality;
 }
 

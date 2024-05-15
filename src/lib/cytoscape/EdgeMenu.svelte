@@ -47,7 +47,6 @@
 	function handleRemove() {
 		if (edges) {
 			edges.forEach((edge) => {
-				console.log('edge.id', edge.id);
 				modelStoreActions.removeRegulation(edge.id);
 			});
 		}
