@@ -53,5 +53,5 @@
 
 	<p>Compute Engine: crossbeam, rayon, rocket, json.</p>
 
-	<p>Online client: cytoscape with edgehandles, material icons, hotkeys.</p>
+	<p>Online client: SvelteKit, cytoscape with edgehandles, material icons, hotkeys.</p>
 </div>
