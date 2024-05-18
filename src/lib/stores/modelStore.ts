@@ -126,7 +126,16 @@ const modelStoreActions = {
 				...currentModel,
 				variables: currentModel.variables.map((node) =>
 					node.id === nodeId ? { ...node, name } : node
-				)
+				),
+				regulations: currentModel.regulations.map((edge) => {
+					if (edge.source.id === nodeId) {
+						return { ...edge, source: { ...edge.source, name } };
+					}
+					if (edge.target.id === nodeId) {
+						return { ...edge, target: { ...edge.target, name } };
+					}
+					return edge;
+				})
 			};
 		});
 		if (errorMessage) {

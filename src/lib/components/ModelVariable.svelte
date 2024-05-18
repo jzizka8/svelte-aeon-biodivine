@@ -27,8 +27,8 @@
 	function dispatchToggleObservable(regulation: Regulation) {
 		dispatch('toggleObservable', { regulation: regulation });
 	}
-	function dispatchRenameVariable() {
-		dispatch('renameVariable', { newName: variable.name });
+	function dispatchRenameVariable(event: Event) {
+		dispatch('renameVariable', { id:variable.id, newName:variableNameInput.value });
 	}
 	function handleFunctionChange(event: Event) {
 		dispatch('changeFunction', { function: (event.target as HTMLInputElement).value, variable });
@@ -90,12 +90,10 @@
 			class="variable-name"
 			type="text"
 			name="variable-name"
-			bind:value={variable.name}
 			bind:this={variableNameInput}
-			placeholder={variable.name}
+			value={variable.name}
 			style="font-size: 18px;"
-			spellcheck="false"
-			autocorrect="off"
+			
 			on:change={dispatchRenameVariable}
 		/>
 	</div>
@@ -126,9 +124,10 @@
 	</div>
 	<h4>● Update Function</h4>
 	<input
-		class="invisible-input full-line variable-function"		
+		class="variable-function"		
 		style="font-size: 16px; text-align: center;"
 		bind:this={updateFunctionInput}
+		placeholder={`f(${variable.name})`}
 		value={variable.updateFunction}
 		on:blur={handleFunctionChange}
 	/>
@@ -137,8 +136,9 @@
 	</div>
 </div>
 <style>
-	.invisible-input {
+	.variable-function {
 		border: none;
 		background-color: transparent;
+		width: 100%;
 	}
 </style>

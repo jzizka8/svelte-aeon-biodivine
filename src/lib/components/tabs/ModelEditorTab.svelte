@@ -28,8 +28,10 @@
 		modelStoreActions.setVariableUpdateFunction(variable.id, fn);
 	}
 
-	function handleVariableRename(id: string, name: string) {
+	function handleVariableRename(event: CustomEvent) {
 		try {
+			const id = event.detail.id;
+			const name = event.detail.newName;
 			modelStoreActions.renameVariable(id, name);
 		} catch (e: any) {
 			// TODO: create toasterror
@@ -102,7 +104,7 @@
 			on:delete={() => modelStoreActions.removeVariable(variable.id)}
 			on:changeMonotonicity={handleMonotonicityChange}
 			on:toggleObservable={handleObservableToggle}
-			on:renameVariable={() => handleVariableRename(variable.id, variable.name)}
+			on:renameVariable={ handleVariableRename}
 			on:changeFunction={handleFnChange}		/>
 	{/each}
 </div>
