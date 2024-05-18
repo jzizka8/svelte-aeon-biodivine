@@ -1,5 +1,4 @@
 import { resultsStore } from '$lib/stores/resultsStore';
-import { DecisionTree } from 'aeon-wasm';
 
 export function startAnalysis(model_string: string) {
 	const worker = new Worker(new URL('./compute_worker.ts', import.meta.url), {
@@ -8,7 +7,8 @@ export function startAnalysis(model_string: string) {
 	worker.onmessage = (e) => {
 		if (e.data.type == 'error') {
 			console.error('Error', e.data['error']);
-			worker.terminate(); // worker is no longer needed.
+			resultsStore.set({ ...e.data, is_finished: true });
+			worker.terminate();
 			return;
 		}
 		resultsStore.set(e.data.data);

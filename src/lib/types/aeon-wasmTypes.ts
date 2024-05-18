@@ -5,4 +5,5 @@ export type computationResult = {
 	data: CardinalityClass[];
 	elapsed: number;
 	progress: string;
+	error?: string;
 };
