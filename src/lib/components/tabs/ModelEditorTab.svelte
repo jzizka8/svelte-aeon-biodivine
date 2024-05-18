@@ -22,6 +22,11 @@
 	function handleNameChange(event: Event) {
 		modelStoreActions.setName((event.target as HTMLInputElement).value);
 	}
+	function handleFnChange(event: CustomEvent) {
+		const variable = event.detail.variable;
+		const fn = event.detail.function;
+		modelStoreActions.setVariableUpdateFunction(variable.id, fn);
+	}
 
 	function handleVariableRename(id: string, name: string) {
 		try {
@@ -98,6 +103,6 @@
 			on:changeMonotonicity={handleMonotonicityChange}
 			on:toggleObservable={handleObservableToggle}
 			on:renameVariable={() => handleVariableRename(variable.id, variable.name)}
-		/>
+			on:changeFunction={handleFnChange}		/>
 	{/each}
 </div>

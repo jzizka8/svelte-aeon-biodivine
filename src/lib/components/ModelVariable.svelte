@@ -30,6 +30,10 @@
 	function dispatchRenameVariable() {
 		dispatch('renameVariable', { newName: variable.name });
 	}
+	function handleFunctionChange(event: Event) {
+		dispatch('changeFunction', { function: (event.target as HTMLInputElement).value, variable });
+		validateUpdateFunction();
+	}
 
 	function handleMouseEnter() {
 		hoveredNodeStore.set(variable.id);
@@ -121,17 +125,20 @@
 		{/each}
 	</div>
 	<h4>● Update Function</h4>
-	<div
-		class="invisible-input full-line variable-function"
-		contenteditable
-		spellcheck="false"
-		data-placeholder={`$f_${variable.name}(...)`}
+	<input
+		class="invisible-input full-line variable-function"		
 		style="font-size: 16px; text-align: center;"
 		bind:this={updateFunctionInput}
-		bind:innerText={variable.updateFunction}
-		on:blur={validateUpdateFunction}
+		value={variable.updateFunction}
+		on:blur={handleFunctionChange}
 	/>
 	<div class="variable-function-status" class:red={!functionValid}>
 		{fnValidityText}
 	</div>
 </div>
+<style>
+	.invisible-input {
+		border: none;
+		background-color: transparent;
+	}
+</style>
