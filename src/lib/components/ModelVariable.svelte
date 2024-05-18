@@ -1,37 +1,47 @@
 <script lang="ts">
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import type { Regulation, Variable } from '$lib/types/types';
-	import { regulationShortcut } from '$lib/utils/utils';
+	import { nextMonotonicity, regulationShortcut } from '$lib/utils/utils';
 	import { hoveredNodeStore } from '$lib/stores/hoveredNodeStore';
 	import { focusedInputStore } from '$lib/stores/focusedVariableInput';
-	import {check_update_function} from 'aeon-wasm';
+	import { check_update_function } from 'aeon-wasm';
 
 	import { exportAeonFragment } from '$lib/importExport/';
 	import { cytoscapeManager } from '$lib/cytoscape/CytoscapeManager';
+	import type { Unsubscriber } from 'svelte/motion';
 
 	export let variable: Variable;
 	export let regulations: Regulation[];
 	export let isSelected = false;
+	export let actions: typeof import('$lib/stores/modelStore').modelStoreActions;
 
 	$: isHover = $hoveredNodeStore === variable.id;
-	let updateFunctionInput: HTMLElement;
+	let updateFunctionInput: HTMLInputElement;
 	let variableNameInput: HTMLInputElement;
-	
-	const dispatch = createEventDispatcher();
+
 	function dispatchDelete() {
-		dispatch('delete', { variable });
+		actions.removeVariable(variable.id);
 	}
 	function dispatchMonotonicity(regulation: Regulation) {
-		dispatch('changeMonotonicity', { regulation: regulation });
+		const newMonotonicity = nextMonotonicity(regulation.monotonicity);
+		actions.changeMonotonicity(regulation.id, newMonotonicity);
 	}
 	function dispatchToggleObservable(regulation: Regulation) {
-		dispatch('toggleObservable', { regulation: regulation });
+		actions.toggleObservable(regulation.id);
 	}
 	function dispatchRenameVariable(event: Event) {
-		dispatch('renameVariable', { id:variable.id, newName:variableNameInput.value });
+		try {
+			const id = variable.id;
+			const name = variableNameInput.value;
+			actions.renameVariable(id, name);
+		} catch (e: any) {
+			// TODO: create toasterror
+			alert(e.message);
+			variableNameInput.value = variable.name; //reset to old value
+		}
 	}
 	function handleFunctionChange(event: Event) {
-		dispatch('changeFunction', { function: (event.target as HTMLInputElement).value, variable });
+		actions.setVariableUpdateFunction(variable.id, updateFunctionInput.value);
 		validateUpdateFunction();
 	}
 
@@ -51,7 +61,7 @@
 
 	function validateUpdateFunction() {
 		try {
-			const modelFragment = exportAeonFragment(regulations, variable)
+			const modelFragment = exportAeonFragment(regulations, variable);
 			const valid = check_update_function(modelFragment);
 			fnValidityText = `Possible instantiations: ${valid.cardinality}`;
 			functionValid = true;
@@ -61,8 +71,9 @@
 		}
 	}
 
+	let inputStUnsubcriber: Unsubscriber;
 	onMount(() => {
-		focusedInputStore.subscribe((focusedInput) => {
+		inputStUnsubcriber = focusedInputStore.subscribe((focusedInput) => {
 			if (!isSelected || !focusedInput) {
 				return;
 			}
@@ -74,6 +85,9 @@
 			setTimeout(() => focusedInputStore.set(null), 0);
 		});
 		validateUpdateFunction();
+	});
+	onDestroy(() => {
+		inputStUnsubcriber();
 	});
 </script>
 
@@ -93,7 +107,6 @@
 			bind:this={variableNameInput}
 			value={variable.name}
 			style="font-size: 18px;"
-			
 			on:change={dispatchRenameVariable}
 		/>
 	</div>
@@ -124,17 +137,18 @@
 	</div>
 	<h4>● Update Function</h4>
 	<input
-		class="variable-function"		
+		class="variable-function"
 		style="font-size: 16px; text-align: center;"
 		bind:this={updateFunctionInput}
 		placeholder={`f(${variable.name})`}
 		value={variable.updateFunction}
-		on:blur={handleFunctionChange}
+		on:change={handleFunctionChange}
 	/>
 	<div class="variable-function-status" class:red={!functionValid}>
 		{fnValidityText}
 	</div>
 </div>
+
 <style>
 	.variable-function {
 		border: none;

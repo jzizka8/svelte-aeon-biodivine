@@ -5,39 +5,10 @@
 
 	import { modelStore, modelStoreActions } from '$lib/stores/modelStore';
 	import { calculateMaxDegrees } from '$lib/utils/modelStats';
-	import { nextMonotonicity } from '$lib/utils/utils';
 	import { selectedNodesStore } from '$lib/stores/selectedItemsStore';
-
-	function handleMonotonicityChange(event: CustomEvent) {
-		const regulation = event.detail.regulation;
-		const newMonotonicity = nextMonotonicity(regulation.monotonicity);
-		modelStoreActions.changeMonotonicity(regulation.id, newMonotonicity);
-	}
-
-	function handleObservableToggle(event: CustomEvent) {
-		const regulation = event.detail.regulation;
-		modelStoreActions.toggleObservable(regulation.id);
-	}
 
 	function handleNameChange(event: Event) {
 		modelStoreActions.setName((event.target as HTMLInputElement).value);
-	}
-	function handleFnChange(event: CustomEvent) {
-		const variable = event.detail.variable;
-		const fn = event.detail.function;
-		modelStoreActions.setVariableUpdateFunction(variable.id, fn);
-	}
-
-	function handleVariableRename(event: CustomEvent) {
-		try {
-			const id = event.detail.id;
-			const name = event.detail.newName;
-			modelStoreActions.renameVariable(id, name);
-		} catch (e: any) {
-			// TODO: create toasterror
-			alert(e.message);
-		}
-		
 	}
 
 	$: [maxIn, maxOut] = calculateMaxDegrees($modelStore.regulations);
@@ -74,13 +45,7 @@
 		/>
 	</div>
 	<slot />
-	<div
-		class="invisible-input full-line"
-		id="model-description"
-		contenteditable
-		data-placeholder="(model description)"
-		style="display:none"
-	/>
+
 	<div class="invisible-input full-line" contenteditable bind:innerHTML={$modelStore.description} />
 	<div style="height: 30px;">
 		<h3 style="font-family: 'FiraMono'; text-transform: uppercase;">● Overview</h3>
@@ -91,20 +56,20 @@
 		id="button-add-variable"
 		class="image-button"
 		on:click={() => modelStoreActions.createVariable(null)}
-		style="float: right;">Add variable (N) <img src="img/add_box-24px.svg" alt="Add variable" /></button
+		style="float: right;"
 	>
+		Add variable (N)
+		<img src="img/add_box-24px.svg" alt="Add variable" />
+	</button>
 
 	<h1>Variables</h1>
 
 	{#each $modelStore.variables as variable (variable.id)}
 		<ModelVariable
-			isSelected={$selectedNodesStore.items.some((node) => node.id == variable.id)}
 			{variable}
 			regulations={$modelStore.regulations.filter((v) => v.target.id == variable.id)}
-			on:delete={() => modelStoreActions.removeVariable(variable.id)}
-			on:changeMonotonicity={handleMonotonicityChange}
-			on:toggleObservable={handleObservableToggle}
-			on:renameVariable={ handleVariableRename}
-			on:changeFunction={handleFnChange}		/>
+			isSelected={$selectedNodesStore.items.some((node) => node.id == variable.id)}
+			actions={modelStoreActions}
+		/>
 	{/each}
 </div>
