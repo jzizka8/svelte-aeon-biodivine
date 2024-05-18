@@ -7,6 +7,7 @@
 	import { resultsStore } from '$lib/stores/resultsStore';
 	import { startAnalysis } from '$lib/services/analysisService';
 	import { cytoscapeManager } from '$lib/cytoscape/CytoscapeManager';
+	import { CONFIRM_MODEL_CLEAR } from '$lib/const/message';
 
 	$: modelEmpty = $modelStore.variables.length === 0;
 	$: startAnalysisDisabled = modelEmpty || ($resultsStore && !$resultsStore?.is_finished);
@@ -22,6 +23,10 @@
 	}
 
 	function handleClearModel() {
+		if (!confirm(CONFIRM_MODEL_CLEAR)) {
+			return;
+		}
+
 		modelStoreActions.clearModel();
 		resultsStore.set(undefined);
 		worker?.terminate();

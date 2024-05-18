@@ -11,6 +11,7 @@
 	import { modelStore } from '$lib/stores/modelStore';
 	import { EXAMPLE_MODEL } from '$lib/const/exampleModels';
 	import { cytoscapeManager } from '$lib/cytoscape/CytoscapeManager';
+	import { IMPORT_ERROR } from '$lib/const/message';
 
 	$: modelEmpty = $modelStore.variables.length === 0;
 
@@ -47,9 +48,13 @@
 		if (!(input && input.files && input.files.length > 0)) {
 			return;
 		}
-		const text = await input.files[0].text();
-		fileImportFunction(text);
-		activeTabStore.close();
+		try {
+			const text = await input.files[0].text();
+			fileImportFunction(text);
+			activeTabStore.close();
+		} catch (e) {
+			alert(IMPORT_ERROR + e);
+		}
 	}
 
 	function importModel(model: string) {
@@ -123,7 +128,7 @@
 			class="compound-button"
 			style="margin-top: 8px; margin-bottom: 8px;"
 			on:click={downloadAeon}
-			disabled={modelEmpty}			
+			disabled={modelEmpty}
 			><span class="main">.AEON</span><span class="desc">Simple text format</span></button
 		>
 
@@ -132,7 +137,7 @@
 			class="compound-button"
 			style="margin-top: 8px; margin-bottom: 8px;"
 			on:click={downloadSbml}
-			disabled={modelEmpty}			
+			disabled={modelEmpty}
 			><span class="main">.SBML<br /><small>(parametrized)</small></span><span class="desc"
 				>Parametrized model</span
 			></button
@@ -143,7 +148,7 @@
 			class="compound-button"
 			style="margin-top: 8px; margin-bottom: 8px;"
 			on:click={downloadSbmlInstantiated}
-			disabled={modelEmpty}			
+			disabled={modelEmpty}
 			><span class="main">.SBML<br /><small>(instantiated)</small></span><span class="desc"
 				>Witness<br />model</span
 			></button
