@@ -9,21 +9,26 @@
 	import PrecisionSlider from '$lib/components/treeExplorer/PrecisionSlider.svelte';
 	import QuickHelp from '$lib/components/treeExplorer/QuickHelp.svelte';
 	import CytoscapeTreeExplorer from '$lib/treeCytoscape/CytoscapeTreeExplorer.svelte';
+	import { goto } from '$app/navigation';
 
 	onMount(async () => {
 		await document.fonts.load('1rem "symbols"');
 		await document.fonts.load('1rem "FiraMono"');
 	});
 
-	let	showHelp = true;
+	let showHelp = true;
+	function redirectToMain() {
+		goto('/', { replaceState: true });
+		console.error('No tree found, redirecting to main page.');
+	}
 </script>
 
 <svelte:head>
 	<title>{$modelStore.name} | Tree explorer AEON</title>
 </svelte:head>
 <main>
-	<CytoscapeTreeExplorer bind:showHelp={showHelp}/>
-	<QuickHelp show={showHelp}/>
+	<CytoscapeTreeExplorer bind:showHelp noTreeAction={redirectToMain} />
+	<QuickHelp show={showHelp} />
 
 	<LogoType />
 	<TabWrapper />
@@ -32,4 +37,3 @@
 
 	<LoadingIndicator />
 </main>
-

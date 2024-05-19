@@ -13,7 +13,8 @@
 
 	let refElement: HTMLDivElement;
 	let cyInstance: cytoscape.Core;
-	
+
+	export let noTreeAction: () => void = () => {};
 
 	export let showHelp: boolean;
 
@@ -36,7 +37,11 @@
 			activeTabStore.close();
 		});
 
-		loadBifurcationTree();
+		try {
+			loadBifurcationTree();
+		} catch (e) {
+			noTreeAction();
+		}
 
 		initHotkeys(cyInstance);
 	});
