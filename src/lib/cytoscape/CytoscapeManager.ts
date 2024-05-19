@@ -13,7 +13,6 @@ class CytoscapeManager {
 	initCytoscape(options: cytoscape.CytoscapeOptions): cytoscape.Core {
 		if (!this.instance) {
 			cytoscape.use(cytoscapeEdgehandles);
-			console.log('Initializing Cytoscape...');
 			this.instance = cytoscape(options);
 		}
 		return this.instance;
@@ -51,7 +50,6 @@ class CytoscapeManager {
 	}
 
 	updateElementData(id: string, attributeName: string, newValue: any) {
-		console.log('Updating element data...', id, attributeName, newValue);
 		if (!this.instance) {
 			return;
 		}

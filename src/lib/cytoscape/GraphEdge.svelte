@@ -23,7 +23,6 @@
 		});
 
 		cyEdge.on('select', () => {
-			console.log('edge selected');
 			const position  = getEdgeMenuPosition(cyEdge);
 			selectedEdgesStore.addItem(edge, position);
 		});

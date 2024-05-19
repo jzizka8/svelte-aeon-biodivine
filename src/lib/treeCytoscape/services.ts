@@ -7,16 +7,13 @@ export function loadBifurcationTree() {
 	treeCytoscapeManager.removeAll();
 
 	const tree = getDecisionTree();
-	console.log(tree?.get_tree_precision());
 	const fullTree = JSON.parse(tree?.get_full_tree());
-	console.log(fullTree);
 	treeCytoscapeManager.populateCytoscape(fullTree);
 }
 
 export function undecideSubtree(nodeId: number) {
 	const tree = getDecisionTree();
 	const result = JSON.parse(tree?.revert_decision(nodeId) ?? '');
-	console.log(result);
 
 	// removing descendants
 	result.removed.forEach((nodeId: number) => {
@@ -36,10 +33,8 @@ export function undecideSubtree(nodeId: number) {
 }
 
 export function autoExpandBifurcationTree(nodeId: number, depth: number) {
-	console.log('expanding');
 	const tree = getDecisionTree();
 	const expanded = JSON.parse(tree?.auto_expand(nodeId, depth));
-	console.log(expanded);
 	treeCytoscapeManager.populateCytoscape(expanded);
 
 	treeCytoscapeManager.selectNode(nodeId);

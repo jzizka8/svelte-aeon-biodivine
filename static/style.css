@@ -381,11 +381,15 @@ div.invisible-input[contenteditable]:empty:not(:focus):before {
 	transition: 0.3s;
 }
 
-.compound-button:hover {
+.compound-button[disabled]{
+	cursor: not-allowed;
+}
+.compound-button:hover:not([disabled]) {	
+	cursor: pointer;
 	background-color: #b0bec5;
 }
 
-.compound-button:hover .main {
+.compound-button:hover:not([disabled]) .main {
 	background-color: #cfd8dc;
 }
 

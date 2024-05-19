@@ -37,8 +37,6 @@
 
 	onMount(async () => {
 		await init();
-		console.log('aeon init done.');
-		importAeon(AEON_MODEL);
 	});
 </script>
 
