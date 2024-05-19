@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { modelStore } from '$lib/stores/modelStore';
 
 	import LogoType from '$lib/components/LogoType.svelte';
 	import LoadingIndicator from '$lib/components/LoadingIndicator.svelte';
@@ -24,7 +23,7 @@
 </script>
 
 <svelte:head>
-	<title>{$modelStore.name} | Tree explorer AEON</title>
+	<title>Tree explorer AEON</title>
 </svelte:head>
 <main>
 	<CytoscapeTreeExplorer bind:showHelp noTreeAction={redirectToMain} />
